@@ -1,0 +1,240 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../components/common/Header/Header';
+import Card from '../../components/common/Card/Card';
+import Input from '../../components/common/Input/Input';
+import Button from '../../components/common/Button/Button';
+import ProgressSteps from '../../components/common/ProgressSteps/ProgressSteps';
+import Modal from '../../components/common/Modal/Modal';
+import styles from './SubmissionQuestions.module.css';
+
+const SubmissionQuestions = () => {
+  const navigate = useNavigate();
+  const [questionText, setQuestionText] = useState('');
+  const [codeModificationEnabled, setCodeModificationEnabled] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+
+  const steps = [
+    { id: 'statement', label: 'Question Statement' },
+    { id: 'media', label: 'Media & Resources' },
+    { id: 'details', label: 'Question Details' },
+    { id: 'evaluation', label: 'Evaluation Parameters' },
+    { id: 'solution', label: 'Solution Details' }
+  ];
+
+  const handleSaveAndContinue = () => {
+    if (!isValid) return;
+    // Navigate to next step - Media & Resources
+    navigate('/media-resources');
+  };
+
+  useEffect(() => {
+    setIsValid(questionText.trim().length >= 3);
+  }, [questionText]);
+
+  const handlePreview = () => {
+    setIsPreviewOpen(true);
+  };
+
+  const toolbarButtons = [
+    { icon: '📎', label: 'Source', action: () => {} },
+    { icon: '📄', label: 'Format', action: () => {} },
+    { icon: '↶', label: 'Undo', action: () => {} },
+    { icon: '↷', label: 'Redo', action: () => {} },
+    { icon: '🔍', label: 'Find', action: () => {} },
+    { icon: '⚙️', label: 'Options', action: () => {} }
+  ];
+
+  const formatButtons = [
+    { icon: '𝐁', label: 'Bold', action: () => {} },
+    { icon: '𝐼', label: 'Italic', action: () => {} },
+    { icon: '𝐔', label: 'Underline', action: () => {} },
+    { icon: '𝐒', label: 'Strikethrough', action: () => {} },
+    { icon: '𝑥²', label: 'Superscript', action: () => {} },
+    { icon: '𝑥₂', label: 'Subscript', action: () => {} }
+  ];
+
+  const insertButtons = [
+    { icon: '•', label: 'Bullet List', action: () => {} },
+    { icon: '1.', label: 'Numbered List', action: () => {} },
+    { icon: '➤', label: 'Indent', action: () => {} },
+    { icon: '⇥', label: 'Outdent', action: () => {} },
+    { icon: '❝', label: 'Quote', action: () => {} },
+    { icon: '≡', label: 'Align', action: () => {} },
+    { icon: '🔗', label: 'Link', action: () => {} },
+    { icon: '🖼️', label: 'Image', action: () => {} },
+    { icon: '⊞', label: 'Table', action: () => {} },
+    { icon: '━', label: 'Line', action: () => {} },
+    { icon: '😊', label: 'Emoji', action: () => {} },
+    { icon: '🧮', label: 'Math', action: () => {} },
+    { icon: '𝔸', label: 'Text Style', action: () => {} },
+    { icon: '🎨', label: 'Text Color', action: () => {} },
+    { icon: '🎯', label: 'Highlight', action: () => {} }
+  ];
+
+  return (
+    <div className={styles.container}>
+      <Header title="Submission Questions" />
+      
+      <div className={styles.progressContainer}>
+        <ProgressSteps steps={steps} currentStep={1} />
+      </div>
+
+      <div className={styles.content}>
+        <Card variant="elevated" padding="lg" className={styles.mainCard}>
+          <div className={styles.cardHeader}>
+            <div className={styles.titleSection}>
+              <h2 className={styles.sectionTitle}>Add Question</h2>
+              <div className={styles.editorToggle}>
+                <span className={styles.toggleLabel}>Advanced Editor</span>
+                <label className={styles.switch}>
+                  <input type="checkbox" defaultChecked />
+                  <span className={styles.slider}></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.editorContainer}>
+            {/* Toolbar */}
+            <div className={styles.toolbar}>
+              <div className={styles.toolbarSection}>
+                {toolbarButtons.map((button, index) => (
+                  <button
+                    key={index}
+                    className={styles.toolbarButton}
+                    onClick={button.action}
+                    title={button.label}
+                  >
+                    {button.icon}
+                  </button>
+                ))}
+              </div>
+              
+              <div className={styles.toolbarDivider}></div>
+              
+              <div className={styles.toolbarSection}>
+                {formatButtons.map((button, index) => (
+                  <button
+                    key={index}
+                    className={styles.toolbarButton}
+                    onClick={button.action}
+                    title={button.label}
+                  >
+                    {button.icon}
+                  </button>
+                ))}
+              </div>
+              
+              <div className={styles.toolbarDivider}></div>
+              
+              <div className={styles.toolbarSection}>
+                {insertButtons.map((button, index) => (
+                  <button
+                    key={index}
+                    className={styles.toolbarButton}
+                    onClick={button.action}
+                    title={button.label}
+                  >
+                    {button.icon}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Text Editor */}
+            <div className={styles.editorWrapper}>
+              <div className={styles.editorHeader}>
+                <div className={styles.editorInfo}>
+                  <span className={styles.characterCount}>
+                    {questionText.length} characters
+                  </span>
+                  {!isValid && questionText.length > 0 && (
+                    <span className={styles.validationMessage}>
+                      Minimum 3 characters required
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <textarea
+                className={`${styles.editor} ${!isValid && questionText.length > 0 ? styles.editorError : ''}`}
+                placeholder="Write your question here..."
+                value={questionText}
+                onChange={(e) => setQuestionText(e.target.value)}
+                rows={15}
+              />
+            </div>
+          </div>
+
+          {/* Code Modification Toggle */}
+          <div className={styles.codeModificationSection}>
+            <div className={styles.toggleContainer}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={codeModificationEnabled}
+                  onChange={(e) => setCodeModificationEnabled(e.target.checked)}
+                  className={styles.checkbox}
+                />
+                <span className={styles.checkboxText}>
+                  Enable Code Modification and show Difference
+                </span>
+              </label>
+            </div>
+          </div>
+        </Card>
+
+        {/* Bottom Actions */}
+        <div className={styles.bottomActions}>
+          <div className={styles.actionButtons}>
+            <Button
+              variant="ghost"
+              onClick={() => navigate(-1)}
+              className={styles.cancelButton}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handlePreview}
+              className={styles.previewButton}
+            >
+              Preview
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleSaveAndContinue}
+              disabled={!isValid}
+              className={styles.saveButton}
+            >
+              Save & Continue
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Preview Modal */}
+      <Modal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        title="Question Preview"
+        size="lg"
+      >
+        <div className={styles.previewContent}>
+          <div className={styles.previewText}>
+            {questionText || "No question text to preview"}
+          </div>
+          {codeModificationEnabled && (
+            <div className={styles.previewNote}>
+              <strong>Code Modification:</strong> Enabled
+            </div>
+          )}
+        </div>
+      </Modal>
+    </div>
+  );
+};
+
+export default SubmissionQuestions;

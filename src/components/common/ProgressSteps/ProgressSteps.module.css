@@ -1,0 +1,89 @@
+@import '../../../styles/tokens.css';
+
+.container {
+  background: var(--color-background-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-5);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.progressSteps {
+  display: flex;
+  align-items: center;
+  min-width: fit-content;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.stepCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  color: var(--color-text-tertiary);
+  transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+}
+
+.stepCircle.active {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-600);
+  color: var(--color-text-on-primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.stepCircle.completed {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-600);
+  color: var(--color-text-on-primary);
+}
+
+.stepLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+  transition: color var(--animation-duration-base) var(--animation-ease-in-out);
+}
+
+.stepLabel.activeLabel {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.divider {
+  width: 100px;
+  height: 2px;
+  background: var(--color-border-secondary);
+  margin: 0 var(--spacing-4);
+  margin-bottom: 28px;
+  transition: background-color var(--animation-duration-base) var(--animation-ease-in-out);
+}
+
+.divider.completedDivider {
+  background: var(--color-primary-600);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 16px;
+  }
+  
+  .divider {
+    width: 60px;
+    margin: 0 8px;
+  }
+}

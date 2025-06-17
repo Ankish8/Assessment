@@ -1,0 +1,85 @@
+/* Skills Input */
+.skillsInputWrapper {
+  position: relative;
+}
+
+.skillsInput {
+  padding-right: 60px;
+  cursor: pointer;
+}
+
+.formInput {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #101828;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #7f56d9;
+  box-shadow: 0 0 0 3px rgba(127, 86, 217, 0.1);
+}
+
+.addSkillBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #7f56d9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addSkillBtn:hover {
+  background: #6941c6;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.selectedSkills {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skillChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f4f3ff;
+  color: #7f56d9;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e9d7fe;
+}
+
+.skillChipRemove {
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: none;
+  color: #7f56d9;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.skillChipRemove:hover {
+  background: rgba(127, 86, 217, 0.2);
+}

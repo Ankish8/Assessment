@@ -1,0 +1,33 @@
+/* Import design tokens */
+@import './styles/tokens.css';
+@import './styles/variables.css';
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-base);
+  min-height: 100vh;
+  font-size: var(--font-size-sm);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Focus styles */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
+}
