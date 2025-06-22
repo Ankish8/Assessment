@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header/Header';
 import Card from '../../components/common/Card/Card';
 import Button from '../../components/common/Button/Button';
-import ProgressSteps from '../../components/common/ProgressSteps/ProgressSteps';
+import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
+import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
 import styles from './MediaResources.module.css';
+import '../../styles/utilities.css';
 
 const MediaResources = () => {
   const navigate = useNavigate();
@@ -153,10 +155,10 @@ const MediaResources = () => {
       <Header title="Submission Questions" />
       
       <div className={styles.progressContainer}>
-        <ProgressSteps steps={steps} currentStep={2} />
+        <ResponsiveProgressSteps steps={steps} currentStep={2} />
       </div>
 
-      <div className={styles.content}>
+      <div className={`${styles.content} floating-footer-spacing`}>
         {/* Media Upload Section */}
         <Card variant="elevated" padding="lg" className={styles.uploadCard}>
           <div className={styles.cardHeader}>
@@ -282,25 +284,23 @@ const MediaResources = () => {
         </Card>
 
         {/* Bottom Actions */}
-        <div className={styles.bottomActions}>
-          <div className={styles.actionButtons}>
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/submission-questions')}
-              className={styles.previousButton}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="primary"
-              onClick={handleSaveAndContinue}
-              disabled={!isValid}
-              className={styles.saveButton}
-            >
-              Save & Continue
-            </Button>
-          </div>
-        </div>
+        <FloatingFooter>
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/submission-questions')}
+            className={styles.previousButton}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSaveAndContinue}
+            disabled={!isValid}
+            className={styles.saveButton}
+          >
+            Save & Continue
+          </Button>
+        </FloatingFooter>
       </div>
     </div>
   );

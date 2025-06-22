@@ -422,52 +422,7 @@
   font-size: 12px;
 }
 
-/* Fixed Bottom Section */
-.bottomSection {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--color-background-primary);
-  border-top: 1px solid var(--color-border-primary);
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
-  z-index: 100;
-}
-
-.bottomContainer {
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: var(--spacing-4) var(--spacing-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-.validationAlert {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-2);
-  font-size: var(--font-size-sm);
-  color: var(--color-error-600);
-  font-weight: var(--font-weight-medium);
-  padding: var(--spacing-2) var(--spacing-4);
-  background: var(--color-error-50);
-  border: 1px solid var(--color-error-200);
-  border-radius: var(--radius-base);
-  text-align: center;
-}
-
-.validationAlert i {
-  font-size: 14px;
-}
-
-.actionButtons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--spacing-4);
-}
+/* Button Styling for FloatingFooter */
 
 .previousButton {
   min-width: 120px;
@@ -532,7 +487,7 @@
   }
   
   .content {
-    margin-bottom: 140px; /* More space for mobile bottom section */
+    /* Mobile spacing handled by floating-footer-spacing utility class */
   }
   
   .mainGrid {
@@ -555,11 +510,6 @@
     gap: var(--spacing-3);
   }
   
-  .actionButtons {
-    flex-direction: column;
-    gap: var(--spacing-3);
-  }
-  
   .previousButton,
   .saveButton {
     width: 100%;
@@ -568,10 +518,6 @@
   
   .skillTags {
     justify-content: center;
-  }
-  
-  .bottomContainer {
-    padding: var(--spacing-3) var(--spacing-4);
   }
 }
 

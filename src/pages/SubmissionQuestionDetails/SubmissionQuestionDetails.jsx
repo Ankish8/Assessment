@@ -4,9 +4,11 @@ import Header from '../../components/common/Header/Header';
 import Card from '../../components/common/Card/Card';
 import Input from '../../components/common/Input/Input';
 import Button from '../../components/common/Button/Button';
+import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
 import Selector from '../../components/common/Selector/Selector';
-import ProgressSteps from '../../components/common/ProgressSteps/ProgressSteps';
+import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
 import styles from './SubmissionQuestionDetails.module.css';
+import '../../styles/utilities.css';
 
 const SubmissionQuestionDetails = () => {
   const navigate = useNavigate();
@@ -134,10 +136,10 @@ const SubmissionQuestionDetails = () => {
       <Header title="Submission Questions" />
       
       <div className={styles.progressContainer}>
-        <ProgressSteps steps={steps} currentStep={3} />
+        <ResponsiveProgressSteps steps={steps} currentStep={3} />
       </div>
 
-      <div className={styles.content}>
+      <div className={`${styles.content} floating-footer-spacing`}>
         <div className={styles.mainGrid}>
           {/* Left Column */}
           <div className={styles.leftColumn}>
@@ -340,36 +342,29 @@ const SubmissionQuestionDetails = () => {
         </div>
 
         {/* Fixed Bottom Actions */}
-        <div className={styles.bottomSection}>
-          <div className={styles.bottomContainer}>
-            {!isValid && hasAttemptedSubmit && (
-              <div className={styles.validationAlert}>
-                <i className="fas fa-exclamation-triangle"></i>
-                Please fill in all required fields to continue
-              </div>
-            )}
-            
-            <div className={styles.actionButtons}>
-              <Button
-                variant="ghost"
-                onClick={handlePrevious}
-                className={styles.previousButton}
-              >
-                <i className="fas fa-arrow-left"></i>
-                Previous
-              </Button>
-              <Button
-                variant="primary"
-                onClick={handleSaveAndContinue}
-                disabled={!isValid}
-                className={styles.saveButton}
-              >
-                Save & Continue
-                <i className="fas fa-arrow-right"></i>
-              </Button>
-            </div>
-          </div>
-        </div>
+        <FloatingFooter
+          hasValidationAlert={true}
+          validationMessage="Please fill in all required fields to continue"
+          showAlert={!isValid && hasAttemptedSubmit}
+        >
+          <Button
+            variant="ghost"
+            onClick={handlePrevious}
+            className={styles.previousButton}
+          >
+            <i className="fas fa-arrow-left"></i>
+            Previous
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSaveAndContinue}
+            disabled={!isValid}
+            className={styles.saveButton}
+          >
+            Save & Continue
+            <i className="fas fa-arrow-right"></i>
+          </Button>
+        </FloatingFooter>
       </div>
     </div>
   );

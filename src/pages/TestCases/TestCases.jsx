@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from '../../components/common/Button/Button';
+import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
 import { PROGRESS_STEPS } from '../../constants/progressSteps';
 import styles from './TestCases.module.css';
+import '../../styles/utilities.css';
 
 const TestCases = () => {
   const navigate = useNavigate();
@@ -89,7 +92,7 @@ const TestCases = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} floating-footer-spacing`}>
       {/* Header */}
       <div className={styles.header}>
         <button className={styles.backBtn} onClick={goToPreviousSection}>
@@ -384,14 +387,14 @@ const TestCases = () => {
       </div>
 
       {/* Bottom Actions */}
-      <div className={styles.bottomActions}>
-        <button className={styles.btnSecondary} onClick={goToPreviousSection}>
+      <FloatingFooter>
+        <Button variant="ghost" onClick={goToPreviousSection}>
           Previous
-        </button>
-        <button className={styles.btnPrimary} onClick={saveAndContinue}>
+        </Button>
+        <Button variant="primary" onClick={saveAndContinue}>
           Save & Continue
-        </button>
-      </div>
+        </Button>
+      </FloatingFooter>
     </div>
   );
 };

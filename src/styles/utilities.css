@@ -1,0 +1,15 @@
+@import './tokens.css';
+
+/* Utility classes for common layouts and spacing */
+
+/* FloatingFooter Utilities */
+.floating-footer-spacing {
+  margin-bottom: 120px; /* Space for fixed bottom section */
+}
+
+/* Responsive spacing adjustments */
+@media (max-width: 768px) {
+  .floating-footer-spacing {
+    margin-bottom: 140px; /* More space for mobile bottom section */
+  }
+}

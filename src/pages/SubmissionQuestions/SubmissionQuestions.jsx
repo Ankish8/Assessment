@@ -4,9 +4,11 @@ import Header from '../../components/common/Header/Header';
 import Card from '../../components/common/Card/Card';
 import Input from '../../components/common/Input/Input';
 import Button from '../../components/common/Button/Button';
-import ProgressSteps from '../../components/common/ProgressSteps/ProgressSteps';
+import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
+import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
 import Modal from '../../components/common/Modal/Modal';
 import styles from './SubmissionQuestions.module.css';
+import '../../styles/utilities.css';
 
 const SubmissionQuestions = () => {
   const navigate = useNavigate();
@@ -78,10 +80,10 @@ const SubmissionQuestions = () => {
       <Header title="Submission Questions" />
       
       <div className={styles.progressContainer}>
-        <ProgressSteps steps={steps} currentStep={1} />
+        <ResponsiveProgressSteps steps={steps} currentStep={1} />
       </div>
 
-      <div className={styles.content}>
+      <div className={`${styles.content} floating-footer-spacing`}>
         <Card variant="elevated" padding="lg" className={styles.mainCard}>
           <div className={styles.cardHeader}>
             <div className={styles.titleSection}>
@@ -187,32 +189,23 @@ const SubmissionQuestions = () => {
         </Card>
 
         {/* Bottom Actions */}
-        <div className={styles.bottomActions}>
-          <div className={styles.actionButtons}>
-            <Button
-              variant="ghost"
-              onClick={() => navigate(-1)}
-              className={styles.cancelButton}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handlePreview}
-              className={styles.previewButton}
-            >
-              Preview
-            </Button>
-            <Button
-              variant="primary"
-              onClick={handleSaveAndContinue}
-              disabled={!isValid}
-              className={styles.saveButton}
-            >
-              Save & Continue
-            </Button>
-          </div>
-        </div>
+        <FloatingFooter>
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className={styles.cancelButton}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSaveAndContinue}
+            disabled={!isValid}
+            className={styles.saveButton}
+          >
+            Save & Continue
+          </Button>
+        </FloatingFooter>
       </div>
 
       {/* Preview Modal */}

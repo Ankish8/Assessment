@@ -1,0 +1,348 @@
+@import '../../../../styles/tokens.css';
+
+.container {
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-background-primary);
+  transition: all var(--animation-duration-base) var(--animation-ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.container:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.container.correct {
+  border-color: var(--color-success-300);
+  background-color: var(--color-success-25);
+}
+
+.container.correct:hover {
+  border-color: var(--color-success-400);
+  box-shadow: var(--shadow-sm);
+}
+
+.container.hasError {
+  border-color: var(--color-error-300);
+  background-color: var(--color-error-25);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-4) var(--spacing-6);
+  background-color: var(--color-background-secondary);
+  border-bottom: 1px solid var(--color-border-primary);
+}
+
+.container.correct .header {
+  background-color: var(--color-success-50);
+  border-bottom-color: var(--color-success-200);
+}
+
+.container.hasError .header {
+  background-color: var(--color-error-50);
+  border-bottom-color: var(--color-error-200);
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-700);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+}
+
+.container.correct .letter {
+  background-color: var(--color-success-100);
+  color: var(--color-success-700);
+}
+
+.correctBadge {
+  background-color: var(--color-success-100);
+  color: var(--color-success-700);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.partialMarks {
+  display: flex;
+  align-items: center;
+}
+
+.partialMarksLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.partialMarksInput {
+  width: 60px;
+  padding: var(--spacing-1) var(--spacing-2);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  background-color: var(--color-background-primary);
+}
+
+.partialMarksInput:disabled {
+  background-color: var(--color-background-disabled);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.partialMarksInput:focus {
+  outline: none;
+  border-color: var(--color-primary-400);
+  box-shadow: var(--shadow-focus);
+}
+
+.correctToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--color-border-secondary);
+  border-radius: var(--radius-full);
+  background-color: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease-out);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.correctToggle:hover {
+  border-color: var(--color-success-400);
+  background-color: var(--color-success-50);
+  color: var(--color-success-600);
+  transform: scale(1.05);
+}
+
+.correctToggle.active {
+  border-color: var(--color-success-500);
+  background-color: var(--color-success-500);
+  color: white;
+}
+
+.removeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--color-error-200);
+  border-radius: var(--radius-full);
+  background-color: var(--color-background-primary);
+  color: var(--color-error-500);
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease-out);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.removeButton:hover {
+  border-color: var(--color-error-400);
+  background-color: var(--color-error-500);
+  color: white;
+  transform: scale(1.05);
+}
+
+.content {
+  padding: var(--spacing-6);
+}
+
+.textEditor {
+  position: relative;
+}
+
+.textarea {
+  width: 100%;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-4);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  resize: vertical;
+  min-height: 80px;
+  background-color: var(--color-background-primary);
+  transition: border-color var(--animation-duration-fast) var(--animation-ease-out);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-400);
+  box-shadow: var(--shadow-focus);
+}
+
+.container.hasError .textarea {
+  border-color: var(--color-error-400);
+}
+
+.container.hasError .textarea:focus {
+  box-shadow: var(--shadow-error-focus);
+}
+
+.editorFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-2);
+}
+
+.expandToggle {
+  background: none;
+  border: none;
+  color: var(--color-primary-600);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--animation-duration-fast) var(--animation-ease-out);
+}
+
+.expandToggle:hover {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.characterCount {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: var(--color-error-50);
+  border: 1px solid var(--color-error-200);
+  border-radius: var(--radius-md);
+  color: var(--color-error-700);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.errorIcon {
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.formatting {
+  display: flex;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) var(--spacing-6);
+  background-color: var(--color-background-tertiary);
+  border-top: 1px solid var(--color-border-primary);
+}
+
+.formatGroup {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.formatButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--animation-duration-fast) var(--animation-ease-out);
+  font-size: var(--font-size-sm);
+}
+
+.formatButton:hover {
+  border-color: var(--color-primary-300);
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-3);
+  }
+  
+  .optionLabel {
+    justify-content: center;
+  }
+  
+  .actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .content {
+    padding: var(--spacing-4);
+  }
+  
+  .formatting {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+  
+  .formatGroup {
+    justify-content: center;
+  }
+}
+
+/* Animation for adding/removing choices */
+.container {
+  animation: slideIn var(--animation-duration-base) var(--animation-ease-out);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
