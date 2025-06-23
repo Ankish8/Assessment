@@ -1,2 +1,2 @@
-export { Selector } from './selector';
-export type { SelectorProps, SelectorOption } from './selector';
+export { Selector } from './selector.js';
+export type { SelectorProps, SelectorOption } from './selector.js';
