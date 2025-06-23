@@ -65,7 +65,8 @@
 .steps {
   display: flex;
   align-items: flex-start;
-  min-width: fit-content;
+  width: 100%;
+  justify-content: space-between;
   gap: 0;
 }
 
@@ -80,7 +81,8 @@
   padding: var(--spacing-2);
   border-radius: var(--radius-md);
   flex-shrink: 0;
-  min-width: 120px;
+  flex: 1;
+  max-width: 180px;
 }
 
 .step:hover {
@@ -157,11 +159,12 @@
 }
 
 .divider {
-  width: 80px;
+  flex: 1;
   height: 2px;
   background: var(--color-border-secondary);
   margin-top: 20px;
-  flex-shrink: 0;
+  margin-left: var(--spacing-2);
+  margin-right: var(--spacing-2);
   transition: background-color var(--animation-duration-base) var(--animation-ease-in-out);
   position: relative;
   z-index: 1;

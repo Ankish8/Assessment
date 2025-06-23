@@ -28,7 +28,7 @@ const submissionTypes = [
       'Quick to evaluate',
       'Reduces guessing'
     ],
-    route: '/question-details?type=fill-blanks'
+    route: '/fill-in-the-blanks'
   },
   {
     id: 'ui-framework',

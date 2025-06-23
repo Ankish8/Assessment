@@ -10,6 +10,7 @@ import SubmissionQuestionDetails from './pages/SubmissionQuestionDetails/Submiss
 import EvaluationParameters from './pages/EvaluationParameters/EvaluationParameters';
 import SolutionDetails from './pages/SolutionDetails/SolutionDetails';
 import MultipleChoiceQuestion from './pages/MultipleChoiceQuestion/MultipleChoiceQuestion';
+import FillInTheBlanks from './pages/FillInTheBlanks/FillInTheBlanks';
 import PremiumModalDemo from './pages/PremiumModalDemo/PremiumModalDemo';
 import './styles/variables.css';
 import './index.css';
@@ -29,6 +30,7 @@ function App() {
         <Route path="/evaluation-parameters" element={<EvaluationParameters />} />
         <Route path="/solution-details" element={<SolutionDetails />} />
         <Route path="/multiple-choice" element={<MultipleChoiceQuestion />} />
+        <Route path="/fill-in-the-blanks" element={<FillInTheBlanks />} />
         <Route path="/premium-modal-demo" element={<PremiumModalDemo />} />
       </Routes>
     </div>
