@@ -39,22 +39,14 @@
 - Create new components rather than modifying existing Storybook components
 - **Always follow the typography standards above** for consistency
 
-## Bit.dev Component Migration Progress
+## Component Library Structure
 
-### Project Goal
-Migrating all Storybook components to Bit.dev for reuse across a huge project. Components need to be self-contained with inline styles (no CSS imports) to avoid dependency issues.
+### Available Components
+The project has a well-organized component library with the following components available in Storybook:
 
-### Migration Pattern
-Each component follows this structure:
-1. **Main component file** (TypeScript with inline styles using exact design token values)
-2. **Comprehensive .composition.tsx** (10+ examples showing all variants)
-3. **Extensive .spec.tsx** (validation tests with multiple scenarios)
-4. **index.ts exports** (proper TypeScript exports)
-5. **Update .bitmap** (Bit workspace configuration)
-
-### ✅ Completed High-Priority Components (10 total)
+**Core UI Components:**
 - **ui/button** - Basic button with variants, sizes, states
-- **ui/input** - Input fields with validation, types, states
+- **ui/input** - Input fields with validation, types, states  
 - **ui/card** - Card container with headers, footers, variants
 - **ui/modal** - Modal dialogs with portal rendering, accessibility
 - **ui/form** - Form wrapper with validation, layouts
@@ -65,14 +57,11 @@ Each component follows this structure:
 - **ui/responsive-progress-steps** - Advanced stepper with overflow detection
 - **ui/floating-footer** - Fixed bottom footer with validation alerts
 
-### 📋 Next Batch Ready (12 components)
-**High Priority:**
+**Feature Components:**
 - **BottomActions** - Common bottom action component
 - **QuestionTypeSelector** - Root level question type selector
 - **EvaluationParameters** - Page component for evaluation settings
 - **CodeEditor** - Code editing component with syntax highlighting
-
-**Medium Priority:**
 - **LanguageList** - Programming language selection
 - **ToggleCard** - Toggle-able card component
 - **SkillsInput** - Skills input with tagging
@@ -83,16 +72,10 @@ Each component follows this structure:
 - **SubmissionQuestions** - Questions listing page
 - **TestCases** - Test cases management page
 
-### Technical Details
-- **CSS-in-JS**: All styles converted to inline React.CSSProperties
-- **Design Tokens**: Hardcoded values from CSS variables (e.g., `#611F69`, `16px`, `6px`)
-- **Responsive**: Media queries handled via window.innerWidth checks
+### Technical Standards
 - **TypeScript**: Full type safety with proper interfaces
+- **CSS Modules**: Component styles in separate CSS files
+- **Design Tokens**: Consistent use of CSS custom properties
+- **Responsive Design**: Mobile-first approach with breakpoints
 - **Accessibility**: Focus management, keyboard navigation, ARIA attributes
-- **Portal Support**: Modal components handle document.body availability
-
-### Current Status
-- **Total Progress**: 10/22 components migrated (45% complete)
-- **Next Session**: Continue with BottomActions component migration
-- **Workspace**: All components configured in `.bitmap` for Bit.dev
-- **Testing**: Each component has comprehensive test coverage
+- **Testing**: Comprehensive test coverage for all components
