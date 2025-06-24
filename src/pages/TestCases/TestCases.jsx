@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button/Button';
 import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
-import { PROGRESS_STEPS } from '../../constants/progressSteps';
+import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
+import { PROGRESS_STEPS, STEP_NUMBERS } from '../../constants/progressSteps';
 import styles from './TestCases.module.css';
 import '../../styles/utilities.css';
 
@@ -83,7 +84,7 @@ const TestCases = () => {
   };
 
   const goToPreviousSection = () => {
-    alert('Previous step (Question Statement) not implemented. This would typically navigate to the question creation page.');
+    navigate('/media-resources');
   };
 
   const saveAndContinue = () => {
@@ -105,32 +106,7 @@ const TestCases = () => {
 
       {/* Progress Steps */}
       <div className={styles.progressContainer}>
-        <div className={styles.progressSteps}>
-          <div className={`${styles.step} ${styles.completed}`}>
-            <div className={styles.stepNumber}>1</div>
-            <div className={styles.stepLabel}>Question Statement</div>
-          </div>
-          <div className={styles.stepDivider}></div>
-          <div className={`${styles.step} ${styles.active}`}>
-            <div className={styles.stepNumber}>2</div>
-            <div className={styles.stepLabel}>Test Cases</div>
-          </div>
-          <div className={styles.stepDivider}></div>
-          <div className={`${styles.step} ${styles.inactive}`}>
-            <div className={styles.stepNumber}>3</div>
-            <div className={styles.stepLabel}>Default Codes</div>
-          </div>
-          <div className={styles.stepDivider}></div>
-          <div className={`${styles.step} ${styles.inactive}`}>
-            <div className={styles.stepNumber}>4</div>
-            <div className={styles.stepLabel}>Question Details</div>
-          </div>
-          <div className={styles.stepDivider}></div>
-          <div className={`${styles.step} ${styles.inactive}`}>
-            <div className={styles.stepNumber}>5</div>
-            <div className={styles.stepLabel}>Solution Details</div>
-          </div>
-        </div>
+        <ResponsiveProgressSteps steps={PROGRESS_STEPS} currentStep={STEP_NUMBERS.TEST_CASES} />
       </div>
 
       {/* Main Content */}

@@ -12,9 +12,11 @@ const BottomActions = ({
   nextDisabled = false,
   shortcuts = true
 }) => {
+  const actionsClass = showPrevious ? styles.actions : styles.actionsSingle;
+  
   return (
     <div className={styles.container}>
-      <div className={styles.actions}>
+      <div className={actionsClass}>
         {showPrevious && (
           <Button 
             variant="secondary" 

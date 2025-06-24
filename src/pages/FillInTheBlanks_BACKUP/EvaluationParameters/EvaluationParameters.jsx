@@ -1,27 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/common/Header/Header';
-import Card from '../../components/common/Card/Card';
-import Input from '../../components/common/Input/Input';
-import Button from '../../components/common/Button/Button';
-import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
-import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
-import { PROGRESS_STEPS, STEP_NUMBERS } from '../../constants/progressSteps';
+import Header from '../../../components/common/Header/Header';
+import Card from '../../../components/common/Card/Card';
+import Input from '../../../components/common/Input/Input';
+import Button from '../../../components/common/Button/Button';
+import FloatingFooter from '../../../components/common/FloatingFooter/FloatingFooter';
+import ResponsiveProgressSteps from '../../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
 import styles from './EvaluationParameters.module.css';
-import '../../styles/utilities.css';
+import '../../../styles/utilities.css';
 
-const EvaluationParameters = () => {
+const FillInTheBlanksEvaluationParameters = () => {
   const navigate = useNavigate();
   const [manualEvaluationEnabled, setManualEvaluationEnabled] = useState(false);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState({});
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const [automatedOptions, setAutomatedOptions] = useState({
+    caseSensitive: false,
+    allowPartialMatches: true,
+    acceptableVariations: true
+  });
 
+  // Fill-in-the-blanks specific progress steps
+  const fillInTheBlanksSteps = [
+    { id: 1, title: 'Question Type', status: 'completed' },
+    { id: 2, title: 'Question Details', status: 'completed' },
+    { id: 3, title: 'Fill-in-the-Blanks Setup', status: 'completed' },
+    { id: 4, title: 'Evaluation Parameters', status: 'current' }
+  ];
 
   const defaultCriteria = [
-    { id: '1', title: 'Code Quality', weightage: 30, description: 'Clean, readable, and well-structured code' },
-    { id: '2', title: 'Problem Solving', weightage: 40, description: 'Logical approach and algorithm efficiency' },
-    { id: '3', title: 'Best Practices', weightage: 30, description: 'Following coding standards and conventions' }
+    { id: '1', title: 'Answer Accuracy', weightage: 50, description: 'Correctness of the filled answers' },
+    { id: '2', title: 'Spelling & Grammar', weightage: 25, description: 'Language mechanics and presentation' },
+    { id: '3', title: 'Context Understanding', weightage: 25, description: 'Understanding of the overall context' }
   ];
 
   // Calculate total weightage
@@ -64,6 +75,13 @@ const EvaluationParameters = () => {
     }
   };
 
+  const handleAutomatedOptionChange = (option, value) => {
+    setAutomatedOptions(prev => ({
+      ...prev,
+      [option]: value
+    }));
+  };
+
   const addCriterion = () => {
     const newCriterion = {
       id: Date.now().toString(),
@@ -91,27 +109,28 @@ const EvaluationParameters = () => {
   const handleSaveAndContinue = () => {
     setHasAttemptedSubmit(true);
     if (manualEvaluationEnabled && Object.keys(errors).length > 0) return;
+    
     // Flow complete - navigate to success page or back to questions list
-    alert('Question creation complete! This would typically navigate to a success page or questions dashboard.');
+    alert('Fill-in-the-blanks question creation complete! This would typically navigate to a success page or questions dashboard.');
   };
 
   const handlePrevious = () => {
-    navigate('/question-details');
+    navigate('/fill-in-the-blanks/question-details');
   };
 
   const isValid = !manualEvaluationEnabled || (Object.keys(errors).length === 0);
 
   return (
     <div className={styles.container}>
-      <Header title="Submission Questions" />
+      <Header title="Fill-in-the-Blanks Question" />
       
       <div className={styles.progressContainer}>
-        <ResponsiveProgressSteps steps={PROGRESS_STEPS} currentStep={STEP_NUMBERS.EVALUATION_PARAMETERS} />
+        <ResponsiveProgressSteps steps={fillInTheBlanksSteps} currentStep={4} />
       </div>
 
       <div className={`${styles.content} floating-footer-spacing`}>
         <div className={styles.mainGrid}>
-          {/* Left Column - Manual Evaluation Toggle */}
+          {/* Left Column - Evaluation Method */}
           <div className={styles.leftColumn}>
             <Card variant="elevated" padding="lg" className={styles.toggleCard}>
               <div className={styles.cardHeader}>
@@ -120,7 +139,7 @@ const EvaluationParameters = () => {
                   Evaluation Method
                 </h2>
                 <p className={styles.sectionDescription}>
-                  Choose how this question will be evaluated and graded
+                  Choose how this fill-in-the-blanks question will be evaluated and graded
                 </p>
               </div>
 
@@ -132,11 +151,11 @@ const EvaluationParameters = () => {
                   <div className={styles.optionContent}>
                     <h3 className={styles.optionTitle}>Automated Evaluation</h3>
                     <p className={styles.optionDescription}>
-                      Questions are automatically graded based on test case results and code execution
+                      Answers are automatically checked against provided correct answers with text matching
                     </p>
                     <ul className={styles.optionFeatures}>
                       <li><i className="fas fa-check"></i> Instant feedback</li>
-                      <li><i className="fas fa-check"></i> Consistent scoring</li>
+                      <li><i className="fas fa-check"></i> Exact text matching</li>
                       <li><i className="fas fa-check"></i> Scalable for large groups</li>
                     </ul>
                   </div>
@@ -152,11 +171,11 @@ const EvaluationParameters = () => {
                   <div className={styles.optionContent}>
                     <h3 className={styles.optionTitle}>Manual Evaluation</h3>
                     <p className={styles.optionDescription}>
-                      Add human review with custom criteria for code quality, approach, and best practices
+                      Add human review with custom criteria for answer accuracy, language quality, and understanding
                     </p>
                     <ul className={styles.optionFeatures}>
                       <li><i className="fas fa-check"></i> Custom evaluation criteria</li>
-                      <li><i className="fas fa-check"></i> Qualitative assessment</li>
+                      <li><i className="fas fa-check"></i> Context-aware assessment</li>
                       <li><i className="fas fa-check"></i> Detailed feedback</li>
                     </ul>
                   </div>
@@ -168,6 +187,61 @@ const EvaluationParameters = () => {
                         onChange={(e) => handleToggleManualEvaluation(e.target.checked)}
                       />
                       <span className={styles.toggleSlider}></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Automated Evaluation Options */}
+              <div className={styles.automatedOptions}>
+                <h4 className={styles.optionsTitle}>
+                  <i className="fas fa-cog"></i>
+                  Automated Evaluation Settings
+                </h4>
+                
+                <div className={styles.optionsList}>
+                  <div className={styles.option}>
+                    <label className={styles.optionCheckbox}>
+                      <input
+                        type="checkbox"
+                        checked={automatedOptions.caseSensitive}
+                        onChange={(e) => handleAutomatedOptionChange('caseSensitive', e.target.checked)}
+                      />
+                      <span className={styles.checkmark}></span>
+                      <div className={styles.optionContent}>
+                        <span className={styles.optionLabel}>Case Sensitive Matching</span>
+                        <span className={styles.optionDescription}>Require exact case matching for answers</span>
+                      </div>
+                    </label>
+                  </div>
+                  
+                  <div className={styles.option}>
+                    <label className={styles.optionCheckbox}>
+                      <input
+                        type="checkbox"
+                        checked={automatedOptions.allowPartialMatches}
+                        onChange={(e) => handleAutomatedOptionChange('allowPartialMatches', e.target.checked)}
+                      />
+                      <span className={styles.checkmark}></span>
+                      <div className={styles.optionContent}>
+                        <span className={styles.optionLabel}>Allow Partial Credit</span>
+                        <span className={styles.optionDescription}>Give partial points for partially correct answers</span>
+                      </div>
+                    </label>
+                  </div>
+                  
+                  <div className={styles.option}>
+                    <label className={styles.optionCheckbox}>
+                      <input
+                        type="checkbox"
+                        checked={automatedOptions.acceptableVariations}
+                        onChange={(e) => handleAutomatedOptionChange('acceptableVariations', e.target.checked)}
+                      />
+                      <span className={styles.checkmark}></span>
+                      <div className={styles.optionContent}>
+                        <span className={styles.optionLabel}>Accept Acceptable Variations</span>
+                        <span className={styles.optionDescription}>Accept synonyms and equivalent answers</span>
+                      </div>
                     </label>
                   </div>
                 </div>
@@ -204,7 +278,7 @@ const EvaluationParameters = () => {
                     </div>
                   </div>
                   <p className={styles.sectionDescription}>
-                    Define specific criteria and their weights for manual evaluation
+                    Define specific criteria and their weights for manual evaluation of text-based answers
                   </p>
                 </div>
 
@@ -259,7 +333,7 @@ const EvaluationParameters = () => {
                     <div className={styles.emptyCriteria}>
                       <i className="fas fa-clipboard-list"></i>
                       <h3>No evaluation criteria yet</h3>
-                      <p>Add criteria to define how submissions will be manually evaluated</p>
+                      <p>Add criteria to define how fill-in-the-blanks responses will be manually evaluated</p>
                     </div>
                   )}
 
@@ -305,14 +379,14 @@ const EvaluationParameters = () => {
                 <div className={styles.placeholderContent}>
                   <i className="fas fa-toggle-off"></i>
                   <h3>Manual Evaluation Disabled</h3>
-                  <p>Enable manual evaluation to configure custom criteria and weightings for human review of submissions.</p>
+                  <p>Enable manual evaluation to configure custom criteria and weightings for human review of fill-in-the-blanks responses.</p>
                   <div className={styles.previewFeatures}>
                     <h4>When enabled, you can:</h4>
                     <ul>
                       <li>Define custom evaluation criteria</li>
                       <li>Set weightage for each criterion</li>
                       <li>Add detailed descriptions for reviewers</li>
-                      <li>Combine with automated testing</li>
+                      <li>Combine with automated text matching</li>
                     </ul>
                   </div>
                 </div>
@@ -341,8 +415,8 @@ const EvaluationParameters = () => {
             disabled={!isValid}
             className={styles.saveButton}
           >
-            Save & Continue
-            <i className="fas fa-arrow-right"></i>
+            Complete Question
+            <i className="fas fa-check"></i>
           </Button>
         </FloatingFooter>
       </div>
@@ -350,4 +424,4 @@ const EvaluationParameters = () => {
   );
 };
 
-export default EvaluationParameters;
+export default FillInTheBlanksEvaluationParameters;

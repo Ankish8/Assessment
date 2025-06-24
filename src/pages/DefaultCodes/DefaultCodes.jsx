@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
-import ProgressSteps from '../../components/common/ProgressSteps';
+import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
 import BottomActions from '../../components/common/BottomActions';
 import { ToggleCard } from './components/ToggleCard';
 import { LanguageList } from './components/LanguageList';
@@ -258,7 +258,7 @@ export function DefaultCodes() {
           onBack={handlePrevious}
         />
 
-        <ProgressSteps steps={PROGRESS_STEPS} currentStep={STEP_NUMBERS.DEFAULT_CODES} />
+        <ResponsiveProgressSteps steps={PROGRESS_STEPS} currentStep={STEP_NUMBERS.DEFAULT_CODES} />
 
         <div className={styles.mainContent}>
         <div className={styles.contentHeader}>

@@ -7,6 +7,7 @@ import Button from '../../components/common/Button/Button';
 import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
 import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
 import Modal from '../../components/common/Modal/Modal';
+import { PROGRESS_STEPS, STEP_NUMBERS } from '../../constants/progressSteps';
 import styles from './SubmissionQuestions.module.css';
 import '../../styles/utilities.css';
 
@@ -17,13 +18,6 @@ const SubmissionQuestions = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
-  const steps = [
-    { id: 'statement', label: 'Question Statement' },
-    { id: 'media', label: 'Media & Resources' },
-    { id: 'details', label: 'Question Details' },
-    { id: 'evaluation', label: 'Evaluation Parameters' },
-    { id: 'solution', label: 'Solution Details' }
-  ];
 
   const handleSaveAndContinue = () => {
     if (!isValid) return;
@@ -80,7 +74,7 @@ const SubmissionQuestions = () => {
       <Header title="Submission Questions" />
       
       <div className={styles.progressContainer}>
-        <ResponsiveProgressSteps steps={steps} currentStep={1} />
+        <ResponsiveProgressSteps steps={PROGRESS_STEPS} currentStep={STEP_NUMBERS.QUESTION_STATEMENT} />
       </div>
 
       <div className={`${styles.content} floating-footer-spacing`}>
