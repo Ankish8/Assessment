@@ -11,6 +11,9 @@ import EvaluationParameters from './pages/EvaluationParameters/EvaluationParamet
 import SolutionDetails from './pages/SolutionDetails/SolutionDetails';
 import MultipleChoiceQuestion from './pages/MultipleChoiceQuestion/MultipleChoiceQuestion';
 import FillInTheBlanks from './pages/FillInTheBlanks/FillInTheBlanks';
+import FillInTheBlanksMediaResources from './pages/FillInTheBlanks/MediaResources/MediaResources';
+import FillInTheBlanksQuestionDetails from './pages/FillInTheBlanks/QuestionDetails/QuestionDetails';
+import FillInTheBlanksEvaluationParameters from './pages/FillInTheBlanks/EvaluationParameters/EvaluationParameters';
 import PremiumModalDemo from './pages/PremiumModalDemo/PremiumModalDemo';
 import './styles/variables.css';
 import './index.css';
@@ -31,6 +34,9 @@ function App() {
         <Route path="/solution-details" element={<SolutionDetails />} />
         <Route path="/multiple-choice" element={<MultipleChoiceQuestion />} />
         <Route path="/fill-in-the-blanks" element={<FillInTheBlanks />} />
+        <Route path="/fill-in-the-blanks/media-resources" element={<FillInTheBlanksMediaResources />} />
+        <Route path="/fill-in-the-blanks/question-details" element={<FillInTheBlanksQuestionDetails />} />
+        <Route path="/fill-in-the-blanks/evaluation-parameters" element={<FillInTheBlanksEvaluationParameters />} />
         <Route path="/premium-modal-demo" element={<PremiumModalDemo />} />
       </Routes>
     </div>
