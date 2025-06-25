@@ -59,7 +59,8 @@ const FillInTheBlanks = () => {
         id: index + 1,
         placeholder: match,
         correctAnswer: '',
-        alternativeAnswers: []
+        alternativeAnswers: [],
+        caseSensitive: false
       };
     });
     setBlanks(newBlanks);
@@ -82,7 +83,8 @@ const FillInTheBlanks = () => {
       id: nextBlankNumber,
       placeholder: blankPlaceholder,
       correctAnswer: '',
-      alternativeAnswers: []
+      alternativeAnswers: [],
+      caseSensitive: false
     };
     
     setBlanks([...blanks, newBlank]);
@@ -320,6 +322,18 @@ const FillInTheBlanks = () => {
                     )}
                   </button>
                 </div>
+              </div>
+              
+              <div className={styles.fieldGroup}>
+                <label className={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    checked={blanks.find(b => b.id === blankId)?.caseSensitive || false}
+                    onChange={(e) => handleBlankAnswerChange(blankId, 'caseSensitive', e.target.checked)}
+                    className={styles.checkbox}
+                  />
+                  <span className={styles.checkboxText}>Case sensitive matching</span>
+                </label>
               </div>
               
               {blanks.find(b => b.id === blankId)?.alternativeAnswers?.map((altAnswer, index) => (
