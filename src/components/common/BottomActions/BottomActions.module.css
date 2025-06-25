@@ -23,6 +23,16 @@
   gap: var(--spacing-4);
 }
 
+.actionsSingle {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
 .shortcut {
   margin-left: var(--spacing-2);
   font-size: var(--font-size-xs);
@@ -32,10 +42,15 @@
 
 /* Responsive */
 @media (max-width: 640px) {
-  .actions {
+  .actions,
+  .actionsSingle {
     padding: 0 var(--spacing-4);
     flex-direction: column;
     gap: var(--spacing-3);
+  }
+  
+  .actionsSingle {
+    align-items: stretch;
   }
   
   .shortcut {

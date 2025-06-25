@@ -1347,60 +1347,6 @@
   background: var(--color-primary-25);
 }
 
-/* Checkbox Styles */
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  user-select: none;
-}
-
-.checkbox {
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-background-primary);
-  cursor: pointer;
-  transition: all var(--animation-duration-fast);
-  position: relative;
-  margin: 0;
-  flex-shrink: 0;
-}
-
-.checkbox:checked {
-  background: var(--color-primary-500);
-  border-color: var(--color-primary-500);
-}
-
-.checkbox:checked::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 5px;
-  width: 4px;
-  height: 8px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.checkbox:hover {
-  border-color: var(--color-primary-300);
-}
-
-.checkbox:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--color-primary-100);
-}
-
-.checkboxText {
-  font-weight: var(--font-weight-medium);
-}
-
 @keyframes slideDown {
   from {
     opacity: 0;

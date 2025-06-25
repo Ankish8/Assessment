@@ -1,15 +1,17 @@
 export const PROGRESS_STEPS = [
   { id: 1, label: 'Question Statement' },
-  { id: 2, label: 'Test Cases' },
-  { id: 3, label: 'Default Codes' },
-  { id: 4, label: 'Question Details' },
-  { id: 5, label: 'Solution Details' },
+  { id: 2, label: 'Media & Resources' },
+  { id: 3, label: 'Test Cases' },
+  { id: 4, label: 'Default Codes' },
+  { id: 5, label: 'Question Details' },
+  { id: 6, label: 'Evaluation Parameters' },
 ];
 
 export const STEP_NUMBERS = {
   QUESTION_STATEMENT: 1,
-  TEST_CASES: 2,
-  DEFAULT_CODES: 3,
-  QUESTION_DETAILS: 4,
-  SOLUTION_DETAILS: 5,
+  MEDIA_RESOURCES: 2,
+  TEST_CASES: 3,
+  DEFAULT_CODES: 4,
+  QUESTION_DETAILS: 5,
+  EVALUATION_PARAMETERS: 6,
 };
