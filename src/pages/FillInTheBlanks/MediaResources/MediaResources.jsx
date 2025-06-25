@@ -13,66 +13,6 @@ const MediaResources = () => {
   const navigate = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [submissionOptions, setSubmissionOptions] = useState({
-    text: true, // Default enabled with AI Evaluation
-    audio: false,
-    urls: false,
-    code: false,
-    files: false,
-    images: false
-  });
-  const [isValid, setIsValid] = useState(true); // At least one option must be selected
-
-  const submissionOptionsList = [
-    {
-      id: 'text',
-      label: 'Text',
-      icon: 'fas fa-file-alt',
-      description: 'Written text responses for fill-in-the-blanks',
-      badge: 'AI Evaluation available',
-      badgeType: 'success'
-    },
-    {
-      id: 'audio',
-      label: 'Audio',
-      icon: 'fas fa-microphone',
-      description: 'Voice recordings for spoken answers',
-      badge: null
-    },
-    {
-      id: 'urls',
-      label: 'URLs',
-      icon: 'fas fa-link',
-      description: 'Web links and external resources',
-      badge: null
-    },
-    {
-      id: 'code',
-      label: 'Code',
-      icon: 'fas fa-code',
-      description: 'Code snippets for programming blanks',
-      badge: null
-    },
-    {
-      id: 'files',
-      label: 'Files',
-      icon: 'fas fa-folder',
-      description: 'Document and file uploads',
-      badge: null
-    },
-    {
-      id: 'images',
-      label: 'Images',
-      icon: 'fas fa-image',
-      description: 'Pictures and visual content',
-      badge: null
-    }
-  ];
-
-  useEffect(() => {
-    const selectedCount = Object.values(submissionOptions).filter(Boolean).length;
-    setIsValid(selectedCount > 0);
-  }, [submissionOptions]);
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -113,12 +53,6 @@ const MediaResources = () => {
     setUploadedFiles(prev => prev.filter(file => file.id !== fileId));
   };
 
-  const toggleSubmissionOption = (optionId) => {
-    setSubmissionOptions(prev => ({
-      ...prev,
-      [optionId]: !prev[optionId]
-    }));
-  };
 
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
@@ -137,8 +71,7 @@ const MediaResources = () => {
   };
 
   const handleSaveAndContinue = () => {
-    if (!isValid) return;
-    console.log('Saving fill-in-the-blanks media resources data:', { uploadedFiles, submissionOptions });
+    console.log('Saving fill-in-the-blanks media resources data:', { uploadedFiles });
     navigate('/fill-in-the-blanks/question-details');
   };
 
@@ -146,7 +79,6 @@ const MediaResources = () => {
     navigate('/fill-in-the-blanks');
   };
 
-  const selectedOptionsCount = Object.values(submissionOptions).filter(Boolean).length;
 
   return (
     <div className={styles.container}>
@@ -234,55 +166,6 @@ const MediaResources = () => {
           </div>
         </Card>
 
-        {/* Submission Options Section */}
-        <Card variant="elevated" padding="lg" className={styles.optionsCard}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.sectionTitle}>Student can submit answers using:</h2>
-            <div className={styles.selectionSummary}>
-              <span className={styles.selectedCount}>
-                {selectedOptionsCount} option{selectedOptionsCount !== 1 ? 's' : ''} selected
-              </span>
-              {!isValid && (
-                <span className={styles.validationError}>
-                  <i className="fas fa-exclamation-triangle"></i> Please select at least one option
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className={styles.optionsGrid}>
-            {submissionOptionsList.map(option => (
-              <div
-                key={option.id}
-                className={`${styles.optionCard} ${submissionOptions[option.id] ? styles.selected : ''}`}
-                onClick={() => toggleSubmissionOption(option.id)}
-              >
-                <div className={styles.optionHeader}>
-                  <div className={styles.optionIcon}>
-                    <i className={option.icon}></i>
-                  </div>
-                  <div className={styles.optionContent}>
-                    <h4 className={styles.optionLabel}>{option.label}</h4>
-                    <p className={styles.optionDescription}>{option.description}</p>
-                  </div>
-                  <div className={styles.optionToggle}>
-                    <input
-                      type="checkbox"
-                      checked={submissionOptions[option.id]}
-                      onChange={() => toggleSubmissionOption(option.id)}
-                      className={styles.checkbox}
-                    />
-                  </div>
-                </div>
-                {option.badge && (
-                  <div className={`${styles.optionBadge} ${styles[option.badgeType]}`}>
-                    {option.badge}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </Card>
 
         {/* Bottom Actions */}
         <FloatingFooter>
@@ -296,7 +179,6 @@ const MediaResources = () => {
           <Button
             variant="primary"
             onClick={handleSaveAndContinue}
-            disabled={!isValid}
             className={styles.saveButton}
           >
             Save & Continue
