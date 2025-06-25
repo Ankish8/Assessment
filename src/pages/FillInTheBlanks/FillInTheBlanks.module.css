@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-6);
-  margin-bottom: 120px; /* Space for BottomActions footer */
+  margin-bottom: var(--spacing-8);
 }
 
 .mainCard {
@@ -763,22 +763,9 @@
   50% { opacity: 0.7; }
 }
 
-/* Floating Footer */
-.footerActions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--spacing-4);
-  width: 100%;
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 0 var(--spacing-6);
-}
-
+/* Save Button */
 .saveButton {
   min-width: 160px;
-  height: 48px;
-  font-weight: var(--font-weight-semibold);
 }
 
 /* Responsive Design */
@@ -866,48 +853,16 @@
 .statusNeedsAnswers {
   display: flex;
   align-items: center;
-  flex-direction: column;
   gap: var(--spacing-2);
   color: var(--color-warning-700);
   background: var(--color-warning-50);
   border: 1px solid var(--color-warning-200);
-  padding: var(--spacing-4);
+  padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-md);
   width: 100%;
-  text-align: center;
 }
 
-.statusNeedsAnswers span {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  font-weight: var(--font-weight-medium);
-}
 
-.scrollToConfigBtn {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  background: var(--color-warning-100);
-  border: 1px solid var(--color-warning-300);
-  color: var(--color-warning-700);
-  padding: var(--spacing-2) var(--spacing-3);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: all var(--animation-duration-fast);
-  margin-top: var(--spacing-2);
-}
-
-.scrollToConfigBtn:hover {
-  background: var(--color-warning-200);
-  transform: translateY(-1px);
-}
-
-.scrollToConfigBtn svg {
-  flex-shrink: 0;
-}
 
 /* Enhanced Blanks Stats */
 .blanksStats {
@@ -1345,60 +1300,6 @@
   border-color: var(--color-primary-300);
   color: var(--color-primary-600);
   background: var(--color-primary-25);
-}
-
-/* Checkbox Styles */
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-primary);
-  user-select: none;
-}
-
-.checkbox {
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-background-primary);
-  cursor: pointer;
-  transition: all var(--animation-duration-fast);
-  position: relative;
-  margin: 0;
-  flex-shrink: 0;
-}
-
-.checkbox:checked {
-  background: var(--color-primary-500);
-  border-color: var(--color-primary-500);
-}
-
-.checkbox:checked::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 5px;
-  width: 4px;
-  height: 8px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.checkbox:hover {
-  border-color: var(--color-primary-300);
-}
-
-.checkbox:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--color-primary-100);
-}
-
-.checkboxText {
-  font-weight: var(--font-weight-medium);
 }
 
 @keyframes slideDown {

@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../../components/common/Header/Header';
 import Card from '../../components/common/Card/Card';
+import Button from '../../components/common/Button/Button';
+import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
 import ResponsiveProgressSteps from '../../components/common/ResponsiveProgressSteps/ResponsiveProgressSteps';
-import BottomActions from '../../components/common/BottomActions/BottomActions';
 import { FILL_IN_THE_BLANKS_PROGRESS_STEPS, FILL_IN_THE_BLANKS_STEP_NUMBERS, getNextRoute } from '../../constants/fillInTheBlanksProgressSteps';
 import styles from './FillInTheBlanks.module.css';
 import '../../styles/utilities.css';
 
 const FillInTheBlanks = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [questionText, setQuestionText] = useState('');
   const [blanks, setBlanks] = useState([]);
   const [cursorPosition, setCursorPosition] = useState(0);
@@ -23,6 +25,14 @@ const FillInTheBlanks = () => {
   const [dismissedNudges, setDismissedNudges] = useState(new Set()); // Track dismissed nudges
   const textareaRef = useRef(null);
   const previewRef = useRef(null);
+  
+  // Determine current step based on route
+  const getCurrentStep = () => {
+    if (location.pathname === '/fill-in-the-blanks/fill-blank-solution') {
+      return FILL_IN_THE_BLANKS_STEP_NUMBERS.FILL_BLANK_SOLUTION;
+    }
+    return FILL_IN_THE_BLANKS_STEP_NUMBERS.QUESTION_STATEMENT;
+  };
   
   // Track cursor position
   const handleCursorChange = () => {
@@ -59,8 +69,7 @@ const FillInTheBlanks = () => {
         id: index + 1,
         placeholder: match,
         correctAnswer: '',
-        alternativeAnswers: [],
-        caseSensitive: false
+        alternativeAnswers: []
       };
     });
     setBlanks(newBlanks);
@@ -83,8 +92,7 @@ const FillInTheBlanks = () => {
       id: nextBlankNumber,
       placeholder: blankPlaceholder,
       correctAnswer: '',
-      alternativeAnswers: [],
-      caseSensitive: false
+      alternativeAnswers: []
     };
     
     setBlanks([...blanks, newBlank]);
@@ -324,18 +332,6 @@ const FillInTheBlanks = () => {
                 </div>
               </div>
               
-              <div className={styles.fieldGroup}>
-                <label className={styles.checkboxLabel}>
-                  <input
-                    type="checkbox"
-                    checked={blanks.find(b => b.id === blankId)?.caseSensitive || false}
-                    onChange={(e) => handleBlankAnswerChange(blankId, 'caseSensitive', e.target.checked)}
-                    className={styles.checkbox}
-                  />
-                  <span className={styles.checkboxText}>Case sensitive matching</span>
-                </label>
-              </div>
-              
               {blanks.find(b => b.id === blankId)?.alternativeAnswers?.map((altAnswer, index) => (
                 <div key={index} className={styles.fieldGroup}>
                   <label className={styles.fieldLabel}>Alternative Answer {index + 1}</label>
@@ -427,12 +423,12 @@ const FillInTheBlanks = () => {
       <div className={styles.progressContainer}>
         <ResponsiveProgressSteps 
           steps={FILL_IN_THE_BLANKS_PROGRESS_STEPS}
-          currentStep={FILL_IN_THE_BLANKS_STEP_NUMBERS.QUESTION_STATEMENT}
+          currentStep={getCurrentStep()}
           variant="horizontal"
         />
       </div>
 
-      <div className={styles.content}>
+      <div className={`${styles.content} floating-footer-spacing`}>
         <Card variant="elevated" padding="lg" className={styles.mainCard}>
           <div className={styles.cardHeader}>
             <div className={styles.titleSection}>
@@ -599,7 +595,7 @@ const FillInTheBlanks = () => {
                     <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" fill="none"/>
                     <path d="M8 4v4m0 4h.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
-                  <span>Complete blank configurations to continue</span>
+                  Complete blank configurations to continue
                 </div>
               ) : (
                 <div className={styles.statusReady}>
@@ -623,13 +619,16 @@ const FillInTheBlanks = () => {
         
       </div>
 
-      <BottomActions
-        onNext={handleSaveAndContinue}
-        nextLabel="Save & Continue"
-        nextDisabled={blanks.length === 0 || blanks.some(blank => !blank.correctAnswer.trim())}
-        showPrevious={false}
-        shortcuts={false}
-      />
+      <FloatingFooter>
+        <Button
+          variant="primary"
+          onClick={handleSaveAndContinue}
+          disabled={blanks.length === 0 || blanks.some(blank => !blank.correctAnswer.trim())}
+          className={styles.saveButton}
+        >
+          Save & Continue
+        </Button>
+      </FloatingFooter>
     </div>
   );
 };
