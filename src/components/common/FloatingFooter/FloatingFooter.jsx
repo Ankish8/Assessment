@@ -9,6 +9,10 @@ const FloatingFooter = ({
   validationMessage = '', 
   showAlert = false 
 }) => {
+  // Determine if there are multiple children to apply appropriate styling
+  const childArray = React.Children.toArray(children);
+  const hasMultipleButtons = childArray.length > 1;
+  
   return (
     <div className={`${styles.bottomSection} ${className}`}>
       <div className={styles.bottomContainer}>
@@ -19,7 +23,7 @@ const FloatingFooter = ({
           </div>
         )}
         
-        <div className={styles.actionButtons}>
+        <div className={`${styles.actionButtons} ${hasMultipleButtons ? styles.actionButtonsMultiple : ''}`}>
           {children}
         </div>
       </div>

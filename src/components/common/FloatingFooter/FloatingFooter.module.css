@@ -42,9 +42,13 @@
 
 .actionButtons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: var(--spacing-4);
+}
+
+.actionButtonsMultiple {
+  justify-content: space-between;
 }
 
 /* Responsive Design */
