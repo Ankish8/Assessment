@@ -79,3 +79,149 @@ The project has a well-organized component library with the following components
 - **Responsive Design**: Mobile-first approach with breakpoints
 - **Accessibility**: Focus management, keyboard navigation, ARIA attributes
 - **Testing**: Comprehensive test coverage for all components
+
+## Assessment Page Types Taxonomy
+
+This section defines the standardized page types used across different assessment types. **Before creating new pages, always check if a similar page type already exists and reuse the design patterns.**
+
+### Core Assessment Flow Pages
+These pages form the standard assessment creation workflow and should be reused across all assessment types:
+
+#### 1. **Question Statement/Content** 
+- **Purpose**: Question content creation with rich text editing
+- **Existing Pages**: 
+  - `SubmissionQuestions` (General) - Advanced WYSIWYG editor
+- **Key Features**: Rich text editor, formatting toolbar, preview, validation
+- **Reuse Pattern**: Use same editor component and layout for all question statement pages
+- **File Pattern**: `{AssessmentType}Questions` or `{AssessmentType}QuestionContent`
+
+#### 2. **Media & Resources Management**
+- **Purpose**: File uploads and submission type configuration
+- **Existing Pages**: 
+  - `MediaResources` (General) - Full media upload with submission options
+  - `FillInTheBlanks/MediaResources` - Simplified for text-based questions
+- **Key Features**: Drag-drop upload, submission options, file validation, preview
+- **Reuse Pattern**: Use base MediaResources component, customize submission options per assessment type
+- **File Pattern**: `{AssessmentType}MediaResources` or `MediaResources`
+
+#### 3. **Question Configuration/Details**
+- **Purpose**: Question metadata, difficulty, skills, marks configuration
+- **Existing Pages**: 
+  - `SubmissionQuestionDetails` (General) - Full metadata form
+  - `QuestionDetails` (Coding) - Enhanced with programming language selection
+  - `FillInTheBlanks/QuestionDetails` - Customized for fill-in-the-blanks flow
+- **Key Features**: Marks input, difficulty cards, skills selection, provider/author info
+- **Reuse Pattern**: Use consistent layout with two-column design (config left, metadata right)
+- **File Pattern**: `{AssessmentType}QuestionDetails` or `QuestionDetails`
+
+#### 4. **Evaluation Parameters**
+- **Purpose**: Evaluation method and criteria configuration
+- **Existing Pages**: 
+  - `EvaluationParameters` (General) - Automated vs manual evaluation
+  - `FillInTheBlanks/EvaluationParameters` - Enhanced with text-matching options
+- **Key Features**: Evaluation method toggle, criteria management, weightage validation
+- **Reuse Pattern**: Base evaluation component with assessment-specific criteria additions
+- **File Pattern**: `{AssessmentType}EvaluationParameters` or `EvaluationParameters`
+
+#### 5. **Solution Details** 
+- **Purpose**: Optional solution content provision
+- **Existing Pages**: 
+  - `SolutionDetails` (General) - Multi-format solution support
+  - `FillInTheBlanks/SolutionDetails` - Integrated solution flow
+- **Key Features**: Multiple content types, file uploads, optional step
+- **Reuse Pattern**: Same solution interface, customize content types per assessment
+- **File Pattern**: `{AssessmentType}SolutionDetails` or `SolutionDetails`
+
+### Specialized Assessment Pages
+These pages are specific to certain assessment types:
+
+#### 6. **Question Type Creation**
+- **Purpose**: The actual question creation interface (varies by type)
+- **Existing Pages**: 
+  - `MultipleChoiceQuestion` - Dynamic choice management
+  - `FillInTheBlanks` - Interactive blank configuration with live preview
+- **Key Features**: Assessment-specific creation interface, real-time preview, validation
+- **Reuse Pattern**: Each question type needs its own creation interface
+- **File Pattern**: `{AssessmentType}Question` or `{AssessmentType}`
+
+#### 7. **Test Cases** (Coding-Specific)
+- **Purpose**: Test case creation and validation for coding questions
+- **Existing Pages**: 
+  - `TestCases` (Coding) - Manual and bulk test case creation
+- **Key Features**: Test case forms, file upload, code verification, weightage
+- **Reuse Pattern**: Use for all coding-based assessments
+- **File Pattern**: `{AssessmentType}TestCases` or `TestCases`
+
+#### 8. **Default Codes** (Coding-Specific)
+- **Purpose**: Starter code templates for programming languages
+- **Existing Pages**: 
+  - `DefaultCodes` (Coding) - Multi-language code templates
+- **Key Features**: Language selection, code editor, advanced configuration
+- **Reuse Pattern**: Use for all coding-based assessments
+- **File Pattern**: `{AssessmentType}DefaultCodes` or `DefaultCodes`
+
+### Reusable Design Patterns
+
+#### Layout Patterns
+1. **Two-Column Layout** (Most Common)
+   ```
+   [Left: Configuration/Forms] [Right: Preview/Metadata]
+   ```
+   Used in: QuestionDetails, EvaluationParameters, SolutionDetails
+
+2. **Single Column Layout**
+   ```
+   [Full Width Content with Cards]
+   ```
+   Used in: MediaResources, TestCases, Question content pages
+
+3. **Split Pane Layout**
+   ```
+   [Editor Pane] [Preview Pane]
+   ```
+   Used in: FillInTheBlanks, DefaultCodes
+
+#### Component Patterns
+- **Progress Navigation**: All pages use `ResponsiveProgressSteps`
+- **Bottom Actions**: `FloatingFooter` or `BottomActions` with consistent button patterns
+- **Form Validation**: Real-time validation with error states
+- **File Management**: Consistent drag-drop upload interface
+- **Card-based Selection**: Difficulty, evaluation methods, submission options
+
+### Page Creation Guidelines
+
+#### When Creating New Assessment Types:
+1. **Check Existing Pages**: Always verify if a similar page type exists
+2. **Reuse Base Components**: Use existing page structures and modify only what's necessary
+3. **Follow Naming Convention**: `{AssessmentType}{PageType}` (e.g., `CodingQuestionDetails`)
+4. **Maintain Design Consistency**: Use established layout patterns and component styles
+5. **Progress Flow Integration**: Ensure pages integrate with the progress step system
+6. **Validation Patterns**: Follow established validation and error handling patterns
+
+#### Assessment Type Checklist:
+For each new assessment type, you typically need:
+- [ ] Question content/statement page
+- [ ] Media & resources page (if applicable)
+- [ ] Question details/configuration page
+- [ ] Question type creation page (the main creation interface)
+- [ ] Evaluation parameters page
+- [ ] Solution details page (optional)
+- [ ] Any specialized pages (like test cases for coding)
+
+#### Routing Pattern:
+- Base assessment type: `/{assessment-type}`
+- Specific pages: `/{assessment-type}/{page-name}`
+- Example: `/fill-in-the-blanks/question-details`
+
+### Currently Implemented Assessment Types:
+1. **General Submission** - Complete flow with all core pages
+2. **Fill-in-the-Blanks** - Complete specialized flow with customized pages  
+3. **Multiple Choice** - Question creation page implemented
+4. **Coding Questions** - Enhanced flow with test cases and default codes
+
+### Missing/Potential Assessment Types:
+- **Essay Questions** - Long-form text responses
+- **File Upload Questions** - Document/project submissions
+- **Audio/Video Questions** - Multimedia response questions
+- **Drag-and-Drop Questions** - Interactive sorting/matching
+- **Drawing/Diagram Questions** - Visual response questions
