@@ -1,0 +1,408 @@
+@import '../../../styles/tokens.css';
+
+.container {
+  background: var(--color-background-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-5);
+  position: relative;
+}
+
+.container.compact {
+  padding: var(--spacing-4);
+  margin-bottom: var(--spacing-3);
+}
+
+/* Horizontal Layout */
+.horizontal .progressIndicator {
+  display: none;
+  margin-bottom: var(--spacing-4);
+  padding: 0 var(--spacing-2);
+}
+
+.progressText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-2);
+  display: block;
+}
+
+.progressBar {
+  height: 4px;
+  background: var(--color-border-secondary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-primary-600);
+  border-radius: var(--radius-full);
+  transition: width var(--animation-duration-base) var(--animation-ease-in-out);
+}
+
+.stepsContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.stepsContainer.scrollable {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stepsContainer.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+.steps {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: space-between;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  scroll-snap-align: center;
+  transition: transform var(--animation-duration-base) var(--animation-ease-in-out);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+  flex: 1;
+  max-width: 180px;
+}
+
+.step:hover {
+  transform: translateY(-2px);
+}
+
+.step:focus-visible {
+  outline: 2px solid var(--color-primary-600);
+  outline-offset: 2px;
+}
+
+.stepCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  color: var(--color-text-tertiary);
+  transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+  position: relative;
+  z-index: 2;
+}
+
+.step.active .stepCircle {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-600);
+  color: var(--color-text-on-primary);
+  box-shadow: var(--shadow-focus);
+  transform: scale(1.1);
+}
+
+.step.completed .stepCircle {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-600);
+  color: var(--color-text-on-primary);
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1);
+  text-align: center;
+}
+
+.stepLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  transition: color var(--animation-duration-base) var(--animation-ease-in-out);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+}
+
+.step.active .stepLabel {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.stepDescription {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-quaternary);
+  line-height: 1.3;
+  max-width: 100px;
+}
+
+.stepNumber {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.divider {
+  flex: 1;
+  height: 2px;
+  background: var(--color-border-secondary);
+  margin-top: 20px;
+  margin-left: var(--spacing-2);
+  margin-right: var(--spacing-2);
+  transition: background-color var(--animation-duration-base) var(--animation-ease-in-out);
+  position: relative;
+  z-index: 1;
+}
+
+.divider.completedDivider {
+  background: var(--color-primary-600);
+}
+
+/* Scroll Hints */
+.scrollHints {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--spacing-2);
+  z-index: 3;
+}
+
+.scrollHint {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-full);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+  box-shadow: var(--shadow-sm);
+  opacity: 0.8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* Vertical Layout */
+.vertical {
+  padding: var(--spacing-4);
+}
+
+.verticalSteps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.vertical .step {
+  flex-direction: row;
+  text-align: left;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+  min-width: auto;
+}
+
+.vertical .step:hover {
+  background: var(--color-background-secondary);
+  transform: none;
+}
+
+.vertical .stepContent {
+  align-items: flex-start;
+  text-align: left;
+  flex: 1;
+}
+
+.vertical .stepCircle {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.vertical .stepLabel {
+  font-size: var(--font-size-base);
+  text-align: left;
+}
+
+.vertical .stepDescription {
+  max-width: none;
+  text-align: left;
+}
+
+.verticalDivider {
+  width: 2px;
+  height: 24px;
+  background: var(--color-border-secondary);
+  margin-left: 18px;
+  transition: background-color var(--animation-duration-base) var(--animation-ease-in-out);
+}
+
+.verticalDivider.completedDivider {
+  background: var(--color-primary-600);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+  }
+
+  .horizontal .progressIndicator {
+    display: block;
+  }
+
+  .step {
+    min-width: 100px;
+    padding: var(--spacing-1);
+  }
+
+  .stepCircle {
+    width: 36px;
+    height: 36px;
+    font-size: var(--font-size-sm);
+  }
+
+  .stepLabel {
+    font-size: var(--font-size-xs);
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .divider {
+    width: 60px;
+    margin-top: 18px;
+  }
+
+  .scrollHints {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: var(--spacing-3);
+  }
+
+  .step {
+    min-width: 80px;
+  }
+
+  .stepCircle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .stepLabel {
+    display: none;
+  }
+
+  .stepContent {
+    display: none;
+  }
+
+  .divider {
+    width: 40px;
+    margin-top: 16px;
+  }
+
+  /* Show only step numbers on very small screens */
+  .stepNumber {
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 360px) {
+  .step {
+    min-width: 60px;
+  }
+
+  .stepCircle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .divider {
+    width: 30px;
+    margin-top: 14px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .stepCircle {
+    border-width: 3px;
+  }
+
+  .step.active .stepCircle,
+  .step.completed .stepCircle {
+    border-width: 3px;
+  }
+
+  .divider {
+    height: 3px;
+  }
+
+  .verticalDivider {
+    width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .step,
+  .stepCircle,
+  .stepLabel,
+  .divider,
+  .progressFill {
+    transition: none;
+  }
+
+  .step:hover {
+    transform: none;
+  }
+
+  .step.active .stepCircle {
+    transform: none;
+  }
+
+  .scrollHint {
+    animation: none;
+  }
+
+  .stepsContainer.scrollable {
+    scroll-behavior: auto;
+  }
+}

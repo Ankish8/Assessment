@@ -1,0 +1,131 @@
+@import '../../../styles/tokens.css';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Layout variants */
+.form.vertical {
+  /* Default vertical layout */
+}
+
+.form.horizontal {
+  /* Horizontal form layout for labels and inputs side by side */
+}
+
+/* Gap variants */
+.form.gap-sm {
+  gap: var(--spacing-3);
+}
+
+.form.gap-base {
+  gap: var(--spacing-4);
+}
+
+.form.gap-lg {
+  gap: var(--spacing-6);
+}
+
+/* Form Group */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.formGroup.columns-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4);
+}
+
+.formGroup.columns-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-4);
+}
+
+.formGroup.columns-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: var(--spacing-4);
+}
+
+/* Form Section */
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.sectionHeader {
+  padding-bottom: var(--spacing-2);
+  border-bottom: 1px solid var(--color-border-primary);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-1) 0;
+  line-height: var(--line-height-tight);
+}
+
+.sectionSubtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-base);
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  gap: var(--spacing-3);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--color-border-primary);
+  margin-top: var(--spacing-2);
+}
+
+.formActions.align-left {
+  justify-content: flex-start;
+}
+
+.formActions.align-center {
+  justify-content: center;
+}
+
+.formActions.align-right {
+  justify-content: flex-end;
+}
+
+.formActions.align-between {
+  justify-content: space-between;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .formGroup.columns-2,
+  .formGroup.columns-3,
+  .formGroup.columns-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .formActions {
+    flex-direction: column-reverse;
+  }
+  
+  .formActions.align-right,
+  .formActions.align-center,
+  .formActions.align-between {
+    justify-content: stretch;
+  }
+}

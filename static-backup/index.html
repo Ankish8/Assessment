@@ -1,0 +1,2678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cases - Untitled UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #fcfcfd;
+            color: #101828;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1216px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            background: #7f56d9;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .back-btn:hover {
+            background: #6941c6;
+        }
+
+        .header-title {
+            font-size: 30px;
+            font-weight: 600;
+            color: #101828;
+            letter-spacing: -0.02em;
+        }
+
+        /* Progress Steps */
+        .progress-container {
+            margin-bottom: 32px;
+        }
+
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .progress-steps::-webkit-scrollbar {
+            display: none;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .step.active .step-number {
+            background: #7f56d9;
+            color: white;
+            box-shadow: 0 0 0 4px #f4f3ff;
+        }
+
+        .step.completed .step-number {
+            background: #7f56d9;
+            color: white;
+        }
+
+        .step.inactive .step-number {
+            background: #f9fafb;
+            color: #667085;
+            border: 1px solid #eaecf0;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .step.active .step-label {
+            color: #101828;
+        }
+
+        .step.completed .step-label {
+            color: #475467;
+        }
+
+        .step.inactive .step-label {
+            color: #667085;
+        }
+
+        .step-divider {
+            width: 20px;
+            height: 1px;
+            background: #eaecf0;
+            flex-shrink: 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #eaecf0;
+            box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1), 0 1px 2px rgba(16, 24, 40, 0.06);
+        }
+
+        .content-header {
+            padding: 24px 24px 0 24px;
+            border-bottom: 1px solid #eaecf0;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #101828;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-description {
+            font-size: 14px;
+            color: #667085;
+            margin-bottom: 24px;
+        }
+
+        .info-icon {
+            width: 16px;
+            height: 16px;
+            background: #f9fafb;
+            border: 1px solid #d0d5dd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667085;
+            font-size: 11px;
+            cursor: help;
+            font-weight: 600;
+        }
+
+        /* Equalize Weightage */
+        .equalize-weightage {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #7f56d9;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .equalize-text {
+            font-size: 14px;
+            color: #101828;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .total-weightage {
+            font-size: 14px;
+            color: #17b26a;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+
+        .content-body {
+            padding: 24px;
+        }
+
+        /* Initial State */
+        .initial-state {
+            display: block;
+        }
+
+        .add-new-section {
+            background: #f9fafb;
+            border: 1px solid #eaecf0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .add-new-btn {
+            width: 100%;
+            max-width: 240px;
+            padding: 12px 20px;
+            background: #7f56d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            margin: 0 auto 12px;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+            white-space: nowrap;
+        }
+        .add-new-btn-two {
+            width: 100%;
+            max-width: 200px;
+            padding: 12px 20px;
+            background: #7f56d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            margin: 0 0 12px;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .add-new-btn:hover {
+            background: #6941c6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(127, 86, 217, 0.24);
+        }
+        .add-new-btn-two:hover {
+            background: #6941c6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(127, 86, 217, 0.2);
+        }
+
+        .add-new-description {
+            font-size: 14px;
+            color: #667085;
+        }
+
+        .divider-section {
+            margin: 32px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .divider-line {
+            border: none;
+            height: 1px;
+            background: #eaecf0;
+        }
+
+        .divider-text {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 16px;
+            color: #667085;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .upload-section {
+            border: 2px dashed #d0d5dd;
+            border-radius: 8px;
+            background: #fcfcfd;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .upload-icon {
+            width: 56px;
+            height: 56px;
+            background: #f9fafb;
+            border: 1px solid #eaecf0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: #667085;
+        }
+
+        .upload-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #344054;
+            margin-bottom: 4px;
+        }
+
+        .upload-subtitle {
+            font-size: 14px;
+            color: #667085;
+            margin-bottom: 16px;
+        }
+
+        .upload-btn {
+            padding: 10px 16px;
+            background: white;
+            color: #344054;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .format-info {
+            background: #f9fafb;
+            border-top: 1px solid #eaecf0;
+            padding: 20px 24px;
+        }
+
+        .format-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .format-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #344054;
+        }
+
+        .format-details-btn {
+            background: none;
+            border: none;
+            color: #7f56d9;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .format-example {
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 12px;
+            color: #667085;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border: 1px solid #eaecf0;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+
+        /* Test Case State */
+        .test-case-state {
+            display: none;
+        }
+
+        .test-case-container {
+            margin-bottom: 24px;
+        }
+
+        .test-case-card {
+            background: #fcfcfd;
+            border: 1px solid #eaecf0;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .test-case-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid #eaecf0;
+    background: #f9fafb;
+}
+.action-btn.save {
+    color: #7f56d9;
+    border-color: #e9d5ff;
+}
+
+.action-btn.save:hover {
+    background: #f9f5ff;
+    border-color: #d8b4fe;
+}
+
+.action-btn.edit {
+    color: #6941c6;
+    background: #f4f3ff;
+    border-color: #d6bbfb;
+}
+
+.action-btn.edit:hover {
+    background: #ede9fe;
+    border-color: #c4b5fd;
+}
+        .test-case-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #101828;
+        }
+
+        .test-case-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            border: 1px solid #d0d5dd;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .action-btn:hover {
+            background: #f9fafb;
+            border-color: #98a2b3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(16, 24, 40, 0.12);
+        }
+
+        .action-btn.duplicate {
+            color: #7f56d9;
+        }
+
+        .action-btn.delete {
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .action-btn.delete:hover {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #b91c1c;
+        }
+
+        /* Loading states */
+        .action-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .action-btn.loading svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Auto-save indicator */
+        .auto-save-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #f0fdf4;
+            color: #166534;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #bbf7d0;
+            font-size: 12px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            z-index: 1000;
+            transition: all 0.2s ease;
+        }
+
+        .auto-save-indicator.saving {
+            background: #fffbeb;
+            color: #92400e;
+            border-color: #fcd34d;
+        }
+
+        .auto-save-indicator.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fca5a5;
+        }
+
+        .test-case-form {
+            padding: 24px;
+            background: white;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .test-case-card.minimized .test-case-form {
+            max-height: 0;
+            padding: 0 24px;
+            opacity: 0;
+        }
+        
+        .test-case-card.minimized .test-case-header {
+            border-bottom: none;
+            background: #fefefe;
+            border-radius: 8px;
+        }
+        .form-row {
+    display: grid;
+    grid-template-columns: 1fr 160px 140px;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: start;
+}
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+        .form-input {
+            padding: 10px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7f56d9;
+            box-shadow: 0 0 0 4px #f4f3ff, 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .control-group {
+    position: relative;
+}
+
+
+
+        .control-btn:hover {
+            background: #f2f4f7;
+        }
+
+        .control-input {
+    padding: 10px 12px;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    width: 100%;
+}
+
+.control-input:focus {
+    outline: none;
+    border-color: #7f56d9;
+    box-shadow: 0 0 0 4px rgba(127, 86, 217, 0.1);
+}
+        
+
+        .io-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .textarea-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-textarea {
+            padding: 12px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            resize: vertical;
+            min-height: 120px;
+            background: white;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        /* Character counter */
+        .char-counter {
+            font-size: 11px;
+            color: #6b7280;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .form-textarea:focus ~ div .char-counter,
+        .form-textarea:not(:placeholder-shown) ~ div .char-counter {
+            opacity: 1;
+        }
+
+        .char-counter.warning {
+            color: #d97706;
+        }
+
+        .char-counter.error {
+            color: #dc2626;
+        }
+
+        /* Keyboard shortcuts help */
+        .shortcuts-help {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 12px;
+            color: #6b7280;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            max-width: 280px;
+        }
+
+        .shortcuts-help.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .shortcuts-help h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .shortcut-key {
+            background: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #374151;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #7f56d9;
+            box-shadow: 0 0 0 4px #f4f3ff, 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .additional-add-btn {
+    text-align: left;
+    margin: 24px 0;
+}
+
+        .upload-links {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            margin: 24px 0;
+            align-items: center;
+        }
+
+        .upload-link {
+            color: #7f56d9;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .upload-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Verify Section */
+        .verify-section {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f6fef9;
+            border: 1px solid #d1fadf;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .verify-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .verify-checkbox.checked {
+            background: #12b76a;
+            border-color: #12b76a;
+            color: white;
+        }
+
+        .verify-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #12b76a;
+            cursor: pointer;
+        }
+
+        /* Code Editor - Enhanced Version */
+        .code-editor-section {
+            display: none;
+            margin-top: 24px;
+            padding: 24px;
+            background: #f9fafb;
+            border: 1px solid #eaecf0;
+            border-radius: 8px;
+        }
+
+        .editor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .editor-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .language-selector {
+            padding: 10px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            color: #101828;
+            font-weight: 500;
+            min-width: 160px;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .language-selector:focus {
+            outline: none;
+            border-color: #7f56d9;
+            box-shadow: 0 0 0 4px rgba(127, 86, 217, 0.1);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-format {
+            padding: 10px 16px;
+            background: white;
+            color: #344054;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .btn-format:hover {
+            background: #f9fafb;
+            border-color: #98a2b3;
+        }
+
+        .editor-note {
+            background: #f4f3ff;
+            border: 1px solid #d6bbfb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #6941c6;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .code-editor-container {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #d0d5dd;
+            background: #1e1e1e;
+            transition: all 0.3s ease;
+        }
+
+        .code-editor-container.light {
+            background: #ffffff;
+            border-color: #e5e7eb;
+        }
+
+        .editor-toolbar {
+            background: #2d2d2d;
+            border-bottom: 1px solid #404040;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .code-editor-container.light .editor-toolbar {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .editor-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #d4d4d4;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .code-editor-container.light .editor-tab {
+            color: #374151;
+        }
+
+        .editor-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #9ca3af;
+            transition: color 0.3s ease;
+        }
+
+        .code-editor-container.light .editor-info {
+            color: #6b7280;
+        }
+
+        .code-editor {
+            width: 100%;
+            height: 360px;
+            border: none;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 14px;
+            padding: 16px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            resize: none;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .code-editor-container.light .code-editor {
+            background: #ffffff;
+            color: #1f2937;
+        }
+
+        .code-editor:focus {
+            outline: none;
+        }
+
+        .compile-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .compile-btn {
+            padding: 12px 20px;
+            background: #7f56d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .compile-btn:hover {
+            background: #6941c6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(127, 86, 217, 0.24);
+        }
+
+        .compile-btn:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .execution-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: #667085;
+        }
+
+        /* Output Console Section - Enhanced Version */
+        .results-section {
+            display: none;
+            background: white;
+        }
+
+        .console-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #eaecf0;
+        }
+
+        .console-title-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .console-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #101828;
+        }
+
+        .execution-time {
+            background: #f9fafb;
+            color: #475467;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #eaecf0;
+        }
+
+        .console-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .summary-item.passed {
+            color: #17b26a;
+        }
+
+        .summary-item.failed {
+            color: #f04438;
+        }
+
+        .summary-item.total {
+            color: #667085;
+        }
+
+        /* Results Table - Enhanced Style */
+        .results-container {
+            padding: 0;
+        }
+
+        .results-filters {
+            padding: 16px 24px;
+            background: #f9fafb;
+            border-bottom: 1px solid #eaecf0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: #667085;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: #f4f3ff;
+            color: #7f56d9;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results-table th {
+            text-align: left;
+            padding: 12px 24px;
+            background: #f9fafb;
+            border-bottom: 1px solid #eaecf0;
+            font-size: 12px;
+            font-weight: 500;
+            color: #667085;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .results-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #eaecf0;
+            font-size: 14px;
+            vertical-align: top;
+            max-width: 0;
+            overflow: hidden;
+        }
+
+        .results-table td:first-child {
+            max-width: 180px;
+        }
+
+        .results-table td:last-child {
+            max-width: 250px;
+        }
+
+        .results-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .test-case-name {
+            font-weight: 500;
+            color: #101828;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .test-case-name span:last-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .test-case-number {
+            background: #f9fafb;
+            color: #667085;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #eaecf0;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-badge.success {
+            background: #ecfdf3;
+            color: #027a48;
+        }
+
+        .status-badge.error {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .status-badge.timeout {
+            background: #fffbeb;
+            color: #b45309;
+        }
+
+        .execution-time-cell {
+            color: #667085;
+            font-weight: 500;
+        }
+
+        .output-toggle {
+            color: #7f56d9;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .output-toggle:hover {
+            color: #6941c6;
+            text-decoration: underline;
+        }
+
+        .output-details {
+            display: none;
+            margin-top: 12px;
+            background: #fcfcfd;
+            border: 1px solid #eaecf0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .output-tabs {
+            display: flex;
+            background: #f9fafb;
+            border-bottom: 1px solid #eaecf0;
+        }
+
+        .output-tab {
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            color: #667085;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .output-tab.active {
+            color: #7f56d9;
+            border-bottom-color: #7f56d9;
+            background: white;
+        }
+
+        .output-content {
+            padding: 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #374151;
+        }
+
+        /* Loading and Empty States */
+        .loading-state {
+            display: none;
+            text-align: center;
+            padding: 48px 24px;
+            color: #667085;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #eaecf0;
+            border-top: 2px solid #7f56d9;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #667085;
+        }
+
+        .empty-icon {
+            width: 48px;
+            height: 48px;
+            background: #f9fafb;
+            border: 1px solid #eaecf0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: #98a2b3;
+        }
+
+        /* Bottom Summary */
+        .summary-section {
+            padding: 20px 24px;
+            background: #f9fafb;
+            border-top: 1px solid #eaecf0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 32px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #101828;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #667085;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Bottom Actions */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            border-top: 1px solid #eaecf0;
+            margin: 0 -24px -24px -24px;
+            background: #f9fafb;
+        }
+
+        .btn-secondary {
+            padding: 10px 16px;
+            background: white;
+            color: #344054;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #98a2b3;
+        }
+
+        .btn-primary {
+            padding: 10px 16px;
+            background: #7f56d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+
+        .btn-primary:hover {
+            background: #6941c6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(127, 86, 217, 0.24);
+        }
+
+        .save-error {
+            font-size: 12px;
+            color: #f04438;
+            margin-left: 16px;
+        }
+
+        /* Success Notification */
+        .success-notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(16, 24, 40, 0.15);
+            transition: all 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .success-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .success-notification svg {
+            color: #22c55e;
+            flex-shrink: 0;
+        }
+
+        /* Loading spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .io-section {
+                grid-template-columns: 1fr;
+            }
+
+            .equalize-weightage {
+                position: static;
+                margin-top: 16px;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn">
+                ←
+            </button>
+            <h1 class="header-title">Compilable Question</h1>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Question Statement</div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Test Cases</div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step inactive">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Default Codes</div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step inactive">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Question Details</div>
+                </div>
+                <div class="step-divider"></div>
+                <div class="step inactive">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Solution Details</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Test Cases Section -->
+            <div class="test-cases-section" id="testCasesSection">
+                <div class="content-header">
+                    <h2 class="section-title">
+                        Add Test Cases
+                        <div class="info-icon">?</div>
+                    </h2>
+                    <p class="section-description">Create test cases manually or upload them in bulk using our supported format.</p>
+                
+                <!-- Equalize Weightage -->
+                <div class="equalize-weightage" id="equalizeWeightage">
+                    <div class="checkbox">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="equalize-text">Equalize Weightage</span>
+                    <span class="total-weightage">Total Weightage 100%</span>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <!-- Initial State -->
+                <div class="initial-state" id="initialState">
+                    <div class="add-new-section">
+                        <div style="margin-bottom: 16px;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#98a2b3" stroke-width="1" style="margin: 0 auto 12px; display: block;">
+                                <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z"/>
+                                <path d="M14 2V8H20"/>
+                                <path d="M12 18V12M9 15H15"/>
+                            </svg>
+                            <h3 style="font-size: 16px; font-weight: 600; color: #101828; margin-bottom: 4px;">No test cases yet</h3>
+                            <p style="font-size: 14px; color: #667085; margin-bottom: 20px;">Start building your test suite by creating your first test case</p>
+                        </div>
+                        <button class="add-new-btn" onclick="startAddingTestCases()">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            Create First Test Case
+                        </button>
+                        <p class="add-new-description">Use our intuitive form builder or upload bulk test cases</p>
+                    </div>
+
+                    <div class="divider-section">
+                        <hr class="divider-line">
+                        <span class="divider-text">or</span>
+                    </div>
+
+                    <div class="upload-section">
+                        <div class="upload-area">
+                            <div class="upload-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z"/>
+                                    <path d="M14 2V8H20"/>
+                                    <path d="M16 13L12 17L8 13"/>
+                                    <path d="M12 12V17"/>
+                                </svg>
+                            </div>
+                            <h3 class="upload-title">Click to upload</h3>
+                            <p class="upload-subtitle">or drag and drop test case files</p>
+                            <button class="upload-btn">Browse files</button>
+                        </div>
+
+                        <div class="format-info">
+                            <div class="format-header">
+                                <span class="format-title">Supported format</span>
+                                <button class="format-details-btn" onclick="showFormatModal()">View detailed format</button>
+                            </div>
+                            <div class="format-example">Input
+-----mapit-----
+Output
+-----Endmapit-----</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Case State -->
+                <div class="test-case-state" id="testCaseState">
+                    <div class="test-case-container" id="testCaseContainer">
+                        <!-- Test cases will be added here -->
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 24px 0; flex-wrap: wrap;">
+                        <button class="add-new-btn-two" onclick="addNewTestCase()">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                            Add New
+                        </button>
+                        
+                        
+
+                    
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 2px dashed #d0d5dd; border-radius: 8px; background: #fcfcfd; transition: all 0.2s ease; cursor: pointer; min-width: 280px;" onclick="document.getElementById('fileInput').click()">
+                            <div style="width: 32px; height: 32px; background: #f9fafb; border: 1px solid #eaecf0; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #667085; flex-shrink: 0;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7,10 12,15 17,10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px; font-size: 14px;">
+                                <span style="color: #667085;">Upload test case files (</span>
+                                <a href="#" style="color: #7f56d9; font-weight: 500; text-decoration: none;" onclick="showFormatModal()">see format</a>
+                                <span style="color: #667085;">)</span>
+                            </div>
+                        </div>
+                        <input type="file" id="fileInput" style="display: none;" multiple accept=".txt,.csv">
+                        
+                    </div>
+
+                    <!-- Verify Test Cases -->
+                    <div class="verify-section" id="verifySection">
+                        <div class="verify-checkbox" id="verifyCheckbox" onclick="toggleVerifyMode()"></div>
+                        <label class="verify-label" onclick="toggleVerifyMode()">Verify Test Cases</label>
+                    </div>
+
+                    <!-- Code Editor -->
+                    <div class="code-editor-section" id="codeEditorSection">
+                        <div class="editor-header">
+                            <div class="editor-controls">
+                                <label class="form-label" for="language-select">Language</label>
+                                <select id="language-select" class="language-selector">
+                                    <option value="java">JAVA (1.8)</option>
+                                    <option value="python">Python 3.9</option>
+                                    <option value="cpp">C++</option>
+                                    <option value="javascript">Node.js</option>
+                                </select>
+                            </div>
+
+                            <div class="editor-actions">
+                                <button class="btn-format" onclick="formatCode()">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"/>
+                                    </svg>
+                                    Format
+                                </button>
+                                <button class="btn-format" onclick="resetCode()">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"/>
+                                    </svg>
+                                    Reset
+                                </button>
+                                <button class="btn-format" onclick="toggleEditorTheme()" id="themeToggle">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                                    </svg>
+                                    Dark
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="editor-note">
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
+                            </svg>
+                            <span>For JAVA (1.8), the class name needs to be <strong>Main</strong>. Ensure proper syntax and imports.</span>
+                        </div>
+
+                        <div class="code-editor-container">
+                            <div class="editor-toolbar">
+                                <div class="editor-tab">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                    </svg>
+                                    <span>Solution.java</span>
+                                </div>
+                                <div class="editor-info">
+                                    <span>UTF-8</span>
+                                    <span>•</span>
+                                    <span>Java</span>
+                                </div>
+                            </div>
+
+                            <textarea class="code-editor" id="codeEditor" placeholder="Write your solution here...">public class Main {
+    public static void main(String[] args) {
+        // Your solution here
+        System.out.println("Hello World!");
+    }
+}</textarea>
+                        </div>
+
+                        <div class="compile-section">
+                            <button class="compile-btn" id="compileBtn" onclick="compileAndRun()">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" id="compileIcon">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/>
+                                </svg>
+                                <span id="compileText">Compile and Run</span>
+                            </button>
+                            
+                            <div class="execution-info">
+                                <span>Time limit: <strong>10 seconds</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Console Section -->
+                    <div class="results-section" id="resultsSection">
+                        <!-- Loading State -->
+                        <div class="loading-state" id="loadingState">
+                            <div class="loading-spinner"></div>
+                            <h3 style="font-size: 16px; font-weight: 600; color: #101828; margin-bottom: 8px;">Compiling and executing...</h3>
+                            <p>This may take a few seconds</p>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div class="empty-state" id="emptyState">
+                            <div class="empty-icon">
+                                <svg width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 16px; font-weight: 600; color: #101828; margin-bottom: 8px;">No results yet</h3>
+                            <p>Click "Compile and Run" to execute your code against the test cases</p>
+                        </div>
+
+                        <!-- Results Content -->
+                        <div id="resultsContent" style="display: none;">
+                            <div class="console-header">
+                                <div class="console-title-section">
+                                    <h3 class="console-title">Execution Results</h3>
+                                    <div class="execution-time">1.24s</div>
+                                </div>
+                                <div class="console-actions">
+                                    <div class="result-summary">
+                                        <div class="summary-item passed">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <circle cx="8" cy="8" r="8" fill="currentColor"/>
+                                                <path d="M12 5L6.5 10.5L4 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            <span id="passedCount">0 Passed</span>
+                                        </div>
+                                        <div class="summary-item failed">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                <circle cx="8" cy="8" r="8" fill="currentColor"/>
+                                                <path d="M10 6L6 10M6 6L10 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            <span id="failedCount">0 Failed</span>
+                                        </div>
+                                        <div class="summary-item total">
+                                            <span id="totalCount">0 Total</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="results-filters">
+                                <div class="filter-group">
+                                    <button class="filter-btn active" onclick="filterResults('all')">All tests</button>
+                                    <button class="filter-btn" onclick="filterResults('passed')">Passed</button>
+                                    <button class="filter-btn" onclick="filterResults('failed')">Failed</button>
+                                </div>
+                                <div style="font-size: 14px; color: #667085;" id="testCaseCount">
+                                    0 test cases
+                                </div>
+                            </div>
+
+                            <div class="results-container">
+                                <table class="results-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 28%;">Test case</th>
+                                            <th style="width: 24%;">Status</th>
+                                            <th style="width: 24%;">Execution time</th>
+                                            <th style="width: 24%;">Output</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="resultsTableBody">
+                                        <!-- Results populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Summary Section -->
+                            <div class="summary-section">
+                                <div class="summary-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-value" id="passRate">0%</div>
+                                        <div class="stat-label">Pass rate</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value" id="avgTime">0s</div>
+                                        <div class="stat-label">Avg time</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value" id="passedStat">0/0</div>
+                                        <div class="stat-label">Passed</div>
+                                    </div>
+                                </div>
+                                <div class="summary-actions">
+                                    <!-- Actions can be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    
+                </div>
+            </div>
+
+            </div>
+
+
+            <!-- Bottom Actions -->
+            <div class="bottom-actions">
+                <button class="btn-secondary">Previous</button>
+                <div style="display: flex; align-items: center;">
+                    <span class="save-error" id="saveError" style="display: none;">Some test cases are not saved</span>
+                    <button class="btn-primary" onclick="goToDefaultCodesSection()">Save & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div class="success-notification" id="successNotification">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+        </svg>
+        <span>Created test case successfully</span>
+    </div>
+
+    <!-- Auto-save Indicator -->
+    <div class="auto-save-indicator" id="autoSaveIndicator">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+            <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span>Auto-saved</span>
+    </div>
+
+    <!-- Keyboard Shortcuts Help -->
+    <div class="shortcuts-help" id="shortcutsHelp">
+        <h4>Keyboard Shortcuts</h4>
+        <div class="shortcut-item">
+            <span>Save test case</span>
+            <span class="shortcut-key">⌘+S</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Add new test case</span>
+            <span class="shortcut-key">⌘+Enter</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Duplicate test case</span>
+            <span class="shortcut-key">⌘+D</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Minimize test case</span>
+            <span class="shortcut-key">Esc</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Show/hide shortcuts</span>
+            <span class="shortcut-key">⌘+?</span>
+        </div>
+    </div>
+
+    <script>
+        let testCaseCount = 0;
+        let verifyMode = false;
+
+        function startAddingTestCases() {
+            document.getElementById('initialState').style.display = 'none';
+            document.getElementById('testCaseState').style.display = 'block';
+            document.getElementById('equalizeWeightage').style.display = 'flex';
+            document.getElementById('verifySection').style.display = 'flex';
+            
+            addNewTestCase();
+        }
+
+        function addNewTestCase() {
+            testCaseCount++;
+            const container = document.getElementById('testCaseContainer');
+            
+            const testCaseCard = document.createElement('div');
+            testCaseCard.className = 'test-case-card';
+            testCaseCard.id = `testCase${testCaseCount}`;
+            
+            testCaseCard.innerHTML = `
+                <div class="test-case-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="test-case-number">${testCaseCount}</span>
+                        <span class="test-case-title" id="testCaseTitle${testCaseCount}" style="font-size: 16px; font-weight: 500; color: #475467;">Test Case #${testCaseCount}</span>
+                    </div>
+                    <div class="test-case-actions">
+                        <button class="action-btn save" onclick="toggleTestCase(${testCaseCount})" title="Save" id="actionBtn${testCaseCount}">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+    <polyline points="17,21 17,13 7,13 7,21"/>
+    <polyline points="7,3 7,8 15,8"/>
+</svg>
+</button>
+                        <button class="action-btn delete" onclick="deleteTestCase(${testCaseCount})" title="Delete">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 6h18"/>
+        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+    </svg>
+</button>
+                    </div>
+                </div>
+                <div class="test-case-form">
+                    <div class="form-row">
+    <div class="form-group">
+        <label class="form-label">
+            Test case name <span style="color: #f04438; font-size: 12px;">*</span>
+        </label>
+        <input type="text" class="form-input" value="Test Case #${testCaseCount}" onchange="autoSave()" oninput="updateTestCaseTitle(${testCaseCount}, this.value)">
+        <div style="font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.3;">Give your test case a descriptive name</div>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Time limit (ms)</label>
+        <div class="control-group">
+            <input type="number" class="control-input" value="10000" min="0" step="1000" onchange="autoSave()">
+        </div>
+        <div style="font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.3;">Execution time limit</div>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Weightage (%)</label>
+        <div class="control-group">
+            <input type="number" class="control-input" value="100" min="0" max="100" step="10" onchange="autoSave()">
+        </div>
+        <div style="font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.3;">Test case importance</div>
+    </div>
+</div>
+                    <div class="io-section">
+    <div class="textarea-group">
+        <label class="form-label">
+            Input <span style="color: #f04438; font-size: 12px;">*</span>
+        </label>
+        <textarea class="form-textarea" placeholder="Enter input data..." onchange="autoSave()" oninput="updateCharCounter(this, 'input')">${testCaseCount}</textarea>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <div style="font-size: 12px; color: #6b7280; line-height: 1.3;">Input for your test case</div>
+            <div class="char-counter" id="inputCounter${testCaseCount}">0 characters</div>
+        </div>
+    </div>
+    <div class="textarea-group">
+        <label class="form-label">
+            Expected Output <span style="color: #f04438; font-size: 12px;">*</span>
+        </label>
+        <textarea class="form-textarea" placeholder="Enter expected output..." onchange="autoSave()" oninput="updateCharCounter(this, 'output')">${testCaseCount * 2}</textarea>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <div style="font-size: 12px; color: #6b7280; line-height: 1.3;">Expected output for this input</div>
+            <div class="char-counter" id="outputCounter${testCaseCount}">0 characters</div>
+        </div>
+    </div>
+</div>
+                </div>
+            `;
+            
+            container.appendChild(testCaseCard);
+            
+            // Initialize character counters for the new test case
+            const inputTextarea = testCaseCard.querySelector('.textarea-group:first-child .form-textarea');
+            const outputTextarea = testCaseCard.querySelector('.textarea-group:last-child .form-textarea');
+            
+            if (inputTextarea) {
+                updateCharCounter(inputTextarea, 'input');
+            }
+            if (outputTextarea) {
+                updateCharCounter(outputTextarea, 'output');
+            }
+            
+            showSuccessNotification('Created test case successfully');
+        }
+
+        function duplicateTestCase(id) {
+            const original = document.getElementById(`testCase${id}`);
+            testCaseCount++;
+            
+            const clone = original.cloneNode(true);
+            clone.id = `testCase${testCaseCount}`;
+            clone.querySelector('.test-case-number').textContent = testCaseCount;
+            clone.querySelector('.form-input').value = `Test Case #${testCaseCount} (Copy)`;
+            
+            // Update button handlers
+            const duplicateBtn = clone.querySelector('.duplicate');
+            const deleteBtn = clone.querySelector('.delete');
+            duplicateBtn.onclick = () => saveTestCase(testCaseCount);
+            deleteBtn.onclick = () => deleteTestCase(testCaseCount);
+            
+            // Update control handlers
+            const timeButtons = clone.querySelectorAll('.form-group:nth-child(2) .control-btn');
+            timeButtons[0].onclick = () => decrementTime(testCaseCount);
+            timeButtons[1].onclick = () => incrementTime(testCaseCount);
+            
+            const weightButtons = clone.querySelectorAll('.form-group:nth-child(3) .control-btn');
+            weightButtons[0].onclick = () => decrementWeight(testCaseCount);
+            weightButtons[1].onclick = () => incrementWeight(testCaseCount);
+            
+            document.getElementById('testCaseContainer').appendChild(clone);
+            showSuccessNotification('Test case duplicated');
+        }
+
+        function deleteTestCase(id) {
+            const element = document.getElementById(`testCase${id}`);
+            const container = document.getElementById('testCaseContainer');
+            const testCaseName = element.querySelector('.test-case-title').textContent;
+            
+            if (container.children.length > 1) {
+                if (confirm(`Are you sure you want to delete "${testCaseName}"? This action cannot be undone.`)) {
+                    const deleteBtn = element.querySelector('.action-btn.delete');
+                    deleteBtn.classList.add('loading');
+                    
+                    setTimeout(() => {
+                        element.remove();
+                        showSuccessNotification('Test case deleted');
+                    }, 300);
+                }
+            } else {
+                alert('Cannot delete the last test case. At least one test case is required.');
+            }
+        }
+
+        function incrementTime(id) {
+            const input = document.querySelector(`#testCase${id} .form-group:nth-child(2) .control-input`);
+            input.value = parseInt(input.value) + 1000;
+            autoSave();
+        }
+
+        function decrementTime(id) {
+            const input = document.querySelector(`#testCase${id} .form-group:nth-child(2) .control-input`);
+            const newValue = parseInt(input.value) - 1000;
+            if (newValue >= 0) {
+                input.value = newValue;
+                autoSave();
+            }
+        }
+
+        function incrementWeight(id) {
+            const input = document.querySelector(`#testCase${id} .form-group:nth-child(3) .control-input`);
+            input.value = parseInt(input.value) + 10;
+            autoSave();
+        }
+
+        function decrementWeight(id) {
+            const input = document.querySelector(`#testCase${id} .form-group:nth-child(3) .control-input`);
+            const newValue = parseInt(input.value) - 10;
+            if (newValue >= 0) {
+                input.value = newValue;
+                autoSave();
+            }
+        }
+
+        let autoSaveTimeout;
+        
+        function autoSave() {
+            showAutoSaveIndicator('saving');
+            
+            // Simulate auto-save delay
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                showAutoSaveIndicator('saved');
+                setTimeout(() => {
+                    hideAutoSaveIndicator();
+                }, 2000);
+            }, 800);
+        }
+
+        function showAutoSaveIndicator(state) {
+            const indicator = document.getElementById('autoSaveIndicator');
+            const span = indicator.querySelector('span');
+            const svg = indicator.querySelector('svg');
+            
+            indicator.classList.remove('saving', 'error');
+            indicator.style.display = 'flex';
+            
+            if (state === 'saving') {
+                indicator.classList.add('saving');
+                span.textContent = 'Saving...';
+                svg.style.animation = 'spin 1s linear infinite';
+            } else if (state === 'saved') {
+                indicator.classList.remove('saving');
+                span.textContent = 'Auto-saved';
+                svg.style.animation = 'none';
+            } else if (state === 'error') {
+                indicator.classList.add('error');
+                span.textContent = 'Save failed';
+                svg.style.animation = 'none';
+            }
+        }
+
+        function hideAutoSaveIndicator() {
+            document.getElementById('autoSaveIndicator').style.display = 'none';
+        }
+
+        function updateCharCounter(textarea, type) {
+            const length = textarea.value.length;
+            const testCaseId = textarea.closest('.test-case-card').id.replace('testCase', '');
+            const counter = document.getElementById(`${type}Counter${testCaseId}`);
+            
+            if (counter) {
+                counter.textContent = `${length} characters`;
+                
+                // Add warning/error classes based on length
+                counter.classList.remove('warning', 'error');
+                if (length > 1000) {
+                    counter.classList.add('error');
+                } else if (length > 500) {
+                    counter.classList.add('warning');
+                }
+            }
+            
+            // Trigger auto-save
+            autoSave();
+        }
+
+        function toggleVerifyMode() {
+            const checkbox = document.getElementById('verifyCheckbox');
+            const codeSection = document.getElementById('codeEditorSection');
+            
+            verifyMode = !verifyMode;
+            
+            if (verifyMode) {
+                checkbox.classList.add('checked');
+                checkbox.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                codeSection.style.display = 'block';
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('emptyState').style.display = 'block';
+            } else {
+                checkbox.classList.remove('checked');
+                checkbox.innerHTML = '';
+                codeSection.style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'none';
+            }
+        }
+
+        let isCompiling = false;
+
+        // Code Editor Functions
+        function formatCode() {
+            const editor = document.getElementById('codeEditor');
+            // Simple formatting simulation
+            showSuccessNotification('Code formatted successfully');
+        }
+
+        function resetCode() {
+            const editor = document.getElementById('codeEditor');
+            const language = document.getElementById('language-select').value;
+            
+            const templates = {
+                java: `public class Main {
+    public static void main(String[] args) {
+        // Your solution here
+        System.out.println("Hello World!");
+    }
+}`,
+                python: `def main():
+    # Your solution here
+    print("Hello World!")
+
+if __name__ == "__main__":
+    main()`,
+                cpp: `#include <iostream>
+using namespace std;
+
+int main() {
+    // Your solution here
+    cout << "Hello World!" << endl;
+    return 0;
+}`,
+                javascript: `function main() {
+    // Your solution here
+    console.log("Hello World!");
+}
+
+main();`
+            };
+            
+            editor.value = templates[language] || templates.java;
+            showSuccessNotification('Code reset to template');
+        }
+
+        let isLightTheme = false;
+        
+        function toggleEditorTheme() {
+            const container = document.querySelector('.code-editor-container');
+            const toggleBtn = document.getElementById('themeToggle');
+            const toggleText = toggleBtn.querySelector('span') || toggleBtn.childNodes[toggleBtn.childNodes.length - 1];
+            
+            isLightTheme = !isLightTheme;
+            
+            if (isLightTheme) {
+                container.classList.add('light');
+                toggleBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                    </svg>
+                    Light
+                `;
+                showSuccessNotification('Switched to light theme');
+            } else {
+                container.classList.remove('light');
+                toggleBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                    </svg>
+                    Dark
+                `;
+                showSuccessNotification('Switched to dark theme');
+            }
+        }
+
+        // Compilation Functions
+        function compileAndRun() {
+            if (isCompiling) return;
+            
+            isCompiling = true;
+            const btn = document.getElementById('compileBtn');
+            const icon = document.getElementById('compileIcon');
+            const text = document.getElementById('compileText');
+            
+            // Update button state
+            btn.disabled = true;
+            text.textContent = 'Compiling...';
+            icon.innerHTML = `<svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9.504 1.132a1 1 0 01.992 0l1.75 1a1 1 0 11-.992 1.736L10 3.152l-1.254.716a1 1 0 11-.992-1.736l1.75-1zM5.618 4.504a1 1 0 01-.372 1.364L5.016 6l.23.132a1 1 0 11-.992 1.736L3 7.347V8a1 1 0 01-2 0V6a1 1 0 01.504-.868l3-1.732a1 1 0 011.114.104zM14.382 4.504a1 1 0 011.114-.104l3 1.732A1 1 0 0119 6v2a1 1 0 11-2 0v-.653l-1.254.521a1 1 0 11-.992-1.736l.23-.132-.23-.132a1 1 0 01-.372-1.364z"/>
+            </svg>`;
+            icon.style.animation = 'spin 1s linear infinite';
+            
+            // Show loading state
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('resultsContent').style.display = 'none';
+            document.getElementById('loadingState').style.display = 'block';
+            
+            // Simulate compilation process
+            setTimeout(() => {
+                // Hide loading, show results
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('resultsContent').style.display = 'block';
+                
+                // Reset button
+                btn.disabled = false;
+                text.textContent = 'Compile and Run';
+                icon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/>`;
+                icon.style.animation = 'none';
+                
+                isCompiling = false;
+                showResults();
+                showSuccessNotification('Compilation completed');
+            }, 2500);
+        }
+
+        function showResults() {
+            const resultsTableBody = document.getElementById('resultsTableBody');
+            resultsTableBody.innerHTML = '';
+            
+            let passedCount = 0;
+            let totalTime = 0;
+            let testResults = [];
+            
+            // Generate results for each test case
+            for (let i = 1; i <= testCaseCount; i++) {
+                const testCaseElement = document.getElementById(`testCase${i}`);
+                if (testCaseElement) {
+                    const testCaseName = testCaseElement.querySelector('.form-input').value;
+                    const input = testCaseElement.querySelector('.textarea-group:first-child .form-textarea').value;
+                    const expectedOutput = testCaseElement.querySelector('.textarea-group:last-child .form-textarea').value;
+                    const timeLimit = testCaseElement.querySelector('.control-group .control-input').value;
+                    
+                    // Simulate test results (randomly pass/fail for demo)
+                    const isPassed = Math.random() > 0.3; // 70% pass rate
+                    const executionTime = (Math.random() * 0.5 + 0.1).toFixed(3);
+                    const isTimeout = parseFloat(executionTime) > parseFloat(timeLimit) / 1000;
+                    
+                    if (isPassed && !isTimeout) passedCount++;
+                    totalTime += parseFloat(executionTime);
+                    
+                    testResults.push({
+                        name: testCaseName,
+                        number: i,
+                        isPassed: isPassed && !isTimeout,
+                        isTimeout,
+                        executionTime,
+                        input,
+                        expectedOutput,
+                        actualOutput: isPassed ? expectedOutput : expectedOutput.replace(/\d+/g, (match) => parseInt(match) + 1)
+                    });
+                }
+            }
+            
+            // Update summary
+            document.getElementById('passedCount').textContent = `${passedCount} Passed`;
+            document.getElementById('failedCount').textContent = `${testCaseCount - passedCount} Failed`;
+            document.getElementById('totalCount').textContent = `${testCaseCount} Total`;
+            document.getElementById('testCaseCount').textContent = `${testCaseCount} test cases`;
+            
+            // Update stats
+            const passRate = testCaseCount > 0 ? Math.round((passedCount / testCaseCount) * 100) : 0;
+            const avgTime = testCaseCount > 0 ? (totalTime / testCaseCount).toFixed(2) : 0;
+            document.getElementById('passRate').textContent = `${passRate}%`;
+            document.getElementById('avgTime').textContent = `${avgTime}s`;
+            document.getElementById('passedStat').textContent = `${passedCount}/${testCaseCount}`;
+            
+            // Populate results table
+            testResults.forEach((result, index) => {
+                const statusClass = result.isTimeout ? 'timeout' : (result.isPassed ? 'success' : 'error');
+                const statusText = result.isTimeout ? 'Timeout' : (result.isPassed ? 'Pass' : 'Fail');
+                const statusIcon = result.isTimeout ? 
+                    '<circle cx="6" cy="6" r="6" fill="currentColor"/><path d="M6 3V6L8 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' :
+                    (result.isPassed ? 
+                        '<path d="M9 3.5L4 8.5L2 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' :
+                        '<path d="M8 4L4 8M4 4L8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>');
+                
+                resultsTableBody.innerHTML += `
+                    <tr class="test-result" data-status="${result.isPassed ? 'pass' : 'fail'}">
+                        <td>
+                            <div class="test-case-name">
+                                <span class="test-case-number">${result.number}</span>
+                                <span>${result.name}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-indicator">
+                                <span class="status-badge ${statusClass}">
+                                    <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+                                        ${statusIcon}
+                                    </svg>
+                                    ${statusText}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="execution-time-cell">${result.executionTime}s</div>
+                        </td>
+                        <td>
+                            <div class="output-section">
+                                <a href="#" class="output-toggle" onclick="toggleOutput('output${index + 1}', this); return false;">
+                                    <span>View details</span>
+                                    <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                                    </svg>
+                                </a>
+                                <div id="output${index + 1}" class="output-details">
+                                    <div class="output-tabs">
+                                        <button class="output-tab active" onclick="showOutputTab('output${index + 1}', 'actual')">Actual output</button>
+                                        <button class="output-tab" onclick="showOutputTab('output${index + 1}', 'expected')">Expected output</button>
+                                        <button class="output-tab" onclick="showOutputTab('output${index + 1}', 'input')">Input</button>
+                                    </div>
+                                    <div class="output-content" id="output${index + 1}-actual">${result.actualOutput}</div>
+                                    <div class="output-content" id="output${index + 1}-expected" style="display: none;">${result.expectedOutput}</div>
+                                    <div class="output-content" id="output${index + 1}-input" style="display: none;">${result.input}</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Output Functions
+        function toggleOutput(outputId, toggleElement) {
+            const output = document.getElementById(outputId);
+            const icon = toggleElement.querySelector('svg');
+            const text = toggleElement.querySelector('span');
+            
+            if (output.style.display === 'none' || output.style.display === '') {
+                output.style.display = 'block';
+                text.textContent = 'Hide details';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                output.style.display = 'none';
+                text.textContent = 'View details';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function showOutputTab(outputId, tabType) {
+            // Hide all content for this output
+            const contents = document.querySelectorAll(`#${outputId} .output-content`);
+            contents.forEach(content => content.style.display = 'none');
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll(`#${outputId} .output-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected content and activate tab
+            document.getElementById(`${outputId}-${tabType}`).style.display = 'block';
+            event.target.classList.add('active');
+        }
+
+        // Filter Functions
+        function filterResults(filterType) {
+            const rows = document.querySelectorAll('.test-result');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter rows
+            let visibleCount = 0;
+            rows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                if (filterType === 'all' || 
+                   (filterType === 'passed' && status === 'pass') ||
+                   (filterType === 'failed' && (status === 'fail' || status === 'timeout'))) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Update count
+            document.getElementById('testCaseCount').textContent = `${visibleCount} test cases`;
+        }
+
+        function showFormatModal() {
+            alert('Pattern of Test Cases\n\nThere should be a delimiter -----mapit----- after input and a delimiter -----Endmapit----- at the end of test case.\n\nExample: If your input is 5 & output is 10, your file should be as:\n5\n-----mapit-----\n10\n-----Endmapit-----');
+        }
+
+        function showSuccessNotification(message) {
+            const notification = document.getElementById('successNotification');
+            notification.querySelector('span:last-child').textContent = message;
+            notification.style.display = 'flex';
+            
+            // Trigger animation
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 300);
+            }, 3000);
+        }
+        function saveTestCase(id) {
+    showSuccessNotification('Test case saved successfully');
+    console.log('Saving test case:', id);
+}
+
+        function updateTestCaseTitle(id, value) {
+            const titleElement = document.getElementById(`testCaseTitle${id}`);
+            if (titleElement) {
+                titleElement.textContent = value || `Test Case #${id}`;
+            }
+        }
+
+        function toggleTestCase(id) {
+            const testCaseCard = document.getElementById(`testCase${id}`);
+            const actionBtn = document.getElementById(`actionBtn${id}`);
+            const isMinimized = testCaseCard.classList.contains('minimized');
+            
+            // Add loading state
+            actionBtn.classList.add('loading');
+            
+            setTimeout(() => {
+                actionBtn.classList.remove('loading');
+                
+                if (isMinimized) {
+                    // Expand (Edit mode)
+                    testCaseCard.classList.remove('minimized');
+                    actionBtn.classList.remove('edit');
+                    actionBtn.classList.add('save');
+                    actionBtn.title = 'Save';
+                    actionBtn.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                            <polyline points="17,21 17,13 7,13 7,21"/>
+                            <polyline points="7,3 7,8 15,8"/>
+                        </svg>
+                    `;
+                } else {
+                    // Minimize (Save mode)
+                    testCaseCard.classList.add('minimized');
+                    actionBtn.classList.remove('save');
+                    actionBtn.classList.add('edit');
+                    actionBtn.title = 'Edit';
+                    actionBtn.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    `;
+                    showSuccessNotification('Test case saved successfully');
+                }
+            }, 300);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + S: Save current test case or all unsaved
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                const focusedTestCase = document.activeElement.closest('.test-case-card');
+                if (focusedTestCase) {
+                    const id = focusedTestCase.id.replace('testCase', '');
+                    const actionBtn = document.getElementById(`actionBtn${id}`);
+                    if (actionBtn.classList.contains('save')) {
+                        toggleTestCase(id);
+                    }
+                }
+                return;
+            }
+            
+            // Ctrl/Cmd + D: Duplicate current test case
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                const focusedTestCase = document.activeElement.closest('.test-case-card');
+                if (focusedTestCase) {
+                    const id = focusedTestCase.id.replace('testCase', '');
+                    duplicateTestCase(id);
+                }
+                return;
+            }
+            
+            // Ctrl/Cmd + Enter: Add new test case
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                addNewTestCase();
+                return;
+            }
+            
+            // Escape: Minimize current test case
+            if (e.key === 'Escape') {
+                const focusedTestCase = document.activeElement.closest('.test-case-card');
+                if (focusedTestCase && !focusedTestCase.classList.contains('minimized')) {
+                    const id = focusedTestCase.id.replace('testCase', '');
+                    toggleTestCase(id);
+                }
+            }
+            
+            // Cmd/Ctrl + ?: Toggle shortcuts help
+            if ((e.ctrlKey || e.metaKey) && e.key === '?') {
+                e.preventDefault();
+                toggleShortcutsHelp();
+                return;
+            }
+        });
+
+        function toggleShortcutsHelp() {
+            const help = document.getElementById('shortcutsHelp');
+            help.classList.toggle('visible');
+            
+            if (help.classList.contains('visible')) {
+                setTimeout(() => {
+                    help.classList.remove('visible');
+                }, 5000); // Auto-hide after 5 seconds
+            }
+        }
+
+        // Show shortcuts help on first load
+        setTimeout(() => {
+            toggleShortcutsHelp();
+        }, 2000);
+
+        // Navigation function
+        function goToDefaultCodesSection() {
+            console.log('goToDefaultCodesSection called');
+            
+            // Save test cases data first
+            saveTestCasesData();
+            
+            // Show loading effect
+            showLoadingEffect();
+            
+            // Navigate to default codes page
+            setTimeout(() => {
+                console.log('Navigating to default-codes.html');
+                window.location.href = 'default-codes.html';
+            }, 300);
+        }
+        
+        function saveTestCasesData() {
+            try {
+                // Save current test cases to localStorage for persistence
+                const testCases = [];
+                for (let i = 1; i <= testCaseCount; i++) {
+                    const testCaseElement = document.getElementById(`testCase${i}`);
+                    if (testCaseElement && !testCaseElement.classList.contains('minimized')) {
+                        const nameInput = testCaseElement.querySelector('.form-input');
+                        const inputTextarea = testCaseElement.querySelector('.textarea-group:first-child .form-textarea');
+                        const outputTextarea = testCaseElement.querySelector('.textarea-group:last-child .form-textarea');
+                        const timeLimitInput = testCaseElement.querySelector('.control-group:first-of-type .control-input');
+                        const weightageInput = testCaseElement.querySelector('.control-group:last-of-type .control-input');
+                        
+                        testCases.push({
+                            name: nameInput ? nameInput.value : `Test Case ${i}`,
+                            input: inputTextarea ? inputTextarea.value : '',
+                            expectedOutput: outputTextarea ? outputTextarea.value : '',
+                            timeLimit: timeLimitInput ? timeLimitInput.value : '10000',
+                            weightage: weightageInput ? weightageInput.value : '100'
+                        });
+                    }
+                }
+                
+                localStorage.setItem('testCasesData', JSON.stringify(testCases));
+                localStorage.setItem('testCaseCount', testCaseCount);
+                console.log('Test cases saved:', testCases.length);
+            } catch (error) {
+                console.error('Error saving test cases:', error);
+            }
+        }
+        
+        function showLoadingEffect() {
+            // Create and show loading overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            
+            const spinner = document.createElement('div');
+            spinner.style.cssText = `
+                width: 32px;
+                height: 32px;
+                border: 3px solid #e4e7ec;
+                border-top: 3px solid #7f56d9;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            `;
+            
+            overlay.appendChild(spinner);
+            document.body.appendChild(overlay);
+            
+            // Trigger animation
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add language change handler
+            document.getElementById('language-select').addEventListener('change', function() {
+                const language = this.value;
+                const editorTab = document.querySelector('.editor-tab span');
+                const editorLang = document.querySelector('.editor-info span:last-child');
+                
+                const fileExtensions = {
+                    java: 'Solution.java',
+                    python: 'solution.py',
+                    cpp: 'solution.cpp',
+                    javascript: 'solution.js'
+                };
+                
+                const langDisplay = {
+                    java: 'Java',
+                    python: 'Python',
+                    cpp: 'C++',
+                    javascript: 'JavaScript'
+                };
+                
+                editorTab.textContent = fileExtensions[language] || 'Solution.java';
+                editorLang.textContent = langDisplay[language] || 'Java';
+                resetCode();
+            });
+        });
+    </script>
+</body>
+</html>

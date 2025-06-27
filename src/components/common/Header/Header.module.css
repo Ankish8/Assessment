@@ -1,0 +1,45 @@
+@import '../../../styles/tokens.css';
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+}
+
+.backButton {
+  width: 44px;
+  height: 44px;
+  background: var(--color-primary-600);
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--color-text-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+  box-shadow: var(--shadow-xs);
+}
+
+.backButton:hover {
+  background: var(--color-primary-700);
+  box-shadow: var(--shadow-sm);
+}
+
+.backButton:active {
+  transform: translateY(1px);
+  background: var(--color-primary-800);
+}
+
+.backButton:focus {
+  box-shadow: var(--shadow-focus);
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
