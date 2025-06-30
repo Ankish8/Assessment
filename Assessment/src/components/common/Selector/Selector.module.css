@@ -1,0 +1,257 @@
+@import '../../../styles/tokens.css';
+
+.container {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-3);
+  line-height: var(--line-height-tight);
+}
+
+.selectAllContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-3);
+}
+
+.selectAllButton {
+  background: none;
+  border: none;
+  color: var(--color-primary-600);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--animation-duration-fast) var(--animation-ease-in-out);
+}
+
+.selectAllButton:hover:not(:disabled) {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.selectAllButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.selector {
+  display: grid;
+  gap: var(--spacing-3);
+}
+
+/* Layout variants */
+.selector.grid {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.selector.list {
+  grid-template-columns: 1fr;
+}
+
+.selector.inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+/* Size variants */
+.selector.sm {
+  gap: var(--spacing-2);
+}
+
+.selector.sm.grid {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.selector.lg {
+  gap: var(--spacing-4);
+}
+
+.selector.lg.grid {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.selector.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Option styles */
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  background-color: var(--color-background-primary);
+  cursor: pointer;
+  transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+  outline: none;
+  position: relative;
+}
+
+.option:hover:not(.optionDisabled) {
+  border-color: var(--color-border-hover);
+  background-color: var(--color-background-secondary);
+}
+
+.option:focus {
+  border-color: var(--color-primary-600);
+  box-shadow: var(--shadow-focus);
+}
+
+.option.selected {
+  border-color: var(--color-primary-600);
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.option.selected:hover {
+  background-color: var(--color-primary-100);
+}
+
+.option.optionDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--color-background-disabled);
+}
+
+/* Checkbox for multiple selection */
+.checkbox {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--animation-duration-fast) var(--animation-ease-in-out);
+}
+
+.option.selected .checkbox {
+  background-color: var(--color-primary-600);
+  border-color: var(--color-primary-600);
+  color: white;
+}
+
+.option:hover:not(.optionDisabled) .checkbox {
+  border-color: var(--color-border-hover);
+}
+
+/* Option content */
+.optionIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
+}
+
+.option.selected .optionIcon {
+  color: var(--color-primary-600);
+}
+
+.optionContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.optionLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+}
+
+.option.selected .optionLabel {
+  color: var(--color-primary-700);
+}
+
+.optionDescription {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-1);
+  line-height: var(--line-height-base);
+}
+
+.option.selected .optionDescription {
+  color: var(--color-primary-600);
+}
+
+.optionBadge {
+  flex-shrink: 0;
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: var(--color-background-tertiary);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.option.selected .optionBadge {
+  background-color: var(--color-primary-200);
+  color: var(--color-primary-700);
+}
+
+/* Helper text */
+.helperText {
+  margin-top: var(--spacing-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-tight);
+}
+
+/* Specific layouts */
+.selector.inline .option {
+  flex: 0 0 auto;
+  min-width: fit-content;
+}
+
+.selector.list .option {
+  justify-content: flex-start;
+}
+
+/* Size-specific adjustments */
+.selector.sm .option {
+  padding: var(--spacing-2) var(--spacing-3);
+  gap: var(--spacing-2);
+}
+
+.selector.sm .optionLabel {
+  font-size: var(--font-size-xs);
+}
+
+.selector.lg .option {
+  padding: var(--spacing-4) var(--spacing-5);
+  gap: var(--spacing-4);
+}
+
+.selector.lg .optionLabel {
+  font-size: var(--font-size-base);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .selector.grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .selector.sm.grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .selector.inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
