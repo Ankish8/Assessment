@@ -1,0 +1,404 @@
+<!-- Main Selector Container -->
+<div 
+  #selectorContainer
+  class="selector-container"
+  [ngClass]="containerClasses"
+  [attr.aria-label]="ariaLabel"
+  [attr.aria-describedby]="ariaDescribedBy"
+  [attr.aria-labelledby]="ariaLabelledBy"
+  [attr.role]="mode === 'multiple' ? 'listbox' : 'combobox'"
+  [attr.aria-multiselectable]="mode === 'multiple'"
+  [attr.aria-required]="required"
+  [attr.aria-invalid]="state.hasError"
+  [attr.tabindex]="disabled ? -1 : 0"
+  (focus)="onFocus($event)"
+  (blur)="onBlur($event)">
+
+  <!-- Label -->
+  <label 
+    *ngIf="label" 
+    class="selector-label"
+    [for]="_uniqueId + '-search'">
+    {{ label }}
+    <span *ngIf="required" class="selector-required">*</span>
+  </label>
+
+  <!-- Search Input -->
+  <div 
+    *ngIf="searchable" 
+    class="selector-search-container">
+    
+    <ng-container *ngIf="searchTemplate; else defaultSearchTemplate">
+      <ng-container *ngTemplateOutlet="searchTemplate; context: { 
+        $implicit: state.searchTerm, 
+        onSearchChange: onSearchChange.bind(this),
+        placeholder: searchPlaceholder
+      }"></ng-container>
+    </ng-container>
+
+    <ng-template #defaultSearchTemplate>
+      <div class="selector-search-wrapper">
+        <input
+          #searchInput
+          type="text"
+          class="selector-search-input"
+          [id]="_uniqueId + '-search'"
+          [placeholder]="searchPlaceholder"
+          [value]="state.searchTerm"
+          [disabled]="disabled"
+          (input)="onSearchInputChange($event)"
+          autocomplete="off"
+          role="searchbox"
+          [attr.aria-label]="getSearchAriaLabel()"
+          [attr.aria-expanded]="hasResults"
+          [attr.aria-controls]="_uniqueId + '-options'">
+        
+        <!-- Search Icon -->
+        <svg class="selector-search-icon" width="16" height="16" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+
+        <!-- Clear Search -->
+        <button
+          *ngIf="state.searchTerm && clearable"
+          type="button"
+          class="selector-search-clear"
+          (click)="onSearchChange('')"
+          [disabled]="disabled"
+          aria-label="Clear search">
+          <svg width="12" height="12" viewBox="0 0 12 12">
+            <path d="M9 3L3 9m0-6l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Selected Options Display (Multiple Mode) -->
+  <div 
+    *ngIf="mode === 'multiple' && state.selectedOptions.length > 0" 
+    class="selector-selected-container">
+    
+    <ng-container *ngIf="selectedTemplate; else defaultSelectedTemplate">
+      <ng-container *ngTemplateOutlet="selectedTemplate; context: { 
+        $implicit: state.selectedOptions,
+        deselectOption: deselectOption.bind(this),
+        clearAll: clearSelection.bind(this)
+      }"></ng-container>
+    </ng-container>
+
+    <ng-template #defaultSelectedTemplate>
+      <div class="selector-selected-tags">
+        <span 
+          *ngFor="let option of state.selectedOptions; trackBy: trackByOptionId"
+          class="selector-selected-tag">
+          
+          <!-- Option Icon -->
+          <span *ngIf="option.icon" class="selector-tag-icon">
+            <ng-container *ngIf="isString(option.icon); else iconTemplate">
+              <i [class]="option.icon"></i>
+            </ng-container>
+            <ng-template #iconTemplate>
+              <ng-container *ngTemplateOutlet="$any(option.icon)"></ng-container>
+            </ng-template>
+          </span>
+
+          <!-- Option Label -->
+          <span class="selector-tag-label">{{ option.label }}</span>
+
+          <!-- Badge -->
+          <span *ngIf="option.badge" class="selector-tag-badge">{{ option.badge }}</span>
+
+          <!-- Remove Button -->
+          <button
+            type="button"
+            class="selector-tag-remove"
+            (click)="deselectOption(option, $event)"
+            [disabled]="disabled || option.disabled"
+            [attr.aria-label]="'Remove ' + option.label">
+            <svg width="14" height="14" viewBox="0 0 14 14">
+              <path d="M10 4L4 10m0-6l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </span>
+
+        <!-- Clear All Button -->
+        <button
+          *ngIf="clearable && state.selectedOptions.length > 1"
+          type="button"
+          class="selector-clear-all"
+          (click)="clearSelection()"
+          [disabled]="disabled"
+          aria-label="Clear all selections">
+          Clear all
+        </button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Options Container -->
+  <div 
+    class="selector-options-wrapper"
+    [style.max-height]="maxHeight">
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="selector-loading">
+      <ng-container *ngIf="loadingTemplate; else defaultLoadingTemplate">
+        <ng-container *ngTemplateOutlet="loadingTemplate; context: { message: loadingMessage }"></ng-container>
+      </ng-container>
+      
+      <ng-template #defaultLoadingTemplate>
+        <div class="selector-loading-content">
+          <div class="selector-loading-spinner"></div>
+          <span class="selector-loading-text">{{ loadingMessage }}</span>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Options List -->
+    <div 
+      *ngIf="!loading"
+      #optionsContainer
+      class="selector-options"
+      [ngClass]="optionsClasses"
+      [id]="_uniqueId + '-options'"
+      role="listbox"
+      [attr.aria-label]="'Available options'"
+      [attr.aria-multiselectable]="mode === 'multiple'">
+
+      <!-- Standalone Options -->
+      <ng-container *ngFor="let option of state.filteredOptions; let i = index; trackBy: trackByOptionId">
+        <div
+          class="selector-option"
+          [ngClass]="getOptionClasses(option, i)"
+          [attr.role]="'option'"
+          [attr.aria-selected]="isOptionSelected(option)"
+          [attr.aria-disabled]="option.disabled || disabled"
+          [attr.id]="_uniqueId + '-option-' + option.id"
+          [attr.tabindex]="-1"
+          (click)="selectOption(option, $event)"
+          (keydown.enter)="selectOption(option, $event)"
+          (keydown.space)="selectOption(option, $event)">
+
+          <ng-container *ngIf="optionTemplate; else defaultOptionTemplate">
+            <ng-container *ngTemplateOutlet="optionTemplate; context: { 
+              $implicit: option, 
+              selected: isOptionSelected(option),
+              disabled: option.disabled || disabled,
+              index: i
+            }"></ng-container>
+          </ng-container>
+
+          <ng-template #defaultOptionTemplate>
+            <div class="selector-option-content">
+              
+              <!-- Selection Indicator (Multiple Mode) -->
+              <div *ngIf="mode === 'multiple'" class="selector-option-checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="isOptionSelected(option)"
+                  [disabled]="option.disabled || disabled"
+                  tabindex="-1"
+                  readonly>
+                <div class="selector-checkbox-custom"></div>
+              </div>
+
+              <!-- Option Icon -->
+              <div *ngIf="option.icon" class="selector-option-icon">
+                <ng-container *ngIf="isString(option.icon); else optionIconTemplate">
+                  <i [class]="option.icon"></i>
+                </ng-container>
+                <ng-template #optionIconTemplate>
+                  <ng-container *ngTemplateOutlet="$any(option.icon)"></ng-container>
+                </ng-template>
+              </div>
+
+              <!-- Option Text Content -->
+              <div class="selector-option-text">
+                <div class="selector-option-label" [innerHTML]="highlightSearchTerm(option.label)"></div>
+                <div *ngIf="option.description" class="selector-option-description" [innerHTML]="highlightSearchTerm(option.description)"></div>
+              </div>
+
+              <!-- Option Badge -->
+              <div *ngIf="option.badge" class="selector-option-badge">
+                {{ option.badge }}
+              </div>
+
+              <!-- Selection Check (Single Mode) -->
+              <div *ngIf="mode === 'single' && isOptionSelected(option)" class="selector-option-check">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </ng-container>
+
+      <!-- Grouped Options -->
+      <ng-container *ngFor="let group of state.filteredGroups; trackBy: trackByGroupId">
+        <div class="selector-group">
+          
+          <!-- Group Header -->
+          <div class="selector-group-header" (click)="toggleGroup(group.id)">
+            <ng-container *ngIf="groupHeaderTemplate; else defaultGroupHeaderTemplate">
+              <ng-container *ngTemplateOutlet="groupHeaderTemplate; context: { 
+                $implicit: group, 
+                expanded: isGroupExpanded(group.id),
+                toggle: toggleGroup.bind(this)
+              }"></ng-container>
+            </ng-container>
+
+            <ng-template #defaultGroupHeaderTemplate>
+              <div class="selector-group-header-content">
+                <!-- Expand/Collapse Icon -->
+                <svg 
+                  class="selector-group-toggle"
+                  [class.expanded]="isGroupExpanded(group.id)"
+                  width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                <!-- Group Label -->
+                <div class="selector-group-text">
+                  <div class="selector-group-label">{{ group.label }}</div>
+                  <div *ngIf="group.description" class="selector-group-description">{{ group.description }}</div>
+                </div>
+
+                <!-- Group Count -->
+                <div class="selector-group-count">{{ group.options.length }}</div>
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- Group Options -->
+          <div 
+            *ngIf="isGroupExpanded(group.id)"
+            class="selector-group-options"
+            [@expandCollapse]="isGroupExpanded(group.id) ? 'expanded' : 'collapsed'">
+            
+            <ng-container *ngFor="let option of group.options; let i = index; trackBy: trackByOptionId">
+              <div
+                class="selector-option"
+                [ngClass]="getOptionClasses(option, i)"
+                [attr.role]="'option'"
+                [attr.aria-selected]="isOptionSelected(option)"
+                [attr.aria-disabled]="option.disabled || disabled"
+                [attr.id]="_uniqueId + '-option-' + option.id"
+                [attr.tabindex]="-1"
+                (click)="selectOption(option, $event)"
+                (keydown.enter)="selectOption(option, $event)"
+                (keydown.space)="selectOption(option, $event)">
+
+                <ng-container *ngIf="optionTemplate; else defaultGroupOptionTemplate">
+                  <ng-container *ngTemplateOutlet="optionTemplate; context: { 
+                    $implicit: option, 
+                    selected: isOptionSelected(option),
+                    disabled: option.disabled || disabled,
+                    index: i,
+                    group: group
+                  }"></ng-container>
+                </ng-container>
+
+                <ng-template #defaultGroupOptionTemplate>
+                  <div class="selector-option-content">
+                    
+                    <!-- Selection Indicator (Multiple Mode) -->
+                    <div *ngIf="mode === 'multiple'" class="selector-option-checkbox">
+                      <input
+                        type="checkbox"
+                        [checked]="isOptionSelected(option)"
+                        [disabled]="option.disabled || disabled"
+                        tabindex="-1"
+                        readonly>
+                      <div class="selector-checkbox-custom"></div>
+                    </div>
+
+                    <!-- Option Icon -->
+                    <div *ngIf="option.icon" class="selector-option-icon">
+                      <ng-container *ngIf="isString(option.icon); else groupOptionIconTemplate">
+                        <i [class]="option.icon"></i>
+                      </ng-container>
+                      <ng-template #groupOptionIconTemplate>
+                        <ng-container *ngTemplateOutlet="$any(option.icon)"></ng-container>
+                      </ng-template>
+                    </div>
+
+                    <!-- Option Text Content -->
+                    <div class="selector-option-text">
+                      <div class="selector-option-label" [innerHTML]="highlightSearchTerm(option.label)"></div>
+                      <div *ngIf="option.description" class="selector-option-description" [innerHTML]="highlightSearchTerm(option.description)"></div>
+                    </div>
+
+                    <!-- Option Badge -->
+                    <div *ngIf="option.badge" class="selector-option-badge">
+                      {{ option.badge }}
+                    </div>
+
+                    <!-- Selection Check (Single Mode) -->
+                    <div *ngIf="mode === 'single' && isOptionSelected(option)" class="selector-option-check">
+                      <svg width="16" height="16" viewBox="0 0 16 16">
+                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Empty State -->
+      <div *ngIf="showEmptyState" class="selector-empty-state">
+        <ng-container *ngIf="emptyStateTemplate; else defaultEmptyStateTemplate">
+          <ng-container *ngTemplateOutlet="emptyStateTemplate; context: { 
+            searchTerm: state.searchTerm,
+            message: noResultsMessage
+          }"></ng-container>
+        </ng-container>
+
+        <ng-template #defaultEmptyStateTemplate>
+          <div class="selector-empty-content">
+            <svg class="selector-empty-icon" width="48" height="48" viewBox="0 0 48 48">
+              <path d="M24 4C12.96 4 4 12.96 4 24s8.96 20 20 20 20-8.96 20-20S35.04 4 24 4zm0 36c-8.84 0-16-7.16-16-16S15.16 8 24 8s16 7.16 16 16-7.16 16-16 16z" opacity="0.3"/>
+              <path d="M24 14c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/>
+            </svg>
+            <div class="selector-empty-text">
+              <div class="selector-empty-title">{{ noResultsMessage }}</div>
+              <div *ngIf="state.searchTerm" class="selector-empty-subtitle">
+                Try adjusting your search term or clear filters
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Helper Text -->
+  <div 
+    *ngIf="helperText && !state.hasError" 
+    class="selector-helper-text"
+    [id]="_uniqueId + '-helper'">
+    {{ helperText }}
+  </div>
+
+  <!-- Error Message -->
+  <div 
+    *ngIf="state.hasError && state.errorMessage" 
+    class="selector-error-message"
+    [id]="_uniqueId + '-error'"
+    role="alert"
+    aria-live="polite">
+    {{ state.errorMessage }}
+  </div>
+
+  <!-- Selection Summary (Multiple Mode) -->
+  <div 
+    *ngIf="mode === 'multiple' && state.selectedOptions.length > 0" 
+    class="selector-summary"
+    aria-live="polite">
+    {{ state.selectedOptions.length }} of {{ getTotalOptionCount() }} selected
+  </div>
+</div>
