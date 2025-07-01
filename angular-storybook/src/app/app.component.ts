@@ -7,7 +7,7 @@ import { ModalDemoComponent } from './modal-demo/modal-demo.component';
 import { ProgressStepsComponent } from './components/progress-steps/progress-steps.component';
 import { SelectorComponent } from './components/selector/selector.component';
 import { StepConfig, StepClickEvent } from './components/progress-steps/progress-steps.types';
-import { SelectorOption, SelectorGroup } from './components/selector/selector.types';
+import { SelectorOption } from './components/selector/selector.component';
 
 @Component({
   selector: 'app-root',

@@ -1,0 +1,514 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+
+import { InputComponent, InputType, InputSize, InputVariant, InputState } from './input.component';
+
+// Test host component for testing template integration
+@Component({
+  standalone: true,
+  imports: [InputComponent],
+  template: `
+    <app-input
+      [type]="type"
+      [size]="size"
+      [variant]="variant"
+      [state]="state"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [required]="required"
+      [label]="label"
+      [helperText]="helperText"
+      [errorMessage]="errorMessage"
+      [startIcon]="startIcon"
+      [endIcon]="endIcon"
+      [className]="className"
+      [containerClassName]="containerClassName"
+      (valueChange)="onValueChange($event)"
+      (focusEvent)="onFocus($event)"
+      (blurEvent)="onBlur($event)"
+      (inputEvent)="onInput($event)"
+      (keyupEvent)="onKeyUp($event)"
+      (keydownEvent)="onKeyDown($event)"
+    ></app-input>
+
+    <!-- Template for icon testing -->
+    <ng-template #testIcon>
+      <svg width="16" height="16"><circle cx="8" cy="8" r="4" fill="currentColor"/></svg>
+    </ng-template>
+  `
+})
+class TestHostComponent {
+  @ViewChild('testIcon') testIcon!: TemplateRef<any>;
+
+  type: InputType = 'text';
+  size: InputSize = 'base';
+  variant: InputVariant = 'default';
+  state: InputState = 'default';
+  placeholder?: string;
+  disabled = false;
+  required = false;
+  label?: string;
+  helperText?: string;
+  errorMessage?: string;
+  startIcon?: TemplateRef<any> | string;
+  endIcon?: TemplateRef<any> | string;
+  className?: string;
+  containerClassName?: string;
+
+  // Event handlers for testing
+  onValueChange = jasmine.createSpy('onValueChange');
+  onFocus = jasmine.createSpy('onFocus');
+  onBlur = jasmine.createSpy('onBlur');
+  onInput = jasmine.createSpy('onInput');
+  onKeyUp = jasmine.createSpy('onKeyUp');
+  onKeyDown = jasmine.createSpy('onKeyDown');
+}
+
+// Test component for reactive forms integration
+@Component({
+  standalone: true,
+  imports: [InputComponent, ReactiveFormsModule],
+  template: `
+    <form [formGroup]="form">
+      <app-input formControlName="testInput" [label]="'Test Input'"></app-input>
+    </form>
+  `
+})
+class ReactiveFormTestComponent {
+  testInput = new FormControl('initial value');
+  form = new (class {
+    get(controlName: string) {
+      return controlName === 'testInput' ? this.testInput : null;
+    }
+  })();
+
+  constructor() {
+    // Simple form group mock for testing
+  }
+}
+
+describe('InputComponent', () => {
+  let component: InputComponent;
+  let fixture: ComponentFixture<InputComponent>;
+  let hostComponent: TestHostComponent;
+  let hostFixture: ComponentFixture<TestHostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [InputComponent, ReactiveFormsModule, TestHostComponent, ReactiveFormTestComponent]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(InputComponent);
+    component = fixture.componentInstance;
+
+    hostFixture = TestBed.createComponent(TestHostComponent);
+    hostComponent = hostFixture.componentInstance;
+  });
+
+  // Basic rendering tests
+  describe('Basic Rendering', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should render with default props', () => {
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement).toBeTruthy();
+      expect(inputElement.nativeElement.type).toBe('text');
+      expect(inputElement.nativeElement.disabled).toBe(false);
+      expect(inputElement.nativeElement.required).toBe(false);
+    });
+
+    it('should generate unique ID when not provided', () => {
+      fixture.detectChanges();
+      
+      expect(component.inputId).toMatch(/^input-[a-z0-9]{9}$/);
+    });
+
+    it('should use provided ID when given', () => {
+      component.id = 'custom-input-id';
+      fixture.detectChanges();
+      
+      expect(component.inputId).toBe('custom-input-id');
+    });
+  });
+
+  // Size variant tests
+  describe('Size Variants', () => {
+    it('should render small size variant', () => {
+      component.size = 'sm';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('sm');
+    });
+
+    it('should render base size variant (default)', () => {
+      component.size = 'base';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('base');
+    });
+
+    it('should render large size variant', () => {
+      component.size = 'lg';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('lg');
+    });
+  });
+
+  // Style variant tests
+  describe('Style Variants', () => {
+    it('should render default variant', () => {
+      component.variant = 'default';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('default');
+    });
+
+    it('should render filled variant', () => {
+      component.variant = 'filled';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('filled');
+    });
+
+    it('should render ghost variant', () => {
+      component.variant = 'ghost';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('ghost');
+    });
+  });
+
+  // State tests
+  describe('States', () => {
+    it('should render default state', () => {
+      component.state = 'default';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('default');
+      expect(component.hasError).toBe(false);
+    });
+
+    it('should render error state', () => {
+      component.state = 'error';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('error');
+      expect(component.hasError).toBe(true);
+      expect(inputElement.nativeElement.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('should render success state', () => {
+      component.state = 'success';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.classList).toContain('success');
+      expect(component.hasSuccess).toBe(true);
+    });
+
+    it('should show error state when errorMessage is provided', () => {
+      component.errorMessage = 'This field is required';
+      fixture.detectChanges();
+      
+      expect(component.hasError).toBe(true);
+      const errorText = fixture.debugElement.query(By.css('.errorText'));
+      expect(errorText).toBeTruthy();
+      expect(errorText.nativeElement.textContent.trim()).toContain('This field is required');
+    });
+  });
+
+  // Disabled and required states
+  describe('Disabled and Required States', () => {
+    it('should handle disabled state correctly', () => {
+      component.disabled = true;
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(inputElement.nativeElement.disabled).toBe(true);
+      expect(inputElement.nativeElement.classList).toContain('disabled');
+    });
+
+    it('should handle required state correctly', () => {
+      component.required = true;
+      component.label = 'Required Field';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      const requiredSpan = fixture.debugElement.query(By.css('.required'));
+      
+      expect(inputElement.nativeElement.required).toBe(true);
+      expect(inputElement.nativeElement.getAttribute('aria-required')).toBe('true');
+      expect(requiredSpan).toBeTruthy();
+      expect(requiredSpan.nativeElement.textContent).toBe('*');
+    });
+  });
+
+  // Label and help text tests
+  describe('Label and Help Text', () => {
+    it('should render label when provided', () => {
+      component.label = 'Test Label';
+      fixture.detectChanges();
+      
+      const label = fixture.debugElement.query(By.css('label'));
+      expect(label).toBeTruthy();
+      expect(label.nativeElement.textContent.trim()).toBe('Test Label');
+      expect(label.nativeElement.getAttribute('for')).toBe(component.inputId);
+    });
+
+    it('should render helper text when provided', () => {
+      component.helperText = 'This is helper text';
+      fixture.detectChanges();
+      
+      const helperText = fixture.debugElement.query(By.css('.helperText'));
+      expect(helperText).toBeTruthy();
+      expect(helperText.nativeElement.textContent.trim()).toBe('This is helper text');
+    });
+
+    it('should prioritize error message over helper text', () => {
+      component.helperText = 'Helper text';
+      component.errorMessage = 'Error message';
+      fixture.detectChanges();
+      
+      const errorText = fixture.debugElement.query(By.css('.errorText'));
+      const helperText = fixture.debugElement.query(By.css('.helperText'));
+      
+      expect(errorText).toBeTruthy();
+      expect(helperText).toBeFalsy();
+      expect(errorText.nativeElement.textContent.trim()).toContain('Error message');
+    });
+  });
+
+  // Icon tests
+  describe('Icons', () => {
+    it('should render string icon in start position', () => {
+      hostComponent.startIcon = '<svg><circle/></svg>';
+      hostFixture.detectChanges();
+      
+      const startIcon = hostFixture.debugElement.query(By.css('.startIcon'));
+      const inputElement = hostFixture.debugElement.query(By.css('input'));
+      
+      expect(startIcon).toBeTruthy();
+      expect(inputElement.nativeElement.classList).toContain('hasStartIcon');
+    });
+
+    it('should render string icon in end position', () => {
+      hostComponent.endIcon = '<svg><circle/></svg>';
+      hostFixture.detectChanges();
+      
+      const endIcon = hostFixture.debugElement.query(By.css('.endIcon'));
+      const inputElement = hostFixture.debugElement.query(By.css('input'));
+      
+      expect(endIcon).toBeTruthy();
+      expect(inputElement.nativeElement.classList).toContain('hasEndIcon');
+    });
+
+    it('should render template icon', () => {
+      hostFixture.detectChanges();
+      hostComponent.startIcon = hostComponent.testIcon;
+      hostFixture.detectChanges();
+      
+      const startIcon = hostFixture.debugElement.query(By.css('.startIcon'));
+      expect(startIcon).toBeTruthy();
+    });
+  });
+
+  // Event handling tests
+  describe('Event Handling', () => {
+    beforeEach(() => {
+      hostFixture.detectChanges();
+    });
+
+    it('should emit input event', () => {
+      const inputElement = hostFixture.debugElement.query(By.css('input'));
+      const testValue = 'test value';
+      
+      inputElement.nativeElement.value = testValue;
+      inputElement.nativeElement.dispatchEvent(new Event('input'));
+      
+      expect(hostComponent.onInput).toHaveBeenCalled();
+      expect(hostComponent.onValueChange).toHaveBeenCalledWith(testValue);
+    });
+
+    it('should emit focus event', () => {
+      const inputElement = hostFixture.debugElement.query(By.css('input'));
+      
+      inputElement.nativeElement.dispatchEvent(new FocusEvent('focus'));
+      
+      expect(hostComponent.onFocus).toHaveBeenCalled();
+    });
+
+    it('should emit blur event', () => {
+      const inputElement = hostFixture.debugElement.query(By.css('input'));
+      
+      inputElement.nativeElement.dispatchEvent(new FocusEvent('blur'));
+      
+      expect(hostComponent.onBlur).toHaveBeenCalled();
+    });
+
+    it('should emit keyup event', () => {
+      const inputElement = hostFixture.debugElement.query(By.css('input'));
+      
+      inputElement.nativeElement.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      
+      expect(hostComponent.onKeyUp).toHaveBeenCalled();
+    });
+
+    it('should emit keydown event', () => {
+      const inputElement = hostFixture.debugElement.query(By.css('input'));
+      
+      inputElement.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+      
+      expect(hostComponent.onKeyDown).toHaveBeenCalled();
+    });
+  });
+
+  // ControlValueAccessor tests
+  describe('ControlValueAccessor Implementation', () => {
+    it('should implement writeValue', () => {
+      const testValue = 'test value';
+      component.writeValue(testValue);
+      
+      expect(component.value).toBe(testValue);
+    });
+
+    it('should implement registerOnChange', () => {
+      const mockOnChange = jasmine.createSpy('onChange');
+      component.registerOnChange(mockOnChange);
+      
+      // Trigger input change
+      fixture.detectChanges();
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      inputElement.nativeElement.value = 'new value';
+      inputElement.nativeElement.dispatchEvent(new Event('input'));
+      
+      expect(mockOnChange).toHaveBeenCalledWith('new value');
+    });
+
+    it('should implement registerOnTouched', () => {
+      const mockOnTouched = jasmine.createSpy('onTouched');
+      component.registerOnTouched(mockOnTouched);
+      
+      // Trigger blur event
+      fixture.detectChanges();
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      inputElement.nativeElement.dispatchEvent(new FocusEvent('blur'));
+      
+      expect(mockOnTouched).toHaveBeenCalled();
+    });
+
+    it('should implement setDisabledState', () => {
+      component.setDisabledState(true);
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      expect(component.disabled).toBe(true);
+      expect(inputElement.nativeElement.disabled).toBe(true);
+    });
+  });
+
+  // Accessibility tests
+  describe('Accessibility', () => {
+    it('should have proper ARIA attributes', () => {
+      component.label = 'Test Label';
+      component.required = true;
+      component.errorMessage = 'Test error';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      
+      expect(inputElement.nativeElement.getAttribute('aria-label')).toBe('Test Label');
+      expect(inputElement.nativeElement.getAttribute('aria-required')).toBe('true');
+      expect(inputElement.nativeElement.getAttribute('aria-invalid')).toBe('true');
+      expect(inputElement.nativeElement.getAttribute('aria-describedby')).toBe(component.helpTextId);
+    });
+
+    it('should associate label with input', () => {
+      component.label = 'Test Label';
+      fixture.detectChanges();
+      
+      const label = fixture.debugElement.query(By.css('label'));
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      
+      expect(label.nativeElement.getAttribute('for')).toBe(inputElement.nativeElement.id);
+    });
+
+    it('should associate help text with input', () => {
+      component.helperText = 'Help text';
+      fixture.detectChanges();
+      
+      const inputElement = fixture.debugElement.query(By.css('input'));
+      const helpText = fixture.debugElement.query(By.css('.helpText'));
+      
+      expect(inputElement.nativeElement.getAttribute('aria-describedby')).toBe(helpText.nativeElement.id);
+    });
+  });
+
+  // Public methods tests
+  describe('Public Methods', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should focus input element', () => {
+      spyOn(component.inputElement.nativeElement, 'focus');
+      component.focusInput();
+      expect(component.inputElement.nativeElement.focus).toHaveBeenCalled();
+    });
+
+    it('should blur input element', () => {
+      spyOn(component.inputElement.nativeElement, 'blur');
+      component.blurInput();
+      expect(component.inputElement.nativeElement.blur).toHaveBeenCalled();
+    });
+
+    it('should select input text', () => {
+      spyOn(component.inputElement.nativeElement, 'select');
+      component.selectText();
+      expect(component.inputElement.nativeElement.select).toHaveBeenCalled();
+    });
+  });
+
+  // CSS class computation tests
+  describe('CSS Class Computation', () => {
+    it('should compute input classes correctly', () => {
+      component.size = 'lg';
+      component.variant = 'filled';
+      component.state = 'error';
+      component.startIcon = 'icon';
+      component.className = 'custom-class';
+      
+      const expectedClasses = 'input lg filled error hasStartIcon error custom-class';
+      expect(component.inputClasses).toBe(expectedClasses);
+    });
+
+    it('should compute container classes correctly', () => {
+      component.containerClassName = 'custom-container';
+      
+      expect(component.containerClasses).toBe('container custom-container');
+    });
+
+    it('should filter out falsy class names', () => {
+      component.size = 'base';
+      component.variant = 'default';
+      // No icons, no custom classes
+      
+      const expectedClasses = 'input base default default';
+      expect(component.inputClasses).toBe(expectedClasses);
+    });
+  });
+});

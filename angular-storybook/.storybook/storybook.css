@@ -1,0 +1,84 @@
+/* Storybook-specific styles */
+
+/* Design Tokens - Must be in global scope for CSS variables */
+:root {
+  --color-primary: #611F69;
+  --color-primary-600: #611F69;
+  --color-primary-700: #5a1f60;
+  --color-primary-800: #4d1a54;
+  --color-primary-50: #f7edf8;
+  --color-primary-100: #ebd4ef;
+  --color-primary-soft: rgba(97, 31, 105, 0.1);
+  
+  --color-text-primary: #2a1f35;
+  --color-text-secondary: #6b5671;
+  --color-text-tertiary: #8a7490;
+  --color-text-placeholder: #a695b0;
+  --color-text-disabled: #a695b0;
+  --color-text-error: #d92d20;
+  --color-text-on-primary: #ffffff;
+  --color-text-inverse: #ffffff;
+  
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f8f6fa;
+  --color-background-tertiary: #efebf2;
+  --color-background-disabled: #efebf2;
+  
+  --color-border-primary: #ddd6e3;
+  --color-border-secondary: #ddd6e3;
+  --color-border-hover: #c4b8cd;
+  --color-border-disabled: #ddd6e3;
+  
+  --color-error: #d92d20;
+  --color-error-300: #fda29b;
+  --color-error-500: #d92d20;
+  --color-error-600: #d92d20;
+  --color-error-700: #b42318;
+  --color-error-800: #991b1b;
+  --color-error-100: #fee4e2;
+  
+  --color-success: #12b76a;
+  --color-success-300: #6ce9a6;
+  --color-success-500: #12b76a;
+  --color-success-600: #039855;
+  --color-success-700: #027a48;
+  --color-success-800: #065f46;
+  --color-success-100: #d1fadf;
+  
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  
+  --radius-md: 8px;
+  
+  --button-height-sm: 32px;
+  --button-height-base: 40px;
+  --button-height-lg: 48px;
+  --button-height-xl: 56px;
+  
+  --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.1), 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-focus: 0 0 0 4px #ebd4ef;
+  --shadow-error-focus: 0 0 0 4px #fee4e2;
+  
+  --animation-duration-base: 200ms;
+  --animation-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: var(--font-family-base);
+  margin: 0;
+  padding: 0;
+}

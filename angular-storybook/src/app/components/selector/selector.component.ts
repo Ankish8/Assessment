@@ -1,693 +1,466 @@
-import { 
-  Component, 
-  Input, 
-  Output, 
-  EventEmitter, 
-  ChangeDetectionStrategy, 
-  ViewEncapsulation,
-  forwardRef,
-  ViewChild,
-  ElementRef,
-  TemplateRef,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-  HostListener,
-  ContentChild,
-  AfterViewInit,
-  OnChanges,
-  SimpleChanges,
-  TrackByFunction
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
+import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { 
-  SelectorOption, 
-  SelectorGroup, 
-  SelectorState, 
-  SelectorConfig,
-  SelectorMode,
-  SelectorLayout,
-  SelectorSize,
-  SelectorVariant,
-  SelectorValidation,
-  SelectorEvents,
-  SelectorKeyboardNavigation,
-  SelectorAccessibility,
-  SelectorCustomization,
-  SelectorHighlight,
-  SelectorAsyncConfig
-} from './selector.types';
-import { SelectorService } from './selector.service';
+export interface SelectorOption {
+  id: string;
+  label: string;
+  value: any;
+  description?: string;
+  badge?: string;
+  disabled?: boolean;
+}
 
 @Component({
   selector: 'app-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './selector.component.html',
-  styleUrls: ['./selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  animations: [
-    trigger('expandCollapse', [
-      state('collapsed', style({
-        height: '0px',
-        opacity: 0,
-        overflow: 'hidden'
-      })),
-      state('expanded', style({
-        height: '*',
-        opacity: 1,
-        overflow: 'visible'
-      })),
-      transition('collapsed <=> expanded', [
-        animate('200ms ease-in-out')
-      ])
-    ])
-  ],
+  imports: [CommonModule, FormsModule],
   providers: [
-    SelectorService,
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SelectorComponent),
       multi: true
     }
-  ]
+  ],
+  template: `
+    <div class="selector-wrapper">
+      <!-- Label -->
+      <label *ngIf="label" class="selector-label">
+        {{ label }}
+        <span *ngIf="required" class="required-asterisk">*</span>
+      </label>
+      
+      <!-- Helper Text -->
+      <p *ngIf="helperText" class="selector-helper">{{ helperText }}</p>
+      
+      <!-- Single Select Dropdown -->
+      <div *ngIf="mode === 'single' && layout === 'dropdown'" class="selector-dropdown">
+        <select 
+          [value]="selectedValue?.value || ''"
+          (change)="onSingleSelect($event)"
+          [disabled]="disabled"
+          class="selector-select">
+          <option value="" disabled>{{ placeholder || 'Select an option...' }}</option>
+          <option 
+            *ngFor="let option of options" 
+            [value]="option.value"
+            [disabled]="option.disabled">
+            {{ option.label }}
+            <span *ngIf="option.badge"> ({{ option.badge }})</span>
+          </option>
+        </select>
+      </div>
+      
+      <!-- Grid Layout -->
+      <div *ngIf="layout === 'grid'" class="selector-grid" [class]="'columns-' + gridColumns">
+        <div 
+          *ngFor="let option of options"
+          class="selector-option-card"
+          [class]="getOptionClasses(option)"
+          (click)="onOptionClick(option)">
+          
+          <div class="option-content">
+            <div class="option-header">
+              <span class="option-label">{{ option.label }}</span>
+              <span *ngIf="option.badge" class="option-badge">{{ option.badge }}</span>
+            </div>
+            <p *ngIf="option.description" class="option-description">{{ option.description }}</p>
+          </div>
+          
+          <!-- Selection indicator -->
+          <div class="selection-indicator" *ngIf="isSelected(option)">
+            <span class="checkmark">✓</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- List Layout -->
+      <div *ngIf="layout === 'list'" class="selector-list">
+        <div 
+          *ngFor="let option of options"
+          class="selector-option-item"
+          [class]="getOptionClasses(option)"
+          (click)="onOptionClick(option)">
+          
+          <div class="option-content">
+            <span class="option-label">{{ option.label }}</span>
+            <span *ngIf="option.badge" class="option-badge">{{ option.badge }}</span>
+            <p *ngIf="option.description" class="option-description">{{ option.description }}</p>
+          </div>
+          
+          <div class="selection-indicator" *ngIf="isSelected(option)">
+            <span class="checkmark">✓</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Multiple Selection Display -->
+      <div *ngIf="mode === 'multiple' && selectedValues.length > 0" class="selected-items">
+        <span class="selected-count">{{ selectedValues.length }} selected</span>
+        <div class="selected-tags">
+          <span 
+            *ngFor="let item of selectedValues" 
+            class="selected-tag">
+            {{ item.label }}
+            <button class="tag-remove" (click)="removeSelected(item)">×</button>
+          </span>
+        </div>
+      </div>
+      
+      <!-- Error Message -->
+      <p *ngIf="errorMessage" class="selector-error">{{ errorMessage }}</p>
+    </div>
+  `,
+  styles: [`
+    .selector-wrapper {
+      width: 100%;
+    }
+    
+    .selector-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #2a1f35;
+      margin-bottom: 8px;
+    }
+    
+    .required-asterisk {
+      color: #d92d20;
+      margin-left: 4px;
+    }
+    
+    .selector-helper {
+      font-size: 12px;
+      color: #6b5671;
+      margin: 0 0 12px 0;
+    }
+    
+    .selector-error {
+      font-size: 12px;
+      color: #d92d20;
+      margin: 8px 0 0 0;
+    }
+    
+    /* Dropdown Styles */
+    .selector-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd6e3;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #2a1f35;
+      background: white;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b5671' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+    }
+    
+    .selector-select:focus {
+      outline: none;
+      border-color: #611F69;
+      box-shadow: 0 0 0 4px #ebd4ef;
+    }
+    
+    .selector-select:disabled {
+      background-color: #efebf2;
+      color: #a695b0;
+      cursor: not-allowed;
+    }
+    
+    /* Grid Layout */
+    .selector-grid {
+      display: grid;
+      gap: 16px;
+    }
+    
+    .selector-grid.columns-1 { grid-template-columns: 1fr; }
+    .selector-grid.columns-2 { grid-template-columns: repeat(2, 1fr); }
+    .selector-grid.columns-3 { grid-template-columns: repeat(3, 1fr); }
+    .selector-grid.columns-4 { grid-template-columns: repeat(4, 1fr); }
+    
+    .selector-option-card {
+      position: relative;
+      padding: 16px;
+      border: 1px solid #ddd6e3;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+    
+    .selector-option-card:hover {
+      border-color: #611F69;
+      box-shadow: 0 2px 8px rgba(97, 31, 105, 0.1);
+    }
+    
+    .selector-option-card.selected {
+      border-color: #611F69;
+      background: #f7edf8;
+    }
+    
+    .selector-option-card.disabled {
+      background: #efebf2;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    /* List Layout */
+    .selector-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .selector-option-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border: 1px solid #ddd6e3;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+    
+    .selector-option-item:hover {
+      border-color: #611F69;
+      background: #f7edf8;
+    }
+    
+    .selector-option-item.selected {
+      border-color: #611F69;
+      background: #f7edf8;
+    }
+    
+    .selector-option-item.disabled {
+      background: #efebf2;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    /* Option Content */
+    .option-content {
+      flex: 1;
+    }
+    
+    .option-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    
+    .option-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: #2a1f35;
+    }
+    
+    .option-badge {
+      background: #611F69;
+      color: white;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    
+    .option-description {
+      font-size: 14px;
+      color: #6b5671;
+      margin: 0;
+      line-height: 1.4;
+    }
+    
+    /* Selection Indicator */
+    .selection-indicator {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #611F69;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .checkmark {
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    /* Selected Items */
+    .selected-items {
+      margin-top: 12px;
+    }
+    
+    .selected-count {
+      font-size: 14px;
+      color: #6b5671;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .selected-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .selected-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f7edf8;
+      color: #611F69;
+      padding: 6px 10px;
+      border-radius: 16px;
+      font-size: 14px;
+      border: 1px solid #ebd4ef;
+    }
+    
+    .tag-remove {
+      background: none;
+      border: none;
+      color: #611F69;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      line-height: 1;
+    }
+    
+    .tag-remove:hover {
+      color: #d92d20;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .selector-grid.columns-3,
+      .selector-grid.columns-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .selector-grid.columns-2 {
+        grid-template-columns: 1fr;
+      }
+      
+      .option-label {
+        font-size: 14px;
+      }
+      
+      .option-description {
+        font-size: 12px;
+      }
+    }
+  `]
 })
-export class SelectorComponent implements 
-  ControlValueAccessor, 
-  OnInit, 
-  OnDestroy, 
-  AfterViewInit, 
-  OnChanges {
-
-  // Primary Configuration
-  @Input() mode: SelectorMode = 'single';
-  @Input() layout: SelectorLayout = 'list';
-  @Input() size: SelectorSize = 'base';
-  @Input() variant: SelectorVariant = 'default';
+export class SelectorComponent implements ControlValueAccessor {
   @Input() options: SelectorOption[] = [];
-  @Input() groups: SelectorGroup[] = [];
-  
-  // Styling and Layout
-  @Input() gridColumns: number = 3;
-  @Input() maxHeight: string = '300px';
-  @Input() className?: string;
-  @Input() containerClassName?: string;
-  
-  // Functionality
-  @Input() searchable: boolean = true;
-  @Input() clearable: boolean = true;
-  @Input() groupable: boolean = false;
-  @Input() virtualScroll: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() loading: boolean = false;
-  
-  // Text and Placeholders
-  @Input() placeholder: string = 'Select an option...';
-  @Input() searchPlaceholder: string = 'Search options...';
-  @Input() noResultsMessage: string = 'No options found';
-  @Input() loadingMessage: string = 'Loading options...';
+  @Input() mode: 'single' | 'multiple' = 'single';
+  @Input() layout: 'dropdown' | 'grid' | 'list' = 'dropdown';
+  @Input() gridColumns: number = 2;
+  @Input() variant: string = 'default';
+  @Input() size: string = 'base';
   @Input() label?: string;
+  @Input() placeholder?: string;
   @Input() helperText?: string;
   @Input() errorMessage?: string;
-  
-  // Validation
   @Input() required: boolean = false;
-  @Input() minSelection?: number;
+  @Input() disabled: boolean = false;
+  @Input() searchable: boolean = false;
+  @Input() clearable: boolean = false;
   @Input() maxSelection?: number;
-  @Input() validation?: SelectorValidation;
-  
-  // Accessibility
-  @Input() ariaLabel?: string;
-  @Input() ariaDescribedBy?: string;
-  @Input() ariaLabelledBy?: string;
-  
-  // Advanced Features
-  @Input() highlight: SelectorHighlight = { enabled: true };
-  @Input() asyncConfig?: SelectorAsyncConfig;
-  
-  // Template Customization
-  @ContentChild('optionTemplate') optionTemplate?: TemplateRef<any>;
-  @ContentChild('groupHeaderTemplate') groupHeaderTemplate?: TemplateRef<any>;
-  @ContentChild('emptyStateTemplate') emptyStateTemplate?: TemplateRef<any>;
-  @ContentChild('loadingTemplate') loadingTemplate?: TemplateRef<any>;
-  @ContentChild('searchTemplate') searchTemplate?: TemplateRef<any>;
-  @ContentChild('selectedTemplate') selectedTemplate?: TemplateRef<any>;
-  
-  // Output Events
-  @Output() selectionChange = new EventEmitter<any | any[]>();
-  @Output() optionSelect = new EventEmitter<SelectorOption>();
-  @Output() optionDeselect = new EventEmitter<SelectorOption>();
-  @Output() searchChange = new EventEmitter<string>();
-  @Output() groupToggle = new EventEmitter<string>();
-  @Output() focus = new EventEmitter<FocusEvent>();
-  @Output() blur = new EventEmitter<FocusEvent>();
-  @Output() validationChange = new EventEmitter<string | null>();
 
-  // ViewChild References
-  @ViewChild('selectorContainer', { static: true }) selectorContainer!: ElementRef<HTMLDivElement>;
-  @ViewChild('searchInput', { static: false }) searchInput?: ElementRef<HTMLInputElement>;
-  @ViewChild('optionsContainer', { static: false }) optionsContainer?: ElementRef<HTMLDivElement>;
+  @Output() selectionChange = new EventEmitter<any>();
 
-  // Internal State
-  public state: SelectorState = {
-    selectedOptions: [],
-    selectedValues: [],
-    searchTerm: '',
-    filteredOptions: [],
-    filteredGroups: [],
-    isSearching: false,
-    hasError: false
-  };
+  selectedValue: SelectorOption | null = null;
+  selectedValues: SelectorOption[] = [];
 
-  // Keyboard Navigation
-  public keyboardNavigation: SelectorKeyboardNavigation = {
-    selectedIndex: -1,
-    focusedIndex: -1,
-    isKeyboardActive: false
-  };
-
-  // Internal Properties
-  private destroy$ = new Subject<void>();
-  private searchSubject = new Subject<string>();
-  public _uniqueId: string = '';
-  private _value: any = null;
-  private _groupStates: Map<string, boolean> = new Map();
-  
-  // ControlValueAccessor
   private onChange = (value: any) => {};
   private onTouched = () => {};
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private selectorService: SelectorService
-  ) {
-    this._uniqueId = `selector-${Math.random().toString(36).substr(2, 9)}`;
+  getOptionClasses(option: SelectorOption): string {
+    const classes = [];
+    if (this.isSelected(option)) classes.push('selected');
+    if (option.disabled) classes.push('disabled');
+    return classes.join(' ');
   }
 
-  ngOnInit(): void {
-    this.initializeService();
-    this.setupSearchHandling();
-    this.subscribeToStateChanges();
-    this.initializeGroupStates();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  ngAfterViewInit(): void {
-    this.updateFilteredOptions();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['options'] || changes['groups']) {
-      this.updateFilteredOptions();
-      this.cdr.markForCheck();
-    }
-  }
-
-  // Initialization Methods
-  private initializeService(): void {
-    const config: SelectorConfig = {
-      mode: this.mode,
-      layout: this.layout,
-      size: this.size,
-      variant: this.variant,
-      gridColumns: this.gridColumns,
-      virtualScroll: this.virtualScroll,
-      searchable: this.searchable,
-      clearable: this.clearable,
-      groupable: this.groupable,
-      validation: this.getValidationConfig(),
-      placeholder: this.placeholder,
-      searchPlaceholder: this.searchPlaceholder,
-      noResultsMessage: this.noResultsMessage,
-      loadingMessage: this.loadingMessage,
-      maxHeight: this.maxHeight,
-      className: this.className
-    };
-
-    this.selectorService.initialize(this.options, this.groups, config, this.asyncConfig);
-  }
-
-  private setupSearchHandling(): void {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    ).subscribe(searchTerm => {
-      this.performSearch(searchTerm);
-    });
-  }
-
-  private subscribeToStateChanges(): void {
-    this.selectorService.state$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(state => {
-      this.state = state;
-      this.updateValue();
-      this.validateSelection();
-      this.cdr.markForCheck();
-    });
-  }
-
-  private initializeGroupStates(): void {
-    this.groups.forEach(group => {
-      this._groupStates.set(group.id, !group.collapsed);
-    });
-  }
-
-  private updateFilteredOptions(): void {
-    if (this.searchable && this.state.searchTerm) {
-      this.performSearch(this.state.searchTerm);
+  isSelected(option: SelectorOption): boolean {
+    if (this.mode === 'single') {
+      return this.selectedValue?.id === option.id;
     } else {
-      this.state.filteredOptions = this.options;
-      this.state.filteredGroups = this.groups;
+      return this.selectedValues.some(item => item.id === option.id);
     }
   }
 
-  // Search and Filtering
-  public onSearchChange(searchTerm: string): void {
-    this.state.searchTerm = searchTerm;
-    this.searchSubject.next(searchTerm);
-    this.searchChange.emit(searchTerm);
-  }
-
-  private performSearch(searchTerm: string): void {
-    if (!searchTerm.trim()) {
-      this.state.filteredOptions = this.options;
-      this.state.filteredGroups = this.groups;
-      this.state.isSearching = false;
-      return;
+  onSingleSelect(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const selectedOption = this.options.find(option => option.value === select.value);
+    
+    if (selectedOption) {
+      this.selectedValue = selectedOption;
+      this.onChange(selectedOption.value);
+      this.selectionChange.emit(selectedOption.value);
     }
-
-    this.state.isSearching = true;
-    const term = searchTerm.toLowerCase();
-
-    // Filter standalone options
-    this.state.filteredOptions = this.options.filter(option =>
-      this.matchesSearchTerm(option, term)
-    );
-
-    // Filter grouped options
-    this.state.filteredGroups = this.groups
-      .map(group => ({
-        ...group,
-        options: group.options.filter(option => this.matchesSearchTerm(option, term))
-      }))
-      .filter(group => group.options.length > 0);
-
-    this.state.isSearching = false;
-    this.resetKeyboardNavigation();
   }
 
-  private matchesSearchTerm(option: SelectorOption, term: string): boolean {
-    return option.label.toLowerCase().includes(term) ||
-           (!!option.description && option.description.toLowerCase().includes(term)) ||
-           (!!option.badge && option.badge.toLowerCase().includes(term));
-  }
-
-  // Selection Methods
-  public selectOption(option: SelectorOption, event?: Event): void {
-    if (option.disabled || this.disabled) return;
-
-    event?.preventDefault();
-    event?.stopPropagation();
-
-    const wasSelected = this.isOptionSelected(option);
+  onOptionClick(option: SelectorOption): void {
+    if (option.disabled) return;
 
     if (this.mode === 'single') {
-      this.state.selectedOptions = [option];
-      this.state.selectedValues = [option.value];
-      this.optionSelect.emit(option);
+      this.selectedValue = option;
+      this.onChange(option.value);
+      this.selectionChange.emit(option.value);
     } else {
-      if (wasSelected) {
-        this.deselectOption(option);
+      if (this.isSelected(option)) {
+        this.selectedValues = this.selectedValues.filter(item => item.id !== option.id);
       } else {
-        if (this.canSelectMore()) {
-          this.state.selectedOptions = [...this.state.selectedOptions, option];
-          this.state.selectedValues = [...this.state.selectedValues, option.value];
-          this.optionSelect.emit(option);
+        if (!this.maxSelection || this.selectedValues.length < this.maxSelection) {
+          this.selectedValues = [...this.selectedValues, option];
         }
       }
-    }
-
-    this.updateValue();
-    this.validateSelection();
-    this.cdr.markForCheck();
-  }
-
-  public deselectOption(option: SelectorOption, event?: Event): void {
-    if (this.disabled) return;
-
-    event?.preventDefault();
-    event?.stopPropagation();
-
-    this.state.selectedOptions = this.state.selectedOptions.filter(opt => opt.id !== option.id);
-    this.state.selectedValues = this.state.selectedValues.filter(val => val !== option.value);
-    
-    this.optionDeselect.emit(option);
-    this.updateValue();
-    this.validateSelection();
-    this.cdr.markForCheck();
-  }
-
-  public clearSelection(): void {
-    if (this.disabled) return;
-
-    const deselectedOptions = [...this.state.selectedOptions];
-    this.state.selectedOptions = [];
-    this.state.selectedValues = [];
-    
-    deselectedOptions.forEach(option => this.optionDeselect.emit(option));
-    this.updateValue();
-    this.validateSelection();
-    this.cdr.markForCheck();
-  }
-
-  public isOptionSelected(option: SelectorOption): boolean {
-    return this.state.selectedOptions.some(opt => opt.id === option.id);
-  }
-
-  private canSelectMore(): boolean {
-    if (this.mode === 'single') return this.state.selectedOptions.length === 0;
-    if (this.maxSelection) return this.state.selectedOptions.length < this.maxSelection;
-    return true;
-  }
-
-  // Group Management
-  public toggleGroup(groupId: string): void {
-    const currentState = this._groupStates.get(groupId) || false;
-    this._groupStates.set(groupId, !currentState);
-    this.groupToggle.emit(groupId);
-    this.cdr.markForCheck();
-  }
-
-  public isGroupExpanded(groupId: string): boolean {
-    return this._groupStates.get(groupId) || false;
-  }
-
-  // Validation
-  public validateSelection(): void {
-    const validationConfig = this.getValidationConfig();
-    const errorMessage = this.validateSelectionConfig(validationConfig);
-    
-    this.state.hasError = !!errorMessage;
-    this.state.errorMessage = errorMessage || undefined;
-    
-    this.validationChange.emit(errorMessage);
-  }
-
-  public getValidationConfig(): SelectorValidation {
-    return {
-      required: this.required,
-      minSelection: this.minSelection,
-      maxSelection: this.maxSelection,
-      ...this.validation
-    };
-  }
-
-  public validateSelectionConfig(config: SelectorValidation): string | null {
-    const selectedCount = this.state.selectedOptions.length;
-
-    if (config.required && selectedCount === 0) {
-      return 'Selection is required';
-    }
-
-    if (config.minSelection && selectedCount < config.minSelection) {
-      return `Select at least ${config.minSelection} option${config.minSelection > 1 ? 's' : ''}`;
-    }
-
-    if (config.maxSelection && selectedCount > config.maxSelection) {
-      return `Select at most ${config.maxSelection} option${config.maxSelection > 1 ? 's' : ''}`;
-    }
-
-    if (config.customValidator) {
-      return config.customValidator(this.state.selectedValues);
-    }
-
-    return null;
-  }
-
-  // Keyboard Navigation
-  @HostListener('keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent): void {
-    if (this.disabled) return;
-
-    const navigableOptions = this.getNavigableOptions();
-    if (navigableOptions.length === 0) return;
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        this.navigateDown(navigableOptions);
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        this.navigateUp(navigableOptions);
-        break;
-      case 'Enter':
-      case ' ':
-        event.preventDefault();
-        this.selectFocusedOption(navigableOptions);
-        break;
-      case 'Escape':
-        this.resetKeyboardNavigation();
-        break;
-      case 'Home':
-        event.preventDefault();
-        this.focusFirstOption();
-        break;
-      case 'End':
-        event.preventDefault();
-        this.focusLastOption(navigableOptions);
-        break;
-    }
-  }
-
-  private getNavigableOptions(): SelectorOption[] {
-    const standalone = this.state.filteredOptions.filter(opt => !opt.disabled);
-    const grouped = this.state.filteredGroups.reduce((acc, group) => {
-      if (this.isGroupExpanded(group.id)) {
-        acc.push(...group.options.filter(opt => !opt.disabled));
-      }
-      return acc;
-    }, [] as SelectorOption[]);
-    
-    return [...standalone, ...grouped];
-  }
-
-  private navigateDown(options: SelectorOption[]): void {
-    this.keyboardNavigation.isKeyboardActive = true;
-    this.keyboardNavigation.focusedIndex = Math.min(
-      this.keyboardNavigation.focusedIndex + 1,
-      options.length - 1
-    );
-    this.scrollToFocusedOption();
-  }
-
-  private navigateUp(options: SelectorOption[]): void {
-    this.keyboardNavigation.isKeyboardActive = true;
-    this.keyboardNavigation.focusedIndex = Math.max(
-      this.keyboardNavigation.focusedIndex - 1,
-      0
-    );
-    this.scrollToFocusedOption();
-  }
-
-  private selectFocusedOption(options: SelectorOption[]): void {
-    if (this.keyboardNavigation.focusedIndex >= 0 && 
-        this.keyboardNavigation.focusedIndex < options.length) {
-      const option = options[this.keyboardNavigation.focusedIndex];
-      this.selectOption(option);
-    }
-  }
-
-  private focusFirstOption(): void {
-    this.keyboardNavigation.isKeyboardActive = true;
-    this.keyboardNavigation.focusedIndex = 0;
-    this.scrollToFocusedOption();
-  }
-
-  private focusLastOption(options: SelectorOption[]): void {
-    this.keyboardNavigation.isKeyboardActive = true;
-    this.keyboardNavigation.focusedIndex = options.length - 1;
-    this.scrollToFocusedOption();
-  }
-
-  private resetKeyboardNavigation(): void {
-    this.keyboardNavigation.focusedIndex = -1;
-    this.keyboardNavigation.isKeyboardActive = false;
-  }
-
-  private scrollToFocusedOption(): void {
-    // Implementation for scrolling to focused option
-    this.cdr.markForCheck();
-  }
-
-  // Event Handlers
-  public onSearchInputChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.onSearchChange(target.value);
-  }
-
-  public onFocus(event: FocusEvent): void {
-    this.focus.emit(event);
-  }
-
-  public onBlur(event: FocusEvent): void {
-    this.onTouched();
-    this.resetKeyboardNavigation();
-    this.blur.emit(event);
-  }
-
-  // Utility Methods
-  public highlightSearchTerm(text: string): string {
-    if (!this.highlight.enabled || !this.state.searchTerm) {
-      return text;
-    }
-
-    const term = this.state.searchTerm;
-    const className = this.highlight.className || 'selector-highlight';
-    const flags = this.highlight.caseSensitive ? 'g' : 'gi';
-    const regex = new RegExp(this.escapeRegExp(term), flags);
-    
-    return text.replace(regex, `<span class="${className}">$&</span>`);
-  }
-
-  private escapeRegExp(string: string): string {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  // Template Helper Methods
-  public get hasResults(): boolean {
-    return this.state.filteredOptions.length > 0 || 
-           this.state.filteredGroups.some(group => group.options.length > 0);
-  }
-
-  public get showEmptyState(): boolean {
-    return !this.loading && !this.hasResults && !this.state.isSearching;
-  }
-
-  public get containerClasses(): string {
-    return [
-      'selector-container',
-      this.size,
-      this.variant,
-      this.mode,
-      this.layout,
-      this.disabled && 'disabled',
-      this.state.hasError && 'error',
-      this.loading && 'loading',
-      this.containerClassName
-    ].filter(Boolean).join(' ');
-  }
-
-  public get optionsClasses(): string {
-    return [
-      'selector-options',
-      this.layout,
-      this.size,
-      this.layout === 'grid' && `grid-cols-${this.gridColumns}`,
-      this.className
-    ].filter(Boolean).join(' ');
-  }
-
-  public getOptionClasses(option: SelectorOption, index: number): { [key: string]: boolean } {
-    return {
-      'selector-option': true,
-      'selected': this.isOptionSelected(option),
-      'disabled': option.disabled || this.disabled,
-      'focused': this.keyboardNavigation.focusedIndex === index && this.keyboardNavigation.isKeyboardActive,
-      [this.size]: true,
-      [this.variant]: true
-    };
-  }
-
-  // ControlValueAccessor Implementation
-  writeValue(value: any): void {
-    this._value = value;
-    
-    if (value) {
-      const values = Array.isArray(value) ? value : [value];
-      const allOptions = [...this.options, ...this.groups.flatMap(g => g.options)];
       
-      this.state.selectedOptions = allOptions.filter(option => 
-        values.includes(option.value)
-      );
-      this.state.selectedValues = values;
-    } else {
-      this.state.selectedOptions = [];
-      this.state.selectedValues = [];
+      const values = this.selectedValues.map(item => item.value);
+      this.onChange(values);
+      this.selectionChange.emit(values);
     }
-    
-    this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (value: any) => void): void {
+  removeSelected(option: SelectorOption): void {
+    this.selectedValues = this.selectedValues.filter(item => item.id !== option.id);
+    const values = this.selectedValues.map(item => item.value);
+    this.onChange(values);
+    this.selectionChange.emit(values);
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: any): void {
+    if (this.mode === 'single') {
+      this.selectedValue = this.options.find(option => option.value === value) || null;
+    } else {
+      if (Array.isArray(value)) {
+        this.selectedValues = this.options.filter(option => value.includes(option.value));
+      } else {
+        this.selectedValues = [];
+      }
+    }
+  }
+
+  registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
-    this.cdr.markForCheck();
-  }
-
-  private updateValue(): void {
-    const value = this.mode === 'single' 
-      ? (this.state.selectedValues[0] || null)
-      : this.state.selectedValues;
-    
-    this._value = value;
-    this.onChange(value);
-    this.selectionChange.emit(value);
-  }
-
-  // TrackBy Functions
-  public trackByOptionId: TrackByFunction<SelectorOption> = (index, option) => option.id;
-  public trackByGroupId: TrackByFunction<SelectorGroup> = (index, group) => group.id;
-
-  // Public API Methods
-  public focusSearch(): void {
-    if (this.searchInput) {
-      this.searchInput.nativeElement.focus();
-    }
-  }
-
-  public getSelectedOptions(): SelectorOption[] {
-    return this.state.selectedOptions;
-  }
-
-  public getSelectedValues(): any[] {
-    return this.state.selectedValues;
-  }
-
-  public getTotalOptionCount(): number {
-    const standaloneOptions = this.options.length;
-    const groupOptions = this.groups.reduce((acc, group) => acc + group.options.length, 0);
-    return standaloneOptions + groupOptions;
-  }
-
-  public getSearchAriaLabel(): string {
-    return 'Search ' + (this.label || 'options');
-  }
-
-  // Template helper methods
-  public isTemplate(icon: TemplateRef<any> | string | undefined): boolean {
-    return icon instanceof TemplateRef;
-  }
-
-  public isString(icon: TemplateRef<any> | string | undefined): boolean {
-    return typeof icon === 'string';
   }
 }

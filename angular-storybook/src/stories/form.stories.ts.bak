@@ -1,0 +1,510 @@
+import type { Meta, StoryObj } from '@storybook/angular';
+import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { applicationConfig, moduleMetadata } from '@storybook/angular';
+import { action } from '@storybook/addon-actions';
+
+import { FormComponent, FormLayout, FormSize, SubmitState, FormSection } from '../app/components/form/form.component';
+import { InputComponent } from '../app/components/input/input.component';
+
+const meta: Meta<FormComponent> = {
+  title: 'Components/Form',
+  component: FormComponent,
+  decorators: [
+    moduleMetadata({
+      imports: [ReactiveFormsModule, InputComponent],
+    }),
+  ],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'A flexible form component with multiple layout options, validation, sections, and submit states. Integrates seamlessly with Angular reactive forms.',
+      },
+    },
+  },
+  argTypes: {
+    layout: {
+      control: { type: 'select' },
+      options: ['single', 'two-column', 'grid', 'inline'] as FormLayout[],
+      description: 'Form layout variant',
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'base', 'lg'] as FormSize[],
+      description: 'Form size affecting spacing and typography',
+    },
+    submitState: {
+      control: { type: 'select' },
+      options: ['idle', 'loading', 'success', 'error'] as SubmitState[],
+      description: 'Current submit state of the form',
+    },
+    validationMode: {
+      control: { type: 'select' },
+      options: ['onSubmit', 'onChange', 'onBlur'],
+      description: 'When to show validation errors',
+    },
+    noValidate: {
+      control: 'boolean',
+      description: 'Disable browser validation',
+    },
+    autoComplete: {
+      control: 'boolean',
+      description: 'Enable browser autocomplete',
+    },
+    showRequiredIndicator: {
+      control: 'boolean',
+      description: 'Show asterisk for required fields',
+    },
+    submitText: {
+      control: 'text',
+      description: 'Submit button text',
+    },
+    cancelText: {
+      control: 'text',
+      description: 'Cancel button text',
+    },
+    showCancel: {
+      control: 'boolean',
+      description: 'Show cancel button',
+    },
+    submitDisabled: {
+      control: 'boolean',
+      description: 'Disable submit button',
+    },
+    onSubmit: { action: 'submitted' },
+    onCancel: { action: 'cancelled' },
+    onValidationChange: { action: 'validation-changed' },
+    onSectionToggle: { action: 'section-toggled' },
+    onFieldChange: { action: 'field-changed' },
+  },
+};
+
+export default meta;
+type Story = StoryObj<FormComponent>;
+
+// Helper function to create form group
+const createFormGroup = () => {
+  const fb = new FormBuilder();
+  return fb.group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone: [''],
+    company: [''],
+    message: ['', [Validators.required, Validators.minLength(10)]],
+  });
+};
+
+const createSimpleFormGroup = () => {
+  const fb = new FormBuilder();
+  return fb.group({
+    name: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+  });
+};
+
+// Default story
+export const Default: Story = {
+  args: {
+    layout: 'single',
+    size: 'base',
+    submitState: 'idle',
+    validationMode: 'onSubmit',
+    noValidate: false,
+    autoComplete: true,
+    showRequiredIndicator: true,
+    submitText: 'Submit',
+    cancelText: 'Cancel',
+    showCancel: false,
+    submitDisabled: false,
+    formGroup: createSimpleFormGroup(),
+    sections: [],
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onSubmit: action('form-submitted'),
+      onCancel: action('form-cancelled'),
+      onValidationChange: action('validation-changed'),
+      onFieldChange: action('field-changed'),
+    },
+    template: `
+      <app-form [formGroup]="formGroup" 
+                [layout]="layout"
+                [size]="size"
+                [submitState]="submitState"
+                [validationMode]="validationMode"
+                [noValidate]="noValidate"
+                [autoComplete]="autoComplete"
+                [showRequiredIndicator]="showRequiredIndicator"
+                [submitText]="submitText"
+                [cancelText]="cancelText"
+                [showCancel]="showCancel"
+                [submitDisabled]="submitDisabled"
+                (onSubmit)="onSubmit($event)"
+                (onCancel)="onCancel()"
+                (onValidationChange)="onValidationChange($event)"
+                (onFieldChange)="onFieldChange($event)">
+        
+        <app-input label="Name" 
+                   formControlName="name" 
+                   [required]="true"
+                   placeholder="Enter your full name">
+        </app-input>
+        
+        <app-input label="Email" 
+                   type="email"
+                   formControlName="email" 
+                   [required]="true"
+                   placeholder="Enter your email address">
+        </app-input>
+      </app-form>
+    `,
+  }),
+};
+
+// Layout variants
+export const SingleColumn: Story = {
+  args: {
+    ...Default.args,
+    layout: 'single',
+    formGroup: createFormGroup(),
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onSubmit: action('form-submitted'),
+      onCancel: action('form-cancelled'),
+    },
+    template: `
+      <div style="width: 400px;">
+        <app-form [formGroup]="formGroup" 
+                  [layout]="layout"
+                  [size]="size"
+                  [submitState]="submitState"
+                  [submitText]="submitText"
+                  [showCancel]="showCancel"
+                  (onSubmit)="onSubmit($event)"
+                  (onCancel)="onCancel()">
+          
+          <app-input label="First Name" formControlName="firstName" [required]="true" placeholder="Enter first name"></app-input>
+          <app-input label="Last Name" formControlName="lastName" [required]="true" placeholder="Enter last name"></app-input>
+          <app-input label="Email" type="email" formControlName="email" [required]="true" placeholder="Enter email"></app-input>
+          <app-input label="Phone" type="tel" formControlName="phone" placeholder="Enter phone number"></app-input>
+          <app-input label="Company" formControlName="company" placeholder="Enter company name"></app-input>
+        </app-form>
+      </div>
+    `,
+  }),
+};
+
+export const TwoColumn: Story = {
+  args: {
+    ...Default.args,
+    layout: 'two-column',
+    formGroup: createFormGroup(),
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onSubmit: action('form-submitted'),
+      onCancel: action('form-cancelled'),
+    },
+    template: `
+      <div style="width: 600px;">
+        <app-form [formGroup]="formGroup" 
+                  [layout]="layout"
+                  [size]="size"
+                  [submitState]="submitState"
+                  [submitText]="submitText"
+                  [showCancel]="showCancel"
+                  (onSubmit)="onSubmit($event)"
+                  (onCancel)="onCancel()">
+          
+          <app-input label="First Name" formControlName="firstName" [required]="true" placeholder="Enter first name"></app-input>
+          <app-input label="Last Name" formControlName="lastName" [required]="true" placeholder="Enter last name"></app-input>
+          <app-input label="Email" type="email" formControlName="email" [required]="true" placeholder="Enter email" className="full-width"></app-input>
+          <app-input label="Phone" type="tel" formControlName="phone" placeholder="Enter phone number"></app-input>
+          <app-input label="Company" formControlName="company" placeholder="Enter company name"></app-input>
+        </app-form>
+      </div>
+    `,
+  }),
+};
+
+export const GridLayout: Story = {
+  args: {
+    ...Default.args,
+    layout: 'grid',
+    size: 'lg',
+    formGroup: createFormGroup(),
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onSubmit: action('form-submitted'),
+      onCancel: action('form-cancelled'),
+    },
+    template: `
+      <div style="width: 800px;">
+        <app-form [formGroup]="formGroup" 
+                  [layout]="layout"
+                  [size]="size"
+                  [submitState]="submitState"
+                  [submitText]="submitText"
+                  [showCancel]="showCancel"
+                  (onSubmit)="onSubmit($event)"
+                  (onCancel)="onCancel()">
+          
+          <app-input label="First Name" formControlName="firstName" [required]="true" placeholder="Enter first name"></app-input>
+          <app-input label="Last Name" formControlName="lastName" [required]="true" placeholder="Enter last name"></app-input>
+          <app-input label="Email" type="email" formControlName="email" [required]="true" placeholder="Enter email"></app-input>
+          <app-input label="Phone" type="tel" formControlName="phone" placeholder="Enter phone number"></app-input>
+          <app-input label="Company" formControlName="company" placeholder="Enter company name"></app-input>
+        </app-form>
+      </div>
+    `,
+  }),
+};
+
+export const InlineLayout: Story = {
+  args: {
+    ...Default.args,
+    layout: 'inline',
+    formGroup: createSimpleFormGroup(),
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onSubmit: action('form-submitted'),
+      onCancel: action('form-cancelled'),
+    },
+    template: `
+      <div style="width: 600px;">
+        <app-form [formGroup]="formGroup" 
+                  [layout]="layout"
+                  [size]="size"
+                  [submitState]="submitState"
+                  [submitText]="submitText"
+                  (onSubmit)="onSubmit($event)"
+                  (onCancel)="onCancel()">
+          
+          <app-input label="Name" formControlName="name" [required]="true" placeholder="Enter name"></app-input>
+          <app-input label="Email" type="email" formControlName="email" [required]="true" placeholder="Enter email"></app-input>
+        </app-form>
+      </div>
+    `,
+  }),
+};
+
+// Size variants
+export const SmallSize: Story = {
+  args: {
+    ...Default.args,
+    size: 'sm',
+    formGroup: createSimpleFormGroup(),
+  },
+  render: SingleColumn.render,
+};
+
+export const LargeSize: Story = {
+  args: {
+    ...Default.args,
+    size: 'lg',
+    formGroup: createFormGroup(),
+  },
+  render: SingleColumn.render,
+};
+
+// Form with sections
+export const WithSections: Story = {
+  args: {
+    ...Default.args,
+    formGroup: createFormGroup(),
+    sections: [
+      {
+        id: 'personal',
+        title: 'Personal Information',
+        description: 'Please provide your personal details',
+        fields: ['firstName', 'lastName', 'email'],
+        collapsible: true,
+        collapsed: false,
+      },
+      {
+        id: 'contact',
+        title: 'Contact Information',
+        description: 'Additional contact details (optional)',
+        fields: ['phone', 'company'],
+        collapsible: true,
+        collapsed: false,
+      },
+    ] as FormSection[],
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onSubmit: action('form-submitted'),
+      onCancel: action('form-cancelled'),
+      onSectionToggle: action('section-toggled'),
+    },
+    template: `
+      <div style="width: 500px;">
+        <app-form [formGroup]="formGroup" 
+                  [layout]="layout"
+                  [size]="size"
+                  [sections]="sections"
+                  [submitState]="submitState"
+                  [submitText]="submitText"
+                  [showCancel]="showCancel"
+                  (onSubmit)="onSubmit($event)"
+                  (onCancel)="onCancel()"
+                  (onSectionToggle)="onSectionToggle($event)">
+          
+          <div slot="section-personal-content">
+            <app-input label="First Name" formControlName="firstName" [required]="true" placeholder="Enter first name"></app-input>
+            <app-input label="Last Name" formControlName="lastName" [required]="true" placeholder="Enter last name"></app-input>
+            <app-input label="Email" type="email" formControlName="email" [required]="true" placeholder="Enter email"></app-input>
+          </div>
+          
+          <div slot="section-contact-content">
+            <app-input label="Phone" type="tel" formControlName="phone" placeholder="Enter phone number"></app-input>
+            <app-input label="Company" formControlName="company" placeholder="Enter company name"></app-input>
+          </div>
+        </app-form>
+      </div>
+    `,
+  }),
+};
+
+// Submit states
+export const LoadingState: Story = {
+  args: {
+    ...Default.args,
+    submitState: 'loading',
+    formGroup: createSimpleFormGroup(),
+  },
+  render: Default.render,
+};
+
+export const ErrorState: Story = {
+  args: {
+    ...Default.args,
+    submitState: 'error',
+    showCancel: true,
+    formGroup: createSimpleFormGroup(),
+  },
+  render: Default.render,
+};
+
+export const SuccessState: Story = {
+  args: {
+    ...Default.args,
+    submitState: 'success',
+    formGroup: createSimpleFormGroup(),
+  },
+  render: Default.render,
+};
+
+// Validation modes
+export const OnChangeValidation: Story = {
+  args: {
+    ...Default.args,
+    validationMode: 'onChange',
+    formGroup: createSimpleFormGroup(),
+  },
+  render: Default.render,
+};
+
+// Complex form example
+export const ComplexForm: Story = {
+  args: {
+    ...Default.args,
+    layout: 'two-column',
+    size: 'base',
+    showCancel: true,
+    submitText: 'Send Message',
+    cancelText: 'Clear Form',
+    formGroup: createFormGroup(),
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      onSubmit: action('form-submitted'),
+      onCancel: action('form-cancelled'),
+      onValidationChange: action('validation-changed'),
+    },
+    template: `
+      <div style="width: 700px;">
+        <h2 style="margin-bottom: 24px; font-size: 24px; font-weight: 600; color: var(--color-text-primary);">
+          Contact Us
+        </h2>
+        <p style="margin-bottom: 32px; color: var(--color-text-secondary); line-height: 1.5;">
+          Fill out the form below and we'll get back to you as soon as possible.
+        </p>
+        
+        <app-form [formGroup]="formGroup" 
+                  [layout]="layout"
+                  [size]="size"
+                  [submitState]="submitState"
+                  [validationMode]="validationMode"
+                  [submitText]="submitText"
+                  [cancelText]="cancelText"
+                  [showCancel]="showCancel"
+                  ariaLabel="Contact form"
+                  (onSubmit)="onSubmit($event)"
+                  (onCancel)="onCancel()"
+                  (onValidationChange)="onValidationChange($event)">
+          
+          <app-input label="First Name" 
+                     formControlName="firstName" 
+                     [required]="true" 
+                     placeholder="Enter your first name">
+          </app-input>
+          
+          <app-input label="Last Name" 
+                     formControlName="lastName" 
+                     [required]="true" 
+                     placeholder="Enter your last name">
+          </app-input>
+          
+          <app-input label="Email Address" 
+                     type="email"
+                     formControlName="email" 
+                     [required]="true" 
+                     placeholder="Enter your email address"
+                     className="full-width">
+          </app-input>
+          
+          <app-input label="Phone Number" 
+                     type="tel"
+                     formControlName="phone" 
+                     placeholder="Enter your phone number">
+          </app-input>
+          
+          <app-input label="Company" 
+                     formControlName="company" 
+                     placeholder="Enter your company name">
+          </app-input>
+          
+          <app-input label="Message" 
+                     formControlName="message" 
+                     [required]="true" 
+                     placeholder="Enter your message (minimum 10 characters)"
+                     helperText="Please provide as much detail as possible"
+                     className="full-width">
+          </app-input>
+        </app-form>
+      </div>
+    `,
+  }),
+};
+
+// Disabled form
+export const DisabledSubmit: Story = {
+  args: {
+    ...Default.args,
+    submitDisabled: true,
+    formGroup: createSimpleFormGroup(),
+  },
+  render: Default.render,
+};

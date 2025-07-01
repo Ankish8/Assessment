@@ -1,0 +1,299 @@
+/* Base Button Styles - Exact match with React version */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  min-height: 0;
+  line-height: 1;
+  
+  /* Force height constraints to prevent expansion */
+  flex-shrink: 0;
+  flex-grow: 0;
+  
+  /* Ensure content doesn't expand the button */
+  > * {
+    flex-shrink: 0;
+    line-height: 1;
+  }
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button:focus {
+  box-shadow: var(--shadow-focus);
+}
+
+/* Variants - Exact match with React CSS */
+.primary {
+  background-color: var(--color-primary-600);
+  color: var(--color-text-on-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--color-primary-700);
+  box-shadow: var(--shadow-sm);
+}
+
+.primary:active:not(:disabled) {
+  background-color: var(--color-primary-800);
+  transform: translateY(1px);
+}
+
+.secondary {
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: var(--color-background-secondary);
+  border-color: var(--color-border-hover);
+}
+
+.secondary:active:not(:disabled) {
+  background-color: var(--color-background-tertiary);
+}
+
+.ghost {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid transparent;
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: var(--color-background-secondary);
+  border-color: var(--color-border-primary);
+}
+
+.ghost:active:not(:disabled) {
+  background-color: var(--color-background-tertiary);
+}
+
+.destructive {
+  background-color: var(--color-error-600);
+  color: var(--color-text-on-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.destructive:hover:not(:disabled) {
+  background-color: var(--color-error-700);
+  box-shadow: var(--shadow-sm);
+}
+
+.destructive:active:not(:disabled) {
+  background-color: var(--color-error-800);
+  transform: translateY(1px);
+}
+
+.destructive:focus {
+  box-shadow: var(--shadow-error-focus);
+}
+
+.success {
+  background-color: var(--color-success-600);
+  color: var(--color-text-on-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.success:hover:not(:disabled) {
+  background-color: var(--color-success-700);
+  box-shadow: var(--shadow-sm);
+}
+
+.success:active:not(:disabled) {
+  background-color: var(--color-success-800);
+  transform: translateY(1px);
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--color-primary-600);
+  border: 1px solid var(--color-primary-600);
+}
+
+.outline:hover:not(:disabled) {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-700);
+  color: var(--color-primary-700);
+}
+
+.outline:active:not(:disabled) {
+  background-color: var(--color-primary-100);
+}
+
+/* Sizes - Exact match with React CSS */
+.small {
+  padding: 0 var(--spacing-3);
+  font-size: var(--font-size-sm);
+  height: var(--button-height-sm) !important;
+  min-height: var(--button-height-sm) !important;
+  max-height: var(--button-height-sm) !important;
+  gap: var(--spacing-1);
+  line-height: 1 !important;
+}
+
+.medium {
+  padding: 0 var(--spacing-4);
+  font-size: var(--font-size-sm);
+  height: var(--button-height-base) !important;
+  min-height: var(--button-height-base) !important;
+  max-height: var(--button-height-base) !important;
+  gap: var(--spacing-2);
+  line-height: 1 !important;
+}
+
+.large {
+  padding: 0 var(--spacing-5);
+  font-size: var(--font-size-base);
+  height: var(--button-height-lg) !important;
+  min-height: var(--button-height-lg) !important;
+  max-height: var(--button-height-lg) !important;
+  gap: var(--spacing-2);
+  line-height: 1 !important;
+}
+
+.xlarge {
+  padding: 0 var(--spacing-6);
+  font-size: var(--font-size-lg);
+  height: var(--button-height-xl) !important;
+  min-height: var(--button-height-xl) !important;
+  max-height: var(--button-height-xl) !important;
+  gap: var(--spacing-3);
+  line-height: 1 !important;
+}
+
+/* Icon */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.small .icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.large .icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.xlarge .icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Loading state */
+.loading {
+  position: relative;
+  color: transparent;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Full width */
+.full-width {
+  width: 100%;
+}
+
+/* Icon only */
+.icon-only {
+  aspect-ratio: 1;
+  padding: 0;
+}
+
+.icon-only.small {
+  width: var(--button-height-sm);
+}
+
+.icon-only.medium {
+  width: var(--button-height-base);
+}
+
+.icon-only.large {
+  width: var(--button-height-lg);
+}
+
+.icon-only.xlarge {
+  width: var(--button-height-xl);
+}
+
+/* CRITICAL: Strict height enforcement to prevent button expansion */
+.button {
+  /* Override any inherited line-height */
+  line-height: 1 !important;
+  
+  /* Prevent content from expanding button */
+  .loading-spinner,
+  .icon,
+  span {
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+    max-height: 100% !important;
+  }
+  
+  /* Ensure all content respects button constraints */
+  > * {
+    line-height: 1 !important;
+    max-height: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Handle text content specifically */
+  ng-content {
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+}
+
+/* Additional safety measures */
+app-button {
+  display: inline-block;
+  line-height: 1 !important;
+  
+  * {
+    line-height: 1 !important;
+  }
+}

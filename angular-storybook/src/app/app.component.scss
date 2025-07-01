@@ -151,10 +151,18 @@ h3 {
 /* Card Component Demo Styles */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   margin-bottom: 24px;
-  align-items: start;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-grid app-card {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* ProgressSteps Component Demo Styles */
