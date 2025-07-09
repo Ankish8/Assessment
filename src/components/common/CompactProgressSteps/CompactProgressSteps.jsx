@@ -2,6 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './CompactProgressSteps.module.css';
 
+/**
+ * CompactProgressSteps - Modern horizontal progress stepper component
+ * 
+ * A unified design system component for displaying multi-step workflow progress.
+ * Optimized for responsive design with consistent shadows, spacing, and typography.
+ * 
+ * @component
+ * @example
+ * const steps = [
+ *   { id: 'step-1', label: 'Question Statement' },
+ *   { id: 'step-2', label: 'Media & Resources' },
+ *   { id: 'step-3', label: 'Question Details' },
+ * ];
+ * 
+ * return (
+ *   <CompactProgressSteps 
+ *     steps={steps} 
+ *     currentStep={1} 
+ *   />
+ * );
+ */
 const CompactProgressSteps = ({ 
   steps, 
   currentStep, 
@@ -39,17 +60,51 @@ const CompactProgressSteps = ({
 };
 
 CompactProgressSteps.propTypes = {
-  /** Array of step objects with label and optional id */
+  /** 
+   * Array of step objects defining the workflow progression.
+   * Each step should contain a label and optionally an id for tracking.
+   * 
+   * @example
+   * [
+   *   { id: 'step-1', label: 'Question Statement' },
+   *   { id: 'step-2', label: 'Media & Resources' },
+   *   { id: 'step-3', label: 'Question Details' },
+   * ]
+   */
   steps: PropTypes.arrayOf(
     PropTypes.shape({
+      /** Optional unique identifier for the step */
       id: PropTypes.string,
+      /** Display label for the step (required) */
       label: PropTypes.string.isRequired,
     })
   ).isRequired,
-  /** Current active step index (0-based) */
+  
+  /** 
+   * Current active step index (0-based).
+   * Steps before this index will show as completed with checkmarks.
+   * Steps after this index will show as pending with number indicators.
+   * 
+   * @example
+   * currentStep={0} // First step active
+   * currentStep={2} // Third step active, first two completed
+   */
   currentStep: PropTypes.number.isRequired,
-  /** Additional CSS class */
+  
+  /** 
+   * Additional CSS class names to apply to the container.
+   * Useful for custom styling or theming.
+   */
   className: PropTypes.string,
 };
+
+CompactProgressSteps.defaultProps = {
+  className: '',
+};
+
+/**
+ * Display name for debugging and React DevTools
+ */
+CompactProgressSteps.displayName = 'CompactProgressSteps';
 
 export default CompactProgressSteps;
