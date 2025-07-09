@@ -1,0 +1,89 @@
+@import '../../../styles/tokens.css';
+
+.compactProgress {
+  background: var(--color-background-primary);
+  border-bottom: 1px solid var(--color-border-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  padding: 12px var(--spacing-6);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  white-space: nowrap;
+  min-height: 56px;
+}
+
+.progressStep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.progressStep:not(.lastStep) {
+  margin-right: 32px;
+}
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  background: var(--color-background-secondary);
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+  border: 1px solid var(--color-border-primary);
+}
+
+.stepIndicator.current {
+  background: var(--color-primary-600);
+  color: var(--color-background-primary);
+  border: 1px solid var(--color-primary-600);
+}
+
+.stepIndicator.completed {
+  background: var(--color-success-600);
+  color: var(--color-background-primary);
+  border: 1px solid var(--color-success-600);
+}
+
+.stepLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.progressStep .fas.fa-chevron-right {
+  color: var(--color-border-secondary);
+  font-size: 10px;
+  margin-left: 6px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 8px var(--spacing-4);
+  }
+  
+  .stepLabel {
+    display: none;
+  }
+  
+  .progressStep:not(.lastStep) {
+    margin-right: 24px;
+  }
+  
+  .progressStep .fas.fa-chevron-right {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}
