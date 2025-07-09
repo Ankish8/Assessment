@@ -22,6 +22,8 @@ import UIFrameworkEvaluationParameters from './pages/UIFramework/UIFrameworkEval
 import PremiumModalDemo from './pages/PremiumModalDemo/PremiumModalDemo';
 import SpeakingQuestionStatement from './pages/Speaking/SpeakingQuestionStatement';
 import SpeakingMediaResources from './pages/Speaking/SpeakingMediaResources';
+import SpeakingQuestionDetails from './pages/Speaking/SpeakingQuestionDetails';
+import SpeakingEvaluationParameters from './pages/Speaking/SpeakingEvaluationParameters';
 import './styles/variables.css';
 import './index.css';
 
@@ -51,6 +53,8 @@ function App() {
         <Route path="/ui-framework/evaluation-parameters" element={<UIFrameworkEvaluationParameters />} />
         <Route path="/speaking/question-statement" element={<SpeakingQuestionStatement />} />
         <Route path="/speaking/media-resources" element={<SpeakingMediaResources />} />
+        <Route path="/speaking/question-details" element={<SpeakingQuestionDetails />} />
+        <Route path="/speaking/evaluation-parameters" element={<SpeakingEvaluationParameters />} />
         <Route path="/premium-modal-demo" element={<PremiumModalDemo />} />
       </Routes>
     </div>

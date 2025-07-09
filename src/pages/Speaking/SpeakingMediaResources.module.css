@@ -605,13 +605,9 @@
   }
   
   .timeButton {
-    padding: 6px 10px;
-    min-width: 38px;
-    font-size: 12px;
-  }
-  
-  .recBadge {
-    font-size: 8px;
+    padding: 6px 8px;
+    min-width: 45px;
+    font-size: 11px;
   }
   
   .actionButtons {
