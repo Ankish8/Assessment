@@ -371,214 +371,147 @@
   padding-left: 56px; /* Align with content after icon */
 }
 
-.settingTitle {
-  margin-bottom: var(--spacing-4);
+.settingRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-4);
 }
 
 .settingLabel {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  display: block;
-}
-
-/* Recommended Section */
-.recommendedSection {
-  margin-bottom: var(--spacing-6);
-}
-
-.recommendedHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  margin-bottom: var(--spacing-3);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-primary-600);
-}
-
-.recommendedHeader i {
-  color: #ffc107;
-  font-size: var(--font-size-sm);
-}
-
-/* Time Cards */
-.timeCard {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: var(--spacing-3) var(--spacing-4);
-  background: var(--color-background-primary);
-  border: 2px solid var(--color-border-primary);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-  width: 100%;
-  min-height: 60px;
-}
-
-.timeCard:hover {
-  border-color: var(--color-primary-400);
-  background: var(--color-primary-50);
-}
-
-.timeCard.selected {
-  border-color: var(--color-primary-600);
-  background: var(--color-primary-100);
-}
-
-.timeCard.recommended {
-  border-color: #ffc107;
-  background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
-  position: relative;
-}
-
-.timeCard.recommended::before {
-  content: '★';
-  position: absolute;
-  top: var(--spacing-2);
-  right: var(--spacing-2);
-  color: #ffc107;
-  font-size: var(--font-size-sm);
-}
-
-.timeCard.recommended.selected {
-  border-color: #ffc107;
-  background: linear-gradient(135deg, #fff3cd 0%, #fff8e1 100%);
-}
-
-.timeCardContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-}
-
-.timeValue {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-  line-height: 1.2;
-}
-
-.timeDescription {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  line-height: 1.3;
-}
-
-/* Time Categories Grid */
-.timeCategoriesGrid {
-  display: grid;
-  gap: var(--spacing-5);
-  margin-bottom: var(--spacing-6);
-}
-
-.timeCategory {
-  display: flex;
-  flex-direction: column;
-}
-
-.categoryHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  margin-bottom: var(--spacing-3);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
-}
-
-.categoryHeader i {
-  color: var(--color-primary-500);
-  font-size: var(--font-size-sm);
-}
-
-.timeCards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: var(--spacing-3);
-}
-
-/* Custom Time Section */
-.customTimeSection {
-  border-top: 1px solid var(--color-border-secondary);
-  padding-top: var(--spacing-4);
-}
-
-.customTimeInput {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-}
-
-.customTimeToggle {
-  display: flex;
-  align-items: center;
-  padding: var(--spacing-3) var(--spacing-4);
-  background: var(--color-background-secondary);
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-base);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-}
-
-.customTimeToggle:hover {
-  background: var(--color-primary-50);
-  border-color: var(--color-primary-400);
-  color: var(--color-text-primary);
-}
-
-.customTimeToggle.active {
-  background: var(--color-primary-100);
-  border-color: var(--color-primary-600);
-  color: var(--color-primary-700);
   font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  padding-top: 6px; /* Align with buttons */
 }
 
-.customInputWrapper {
+.timeSelection {
   display: flex;
-  gap: var(--spacing-3);
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.quickOptions {
+  display: flex;
+  gap: var(--spacing-2);
+  flex-wrap: wrap;
   align-items: center;
-  padding: var(--spacing-3);
-  background: var(--color-background-tertiary);
-  border-radius: var(--radius-base);
-  border: 1px solid var(--color-border-secondary);
+}
+
+.timeButton {
+  position: relative;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.timeButton:hover {
+  border-color: var(--color-primary-400);
+  color: var(--color-text-primary);
+  background: var(--color-primary-50);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.timeButton.active {
+  border-color: var(--color-primary-600);
+  background: var(--color-primary-600);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(88, 28, 96, 0.3);
+}
+
+
+.customButton {
+  color: var(--color-text-tertiary);
+  font-style: italic;
+  border-style: dashed;
+}
+
+.customButton:hover {
+  color: var(--color-primary-600);
+  border-color: var(--color-primary-400);
+  border-style: solid;
+  font-style: normal;
+}
+
+.customButton.active {
+  background: var(--color-primary-600);
+  color: white;
+  font-style: normal;
+  border-style: solid;
 }
 
 .customInput {
-  flex: 1;
-  padding: var(--spacing-2) var(--spacing-3);
+  display: flex;
+  gap: var(--spacing-2);
+  align-items: center;
+  margin-top: var(--spacing-2);
+  padding: var(--spacing-2);
+  background: var(--color-background-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-secondary);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 60px;
+  }
+}
+
+.customInput input {
+  width: 65px;
+  padding: 6px 10px;
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-base);
   font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
   background: var(--color-background-primary);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
-.customInput:focus {
-  outline: none;
-  border-color: var(--color-primary-600);
-  box-shadow: 0 0 0 3px var(--color-primary-100);
-}
-
-.unitSelect {
-  padding: var(--spacing-2) var(--spacing-3);
+.customInput select {
+  padding: 6px 10px;
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-base);
   font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   background: var(--color-background-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
-.unitSelect:focus {
+.customInput input:focus,
+.customInput select:focus {
   outline: none;
   border-color: var(--color-primary-600);
   box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+.customInput input:hover,
+.customInput select:hover {
+  border-color: var(--color-primary-400);
 }
 
 /* Bottom Actions */
@@ -657,30 +590,28 @@
     padding-left: 44px;
   }
   
-  .timeCards {
-    grid-template-columns: 1fr;
-  }
-  
-  .timeCard {
-    min-height: 50px;
-    padding: var(--spacing-2) var(--spacing-3);
-  }
-  
-  .timeValue {
-    font-size: var(--font-size-sm);
-  }
-  
-  .timeDescription {
-    font-size: 11px;
-  }
-  
-  .customInputWrapper {
+  .settingRow {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+    gap: var(--spacing-2);
   }
   
-  .customInput {
-    margin-bottom: var(--spacing-2);
+  .settingLabel {
+    padding-top: 0;
+  }
+  
+  .quickOptions {
+    gap: var(--spacing-1);
+  }
+  
+  .timeButton {
+    padding: 6px 10px;
+    min-width: 38px;
+    font-size: 12px;
+  }
+  
+  .recBadge {
+    font-size: 8px;
   }
   
   .actionButtons {

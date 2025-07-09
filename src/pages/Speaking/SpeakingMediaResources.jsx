@@ -279,121 +279,44 @@ const SpeakingMediaResources = () => {
               </div>
               
               <div className={styles.audioSettings}>
-                <div className={styles.settingTitle}>
-                  <label className={styles.settingLabel}>Time limit for audio response</label>
-                </div>
-                
-                {/* Recommended Option */}
-                <div className={styles.recommendedSection}>
-                  <div className={styles.recommendedHeader}>
-                    <i className="fas fa-star"></i>
-                    <span>Recommended</span>
-                  </div>
-                  <button
-                    className={`${styles.timeCard} ${styles.recommended} ${audioTimeLimit === '5' && !isCustomTime ? styles.selected : ''}`}
-                    onClick={() => handleTimeSelection('5')}
-                  >
-                    <div className={styles.timeCardContent}>
-                      <span className={styles.timeValue}>{timeOptions.recommended.label}</span>
-                      <span className={styles.timeDescription}>{timeOptions.recommended.description}</span>
-                    </div>
-                  </button>
-                </div>
-
-                {/* Time Categories */}
-                <div className={styles.timeCategoriesGrid}>
-                  {/* Quick Responses */}
-                  <div className={styles.timeCategory}>
-                    <div className={styles.categoryHeader}>
-                      <i className="fas fa-bolt"></i>
-                      <span>Quick</span>
-                    </div>
-                    <div className={styles.timeCards}>
-                      {timeOptions.quick.map(option => (
+                <div className={styles.settingRow}>
+                  <label className={styles.settingLabel}>Limit for the audio</label>
+                  <div className={styles.timeSelection}>
+                    <div className={styles.quickOptions}>
+                      {[1, 2, 5, 15, 20, 30].map(time => (
                         <button
-                          key={option.value}
-                          className={`${styles.timeCard} ${audioTimeLimit === option.value && !isCustomTime ? styles.selected : ''}`}
-                          onClick={() => handleTimeSelection(option.value)}
+                          key={time}
+                          className={`${styles.timeButton} ${audioTimeLimit === time.toString() && !isCustomTime ? styles.active : ''}`}
+                          onClick={() => handleTimeSelection(time.toString())}
+                          title={`${time} minute${time > 1 ? 's' : ''}`}
                         >
-                          <span className={styles.timeValue}>{option.label}</span>
-                          <span className={styles.timeDescription}>{option.description}</span>
+                          {time} min
                         </button>
                       ))}
+                      <button
+                        className={`${styles.timeButton} ${styles.customButton} ${isCustomTime ? styles.active : ''}`}
+                        onClick={handleCustomTimeToggle}
+                        title="Set a custom time limit"
+                      >
+                        Custom
+                      </button>
                     </div>
-                  </div>
-
-                  {/* Standard Responses */}
-                  <div className={styles.timeCategory}>
-                    <div className={styles.categoryHeader}>
-                      <i className="fas fa-comment"></i>
-                      <span>Standard</span>
-                    </div>
-                    <div className={styles.timeCards}>
-                      {timeOptions.standard.map(option => (
-                        <button
-                          key={option.value}
-                          className={`${styles.timeCard} ${audioTimeLimit === option.value && !isCustomTime ? styles.selected : ''}`}
-                          onClick={() => handleTimeSelection(option.value)}
-                        >
-                          <span className={styles.timeValue}>{option.label}</span>
-                          <span className={styles.timeDescription}>{option.description}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Extended Responses */}
-                  <div className={styles.timeCategory}>
-                    <div className={styles.categoryHeader}>
-                      <i className="fas fa-clock"></i>
-                      <span>Extended</span>
-                    </div>
-                    <div className={styles.timeCards}>
-                      {timeOptions.extended.map(option => (
-                        <button
-                          key={option.value}
-                          className={`${styles.timeCard} ${audioTimeLimit === option.value && !isCustomTime ? styles.selected : ''}`}
-                          onClick={() => handleTimeSelection(option.value)}
-                        >
-                          <span className={styles.timeValue}>{option.label}</span>
-                          <span className={styles.timeDescription}>{option.description}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Custom Time Input */}
-                <div className={styles.customTimeSection}>
-                  <div className={styles.categoryHeader}>
-                    <i className="fas fa-cog"></i>
-                    <span>Custom</span>
-                  </div>
-                  <div className={styles.customTimeInput}>
-                    <button
-                      className={`${styles.customTimeToggle} ${isCustomTime ? styles.active : ''}`}
-                      onClick={handleCustomTimeToggle}
-                    >
-                      Set custom time limit
-                    </button>
                     {isCustomTime && (
-                      <div className={styles.customInputWrapper}>
+                      <div className={styles.customInput}>
                         <input
                           type="number"
-                          placeholder="Enter time"
+                          placeholder="Time"
                           value={customTimeValue}
                           onChange={(e) => handleCustomTimeChange(e.target.value)}
-                          className={styles.customInput}
                           min="1"
                           max="120"
                         />
                         <select
                           value={customTimeUnit}
                           onChange={(e) => setCustomTimeUnit(e.target.value)}
-                          className={styles.unitSelect}
                         >
-                          <option value="sec">seconds</option>
-                          <option value="min">minutes</option>
+                          <option value="min">min</option>
+                          <option value="sec">sec</option>
                         </select>
                       </div>
                     )}
