@@ -225,3 +225,423 @@ For each new assessment type, you typically need:
 - **Audio/Video Questions** - Multimedia response questions
 - **Drag-and-Drop Questions** - Interactive sorting/matching
 - **Drawing/Diagram Questions** - Visual response questions
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+
+---
+
+# 🚀 ANGULAR STORYBOOK MIGRATION PROJECT
+
+## Project Status: **ACTIVE** ✅
+**Approved by Stakeholder**: ✅  
+**Master Agent**: Active  
+**Timeline**: 12 weeks (4 sprints)
+
+---
+
+## 🎯 MISSION CRITICAL REQUIREMENTS
+
+### **100% VISUAL & FUNCTIONAL PARITY**
+- Components must look **EXACTLY** the same as React versions
+- Components must behave **EXACTLY** the same as React versions  
+- User should **NOT** be able to tell the difference
+- **Zero tolerance** for visual or functional differences
+
+### **THINKING-ENABLED AGENTS**
+All agents MUST use systematic thinking before executing tasks:
+- Analyze requirements thoroughly
+- Plan approach step-by-step
+- Consider edge cases and dependencies
+- Validate solutions before implementation
+
+---
+
+## 👥 AGENT TEAM STRUCTURE
+
+### 🎪 **MASTER AGENT (Project Manager)**
+**Status**: ACTIVE ✅  
+**Agent**: Claude Code  
+**Role**: Coordination, planning, stakeholder communication
+
+**Responsibilities**:
+- Sprint planning and dependency management
+- Progress tracking and stakeholder updates
+- Quality gates and approval workflows
+- Risk management and issue escalation
+
+**Tools & Capabilities**:
+- Sequential thinking for complex problem solving
+- Project management and documentation
+- Technical decision making and architecture review
+- Cross-agent coordination and task assignment
+
+**Current Tasks**:
+- [x] Project proposal creation
+- [🔄] CLAUDE.md documentation update
+- [ ] React Button component analysis
+- [ ] Angular project setup
+- [ ] Agent task sheet creation
+
+---
+
+### 🎨 **AGENT 1: UI/UX SPECIALIST**
+**Status**: STANDBY (Awaiting activation)  
+**Agent**: UI Design Expert  
+**Role**: Design system architect and component designer
+
+**Responsibilities**:
+- React component visual analysis and documentation
+- CSS/SCSS conversion with exact value preservation
+- Design token creation and management
+- Responsive design pattern replication
+- Accessibility compliance verification
+
+**Expertise Areas**:
+- Angular Material and component libraries
+- CSS-in-JS to SCSS migration patterns
+- Design system architecture
+- Responsive design and mobile-first development
+- WCAG accessibility standards
+
+**Thinking Requirements**:
+- Analyze existing React styles systematically
+- Document exact measurements and specifications
+- Plan CSS architecture for maintainability
+- Consider cross-browser compatibility
+- Validate accessibility requirements
+
+---
+
+### ⚙️ **AGENT 2: ANGULAR DEVELOPER (Core Components)**
+**Status**: STANDBY (Awaiting activation)  
+**Agent**: Angular Core Developer  
+**Role**: Core UI component development
+
+**Responsibilities**:
+- Button, Input, Card, Form, Modal component development
+- TypeScript interface creation and prop mapping
+- Event handling and state management replication
+- Core component architecture establishment
+- Integration with design system
+
+**Expertise Areas**:
+- Angular 19 latest features and patterns
+- TypeScript advanced typing and interfaces
+- Component lifecycle and state management
+- RxJS for reactive programming
+- Angular testing utilities
+
+**Thinking Requirements**:
+- Map React props to Angular inputs systematically
+- Plan component architecture for reusability
+- Consider Angular-specific patterns and lifecycle
+- Design for testability and maintainability
+- Validate functional parity requirements
+
+---
+
+### 🔧 **AGENT 3: ANGULAR DEVELOPER (Complex Components)**
+**Status**: STANDBY (Awaiting activation)  
+**Agent**: Angular Advanced Developer  
+**Role**: Advanced component development
+
+**Responsibilities**:
+- ProgressSteps, Selector, Tab, and specialized components
+- Complex interaction patterns and animations
+- Advanced state management and data flow
+- Performance optimization and lazy loading
+- Integration testing and component composition
+
+**Expertise Areas**:
+- Advanced Angular patterns (directives, pipes, services)
+- Angular Animations API
+- State management solutions (NgRx, Akita)
+- Performance optimization techniques
+- Complex component interaction patterns
+
+**Thinking Requirements**:
+- Analyze complex React component interactions
+- Plan Angular-specific state management approach
+- Design for performance and scalability
+- Consider animation and transition requirements
+- Validate complex user interaction flows
+
+---
+
+### 📊 **AGENT 4: STORYBOOK SPECIALIST**
+**Status**: STANDBY (Awaiting activation)  
+**Agent**: Documentation Expert  
+**Role**: Documentation and story creation
+
+**Responsibilities**:
+- Angular Storybook configuration and optimization
+- Story creation and documentation writing
+- Addon integration and customization
+- Developer experience optimization
+- Documentation site maintenance
+
+**Expertise Areas**:
+- Storybook for Angular configuration
+- MDX documentation authoring
+- Addon development and integration
+- Design documentation best practices
+- Developer onboarding optimization
+
+**Thinking Requirements**:
+- Plan Storybook architecture for scalability
+- Design story organization and navigation
+- Consider developer workflow optimization
+- Plan documentation structure and content
+- Validate documentation completeness and accuracy
+
+---
+
+### 🧪 **AGENT 5: QA/TESTING ENGINEER**
+**Status**: STANDBY (Awaiting activation)  
+**Agent**: Quality Assurance Expert  
+**Role**: Quality assurance and testing
+
+**Responsibilities**:
+- Test framework setup and configuration
+- Component unit and integration testing
+- Visual regression testing implementation
+- Accessibility testing and compliance
+- Cross-browser compatibility validation
+
+**Expertise Areas**:
+- Jest and Angular Testing Library
+- Cypress for end-to-end testing
+- Visual regression testing tools
+- Accessibility testing automation
+- Cross-browser testing strategies
+
+**Thinking Requirements**:
+- Plan comprehensive testing strategy
+- Design test cases for component parity
+- Consider edge cases and error scenarios
+- Plan automated testing pipeline
+- Validate quality gates and criteria
+
+---
+
+## 📅 PROJECT TIMELINE & MILESTONES
+
+### **SPRINT 1: PROOF OF CONCEPT** (Week 1-2)
+**Milestone**: Button Component + Storybook Setup  
+**Stakeholder Review**: Demo session for approval
+
+**Deliverables**:
+- [ ] Angular 19 project structure
+- [ ] Storybook configuration for Angular
+- [ ] Button component (all variants and states)
+- [ ] Initial design token system
+- [ ] Side-by-side comparison demo
+
+**Success Criteria**:
+- Button component visually identical to React version
+- All button variants functional and styled correctly
+- Storybook displaying component documentation
+- Stakeholder approval for approach and quality
+
+---
+
+### **SPRINT 2: FOUNDATION** (Week 3-5)
+**Milestone**: Core UI Components  
+**Stakeholder Review**: Progress demo and quality assessment
+
+**Deliverables**:
+- [ ] Input component with all variants
+- [ ] Card component with headers/footers
+- [ ] Form component with validation
+- [ ] Modal component with accessibility
+- [ ] Design system documentation
+
+**Success Criteria**:
+- All core components achieve visual parity
+- Functional testing passes for all components
+- Documentation complete and accessible
+- Performance benchmarks met
+
+---
+
+### **SPRINT 3: ADVANCED COMPONENTS** (Week 6-9)
+**Milestone**: Complex Components  
+**Stakeholder Review**: Feature completeness review
+
+**Deliverables**:
+- [ ] ProgressSteps with responsive behavior
+- [ ] Selector with grid/list layouts
+- [ ] Tab navigation with keyboard support
+- [ ] Interactive component testing
+- [ ] Integration testing suite
+
+**Success Criteria**:
+- Complex interactions replicated accurately
+- Accessibility standards maintained
+- Cross-component integration working
+- Performance optimization complete
+
+---
+
+### **SPRINT 4: COMPLETION** (Week 10-12)
+**Milestone**: Full Library Delivery  
+**Stakeholder Review**: Final delivery and handover
+
+**Deliverables**:
+- [ ] All remaining components migrated
+- [ ] Complete Storybook documentation
+- [ ] Deployment pipeline setup
+- [ ] Handover documentation and training
+
+**Success Criteria**:
+- 100% component migration complete
+- All quality gates passed
+- Documentation complete and published
+- Team trained on maintenance procedures
+
+---
+
+## 📊 DEPENDENCY CHART
+
+```
+Master Agent (Coordination)
+├── UI/UX Specialist (Design Analysis)
+│   ├── Angular Dev 1 (Core Components)
+│   └── Angular Dev 2 (Complex Components)
+├── Storybook Specialist (Documentation)
+│   ├── Angular Dev 1 (Story Integration)
+│   └── Angular Dev 2 (Story Integration)
+└── QA/Testing (Quality Validation)
+    ├── All Development Agents
+    └── Stakeholder Reviews
+```
+
+**Critical Path Dependencies**:
+1. UI/UX analysis must complete before development starts
+2. Core components must be ready before complex components
+3. Component development must complete before story creation
+4. QA validation required before stakeholder reviews
+
+---
+
+## 🎯 SUCCESS METRICS & QUALITY GATES
+
+### **Technical KPIs**
+- **Visual Parity**: 100% pixel-perfect match (0 tolerance for differences)
+- **Functional Parity**: 100% behavior match (all interactions identical)
+- **Performance**: Load time ≤ 3 seconds, bundle size optimized
+- **Accessibility**: WCAG 2.1 AA compliance (100% coverage)
+- **Test Coverage**: ≥ 90% unit test coverage
+- **Cross-browser**: 100% compatibility (Chrome, Firefox, Safari, Edge)
+
+### **Quality Gates (Each Sprint)**
+- [ ] **Visual Review**: Side-by-side comparison approved
+- [ ] **Functional Review**: All interactions tested and approved
+- [ ] **Accessibility Audit**: WCAG compliance verified
+- [ ] **Performance Review**: Benchmarks met or exceeded
+- [ ] **Stakeholder Approval**: Demo approved for next phase
+
+### **Escalation Criteria**
+- Any component fails visual parity check
+- Performance degrades below benchmarks
+- Accessibility compliance issues detected
+- Timeline delays exceed 1 week
+- Quality gates not met within sprint timeframe
+
+---
+
+## 📋 CURRENT SPRINT 1 TASKS
+
+### **ACTIVE TASKS** (Master Agent)
+1. **[🔄 IN PROGRESS]** Complete CLAUDE.md documentation
+2. **[⏳ NEXT]** Analyze React Button component specifications
+3. **[⏳ PENDING]** Setup Angular 19 project structure
+4. **[⏳ PENDING]** Configure Storybook for Angular
+5. **[⏳ PENDING]** Create detailed agent task sheets
+
+### **UPCOMING TASKS** (Sprint 1)
+- **UI/UX Agent**: React Button analysis and specification documentation
+- **Angular Dev 1**: Button component implementation with exact styling
+- **Storybook Agent**: Button stories and documentation creation
+- **QA Agent**: Button testing and validation setup
+- **Master Agent**: Progress coordination and stakeholder communication
+
+---
+
+## 🚨 RISK MANAGEMENT
+
+### **HIGH PRIORITY RISKS**
+1. **Visual Parity Failure**: Mitigation: Detailed spec documentation, pixel-perfect validation
+2. **Angular 19 Compatibility**: Mitigation: Early testing, fallback planning
+3. **Timeline Pressure**: Mitigation: Parallel workflows, priority management
+
+### **MEDIUM PRIORITY RISKS**
+1. **Resource Conflicts**: Mitigation: Clear role definitions, communication protocols
+2. **Complex Component Migration**: Mitigation: Phased approach, early prototyping
+3. **Stakeholder Expectations**: Mitigation: Regular demos, transparent communication
+
+---
+
+## 📞 STAKEHOLDER COMMUNICATION PLAN
+
+### **Regular Updates**
+- **Weekly Progress Reports**: Every Friday with metrics and blockers
+- **Sprint Reviews**: End of each sprint with demos and approvals
+- **Daily Standups**: Agent coordination and issue resolution
+
+### **Emergency Protocols**
+- **Blocker Escalation**: Immediate notification for timeline-critical issues
+- **Quality Issues**: Same-day communication for parity failures
+- **Scope Changes**: Formal approval process for requirement modifications
+
+---
+
+## 📝 AGENT ACTIVATION SEQUENCE
+
+### **Phase 1: Analysis & Setup** (Week 1)
+1. **Master Agent**: Complete documentation and React analysis
+2. **UI/UX Agent**: ACTIVATE for design specification
+3. **Storybook Agent**: ACTIVATE for setup configuration
+
+### **Phase 2: Development** (Week 1-2)
+1. **Angular Dev 1**: ACTIVATE for Button component development
+2. **QA Agent**: ACTIVATE for testing framework setup
+
+### **Phase 3: Validation** (Week 2)
+1. **All Agents**: Integration testing and validation
+2. **Master Agent**: Stakeholder demo preparation
+
+---
+
+**STATUS**: Sprint 1 COMPLETED ✅ - Button component approved by stakeholder  
+**CURRENT**: Sprint 2 ACTIVE ⚡ - 5-agent team deployed  
+**NEXT ACTION**: Input component analysis and parallel development in progress
+
+---
+
+## 🎯 SPRINT 2 STATUS (WEEK 3-5)
+
+### **ACTIVE SPRINT METRICS**
+- **Sprint**: 2 of 4  
+- **Timeline**: 3 weeks (21 days)
+- **Target Components**: Input, Card, Form, Modal
+- **Team Status**: 5 agents ACTIVE ⚡
+- **Quality Standard**: 100% parity maintained
+
+### **CURRENT PRIORITIES**
+1. **[🔄 ACTIVE]** Agent team coordination and task management
+2. **[⏳ NEXT]** React Input component analysis (Agent 1)
+3. **[⏳ NEXT]** Angular Input component implementation (Agent 2)
+4. **[⏳ PENDING]** Storybook configuration resolution (Agent 4)
+
+### **SUCCESS CRITERIA SPRINT 2**
+- [ ] 4 components with pixel-perfect parity
+- [ ] Complete Storybook documentation
+- [ ] 90%+ test coverage
+- [ ] Stakeholder demo ready (Day 21)
+
+**AGENT TASK ASSIGNMENTS**: See `/SPRINT_2_AGENT_TASKS.md` for detailed responsibilities

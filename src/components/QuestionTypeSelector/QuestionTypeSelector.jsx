@@ -67,7 +67,7 @@ const submissionTypes = [
       'Fluency & pace evaluation',
       'Confidence scoring'
     ],
-    route: '/question-details?type=speaking'
+    route: '/speaking/question-statement'
   },
   {
     id: 'reading',
