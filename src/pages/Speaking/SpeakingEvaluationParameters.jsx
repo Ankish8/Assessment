@@ -9,10 +9,19 @@ import '../../styles/utilities.css';
 
 const SpeakingEvaluationParameters = () => {
   const navigate = useNavigate();
+  const [automaticEvaluationEnabled, setAutomaticEvaluationEnabled] = useState(true);
   const [manualEvaluationEnabled, setManualEvaluationEnabled] = useState(false);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState({});
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  
+  // Automatic evaluation criteria with toggleable options
+  const [automaticCriteria, setAutomaticCriteria] = useState([
+    { id: 'fluency', name: 'Fluency', enabled: true, beta: true },
+    { id: 'lexical', name: 'Lexical Resource (Vocabulary)', enabled: true, beta: false },
+    { id: 'grammar', name: 'Grammar Range & Accuracy', enabled: true, beta: false },
+    { id: 'pronunciation', name: 'Pronunciation', enabled: true, beta: true }
+  ]);
 
   // Speaking-specific default criteria
   const defaultCriteria = [
@@ -51,12 +60,38 @@ const SpeakingEvaluationParameters = () => {
     setErrors(newErrors);
   }, [manualEvaluationEnabled, criteria, totalWeightage]);
 
+  const handleToggleAutomaticEvaluation = (enabled) => {
+    setAutomaticEvaluationEnabled(enabled);
+    if (enabled) {
+      setManualEvaluationEnabled(false);
+      setCriteria([]);
+    } else {
+      setManualEvaluationEnabled(true);
+      if (criteria.length === 0) {
+        setCriteria(defaultCriteria);
+      }
+    }
+  };
+
+  const toggleAutomaticCriterion = (criterionId) => {
+    setAutomaticCriteria(prev => 
+      prev.map(criterion => 
+        criterion.id === criterionId 
+          ? { ...criterion, enabled: !criterion.enabled }
+          : criterion
+      )
+    );
+  };
+
   const handleToggleManualEvaluation = (enabled) => {
     setManualEvaluationEnabled(enabled);
-    if (enabled && criteria.length === 0) {
-      // Auto-populate with default criteria when first enabled
-      setCriteria(defaultCriteria);
-    } else if (!enabled) {
+    if (enabled) {
+      setAutomaticEvaluationEnabled(false);
+      if (criteria.length === 0) {
+        setCriteria(defaultCriteria);
+      }
+    } else {
+      setAutomaticEvaluationEnabled(true);
       setCriteria([]);
     }
   };
@@ -88,7 +123,6 @@ const SpeakingEvaluationParameters = () => {
   const handleSaveAndContinue = () => {
     setHasAttemptedSubmit(true);
     if (manualEvaluationEnabled && Object.keys(errors).length > 0) return;
-    // Navigate to next step - Solution Details
     navigate('/speaking/solution-details');
   };
 
@@ -96,13 +130,13 @@ const SpeakingEvaluationParameters = () => {
     navigate('/speaking/question-details');
   };
 
-  const isValid = !manualEvaluationEnabled || (Object.keys(errors).length === 0);
+  const isValid = Object.keys(errors).length === 0;
 
   return (
     <div className={styles.container}>
-      {/* Compact Header */}
-      <div className={styles.compactHeader}>
-        <div>
+      {/* Header */}
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
           <div className={styles.headerLeft}>
             <button 
               className={styles.backButton}
@@ -119,274 +153,239 @@ const SpeakingEvaluationParameters = () => {
         </div>
       </div>
 
-      {/* Compact Progress Steps */}
-      <div className={styles.compactProgress}>
-        <div>
+      {/* Progress Steps */}
+      <div className={styles.progress}>
+        <div className={styles.progressContent}>
           <div className={styles.progressStep}>
             <div className={styles.stepIndicator}>
               <i className="fas fa-check"></i>
             </div>
-            <span className={styles.stepLabel}>Question Statement</span>
+            <span>Question Statement</span>
             <i className="fas fa-chevron-right"></i>
           </div>
           <div className={styles.progressStep}>
             <div className={styles.stepIndicator}>
               <i className="fas fa-check"></i>
             </div>
-            <span className={styles.stepLabel}>Media & Resources</span>
+            <span>Media & Resources</span>
             <i className="fas fa-chevron-right"></i>
           </div>
           <div className={styles.progressStep}>
             <div className={styles.stepIndicator}>
               <i className="fas fa-check"></i>
             </div>
-            <span className={styles.stepLabel}>Question Details</span>
+            <span>Question Details</span>
             <i className="fas fa-chevron-right"></i>
           </div>
           <div className={styles.progressStep}>
             <div className={`${styles.stepIndicator} ${styles.current}`}>
               <i className="fas fa-check"></i>
             </div>
-            <span className={styles.stepLabel}>Evaluation Parameters</span>
+            <span>Evaluation Parameters</span>
             <i className="fas fa-chevron-right"></i>
           </div>
-          <div className={`${styles.progressStep} ${styles.lastStep}`}>
+          <div className={styles.progressStep}>
             <div className={styles.stepIndicator}>5</div>
-            <span className={styles.stepLabel}>Solution Details</span>
+            <span>Solution Details</span>
           </div>
         </div>
       </div>
 
-      <div className={styles.content}>
-        {/* Automatic Evaluation Section */}
-        <Card variant="elevated" padding="lg" className={styles.automaticCard}>
-          <div className={styles.cardHeader}>
-            <h2 className={styles.sectionTitle}>
-              <i className="fas fa-clipboard-check"></i>
-              Add Evaluation Parameters
-              <span className={styles.optionalTag}>(Optional)</span>
-            </h2>
-            <p className={styles.sectionDescription}>
-              Configure how this speaking assessment will be evaluated and graded
-            </p>
-          </div>
+      {/* Main Content */}
+      <div className={styles.main}>
+        {/* Page Title */}
+        <div className={styles.titleCard}>
+          <h1>Add Evaluation Parameters</h1>
+          <p>Configure how this speaking assessment will be evaluated and graded. Choose between automatic AI-powered evaluation or manual human review.</p>
+        </div>
 
-          <div className={styles.automaticEvaluation}>
-            <div className={styles.evaluationMethod}>
-              <div className={styles.methodIcon}>
-                <i className="fas fa-robot"></i>
-              </div>
-              <div className={styles.methodContent}>
-                <h3 className={styles.methodTitle}>Automated Evaluation</h3>
-                <p className={styles.methodDescription}>
-                  Audio recordings are automatically analyzed for speech quality, pronunciation, fluency, and content structure using AI-powered assessment tools.
-                </p>
-                <div className={styles.methodFeatures}>
-                  <div className={styles.feature}>
-                    <i className="fas fa-check"></i>
-                    <span>Instant feedback and scoring</span>
-                  </div>
-                  <div className={styles.feature}>
-                    <i className="fas fa-check"></i>
-                    <span>Consistent and objective evaluation</span>
-                  </div>
-                  <div className={styles.feature}>
-                    <i className="fas fa-check"></i>
-                    <span>Scalable for large groups</span>
-                  </div>
-                  <div className={styles.feature}>
-                    <i className="fas fa-check"></i>
-                    <span>Speech analysis and pronunciation scoring</span>
-                  </div>
+        {/* Evaluation Options */}
+        <div className={styles.evaluationOptions}>
+          {/* Automatic Evaluation */}
+          <div className={styles.option}>
+            <div className={styles.optionHeader}>
+              <div className={styles.optionInfo}>
+                <div className={styles.optionIcon}>
+                  <i className="fas fa-robot"></i>
+                </div>
+                <div>
+                  <h3>Automatic Evaluation</h3>
+                  <p>AI-powered speech analysis and scoring</p>
                 </div>
               </div>
-              <div className={styles.methodStatus}>
-                <div className={styles.statusBadge}>
-                  <i className="fas fa-check-circle"></i>
-                  <span>Enabled</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Manual Evaluation Toggle Section */}
-        <Card variant="elevated" padding="lg" className={styles.manualToggleCard}>
-          <div className={styles.manualToggleSection}>
-            <div className={styles.toggleContent}>
-              <div className={styles.toggleIcon}>
-                <i className="fas fa-user-graduate"></i>
-              </div>
-              <div className={styles.toggleInfo}>
-                <h3 className={styles.toggleTitle}>Manual Evaluation</h3>
-                <p className={styles.toggleDescription}>
-                  Add human review with custom criteria for detailed assessment of speech quality, content, and delivery
-                </p>
-              </div>
-            </div>
-            <div className={styles.toggleControl}>
               <label className={styles.toggle}>
                 <input
                   type="checkbox"
-                  checked={manualEvaluationEnabled}
-                  onChange={(e) => handleToggleManualEvaluation(e.target.checked)}
+                  checked={automaticEvaluationEnabled}
+                  onChange={(e) => handleToggleAutomaticEvaluation(e.target.checked)}
                 />
                 <span className={styles.toggleSlider}></span>
               </label>
             </div>
-          </div>
-
-          {manualEvaluationEnabled && (
-            <div className={styles.enabledInfo}>
-              <div className={styles.infoBox}>
-                <i className="fas fa-info-circle"></i>
-                <div>
-                  <strong>Manual evaluation enabled</strong>
-                  <p>Configure custom evaluation criteria below. Total weightage must equal 100%.</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </Card>
-
-        {/* Criteria Configuration - Only show when manual evaluation is enabled */}
-        {manualEvaluationEnabled && (
-          <Card variant="elevated" padding="lg" className={styles.criteriaCard}>
-            <div className={styles.cardHeader}>
-              <div className={styles.titleRow}>
-                <h2 className={styles.sectionTitle}>
-                  <i className="fas fa-list-ol"></i>
-                  Evaluation Criteria
-                </h2>
-                <div className={styles.weightageIndicator}>
-                  <span className={`${styles.totalWeightage} ${isValidWeightage ? styles.valid : styles.invalid}`}>
-                    Total Weightage: {totalWeightage}%
-                  </span>
-                </div>
-              </div>
-              <p className={styles.sectionDescription}>
-                Define specific criteria and their weights for manual evaluation
-              </p>
-            </div>
-
-            <div className={styles.criteriaSection}>
-              {criteria.length > 0 ? (
-                <div className={styles.criteriaList}>
-                  {criteria.map((criterion, index) => (
-                    <div key={criterion.id} className={styles.criterionItem}>
-                      <div className={styles.criterionHeader}>
-                        <span className={styles.criterionNumber}>{index + 1}</span>
-                        <div className={styles.criterionInputs}>
-                          <Input
-                            placeholder="Evaluation criterion title"
-                            value={criterion.title}
-                            onChange={(e) => updateCriterion(criterion.id, 'title', e.target.value)}
-                            error={errors[`criterion_${index}_title`]}
-                            size="sm"
-                          />
-                          <div className={styles.weightageInput}>
-                            <Input
-                              type="number"
-                              placeholder="Weight %"
-                              value={criterion.weightage}
-                              onChange={(e) => updateCriterion(criterion.id, 'weightage', e.target.value)}
-                              error={errors[`criterion_${index}_weightage`]}
-                              min="1"
-                              max="100"
-                              size="sm"
-                              endIcon={<span>%</span>}
-                            />
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => removeCriterion(criterion.id)}
-                          className={styles.removeCriterion}
-                          title="Remove criterion"
-                        >
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
-                      </div>
-                      <Input
-                        placeholder="Optional description of what this criterion evaluates"
-                        value={criterion.description}
-                        onChange={(e) => updateCriterion(criterion.id, 'description', e.target.value)}
-                        size="sm"
-                        className={styles.descriptionInput}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className={styles.emptyCriteria}>
-                  <i className="fas fa-clipboard-list"></i>
-                  <h3>No evaluation criteria yet</h3>
-                  <p>Add criteria to define how speaking submissions will be manually evaluated</p>
-                </div>
-              )}
-
-              <div className={styles.criteriaActions}>
-                <Button
-                  variant="ghost"
-                  onClick={addCriterion}
-                  className={styles.addCriterion}
-                >
-                  <i className="fas fa-plus"></i>
-                  Add Criterion
-                </Button>
+            
+            {automaticEvaluationEnabled && (
+              <div className={styles.optionContent}>
+                <ul className={styles.features}>
+                  <li><i className="fas fa-check"></i> Instant feedback and scoring</li>
+                  <li><i className="fas fa-check"></i> Speech analysis and pronunciation scoring</li>
+                  <li><i className="fas fa-check"></i> Consistent and objective evaluation</li>
+                </ul>
                 
-                {criteria.length === 0 && (
-                  <Button
-                    variant="secondary"
-                    onClick={loadDefaultCriteria}
-                    className={styles.loadDefaults}
-                  >
-                    <i className="fas fa-magic"></i>
-                    Use Default Criteria
-                  </Button>
-                )}
+                <div className={styles.criteriaCustomization}>
+                  <h4>Evaluation Criteria</h4>
+                  <ul className={styles.features}>
+                    {automaticCriteria.map(criterion => (
+                      <li key={criterion.id} className={styles.criterionToggle}>
+                        <i className={criterion.enabled ? "fas fa-check" : "far fa-square"}></i>
+                        <span onClick={() => toggleAutomaticCriterion(criterion.id)} className={styles.criterionName}>
+                          {criterion.name}
+                          {criterion.beta && (
+                            <div className={styles.tooltipContainer}>
+                              <i className={`fas fa-info-circle ${styles.accuracyInfo}`}></i>
+                              <div className={styles.tooltip}>
+                                AI accuracy for this criterion is still improving
+                              </div>
+                            </div>
+                          )}
+                        </span>
+                        <label className={styles.miniToggle}>
+                          <input
+                            type="checkbox"
+                            checked={criterion.enabled}
+                            onChange={() => toggleAutomaticCriterion(criterion.id)}
+                          />
+                          <span className={styles.miniToggleSlider}></span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
+            )}
+          </div>
 
-              {errors.criteria && (
-                <div className={styles.errorMessage}>
-                  <i className="fas fa-exclamation-triangle"></i>
-                  {errors.criteria}
+          {/* Manual Evaluation */}
+          {!automaticEvaluationEnabled && (
+            <div className={styles.option}>
+              <div className={styles.optionHeader}>
+                <div className={styles.optionInfo}>
+                  <div className={styles.optionIcon}>
+                    <i className="fas fa-user-graduate"></i>
+                  </div>
+                  <div>
+                    <h3>Manual Evaluation</h3>
+                    <p>Create custom evaluation criteria with specific weightings. Evaluators will score each criterion individually, and the final grade will be calculated based on your defined weightings.</p>
+                  </div>
                 </div>
-              )}
+              </div>
               
-              {errors.totalWeightage && (
-                <div className={styles.errorMessage}>
-                  <i className="fas fa-exclamation-triangle"></i>
-                  {errors.totalWeightage}
+              <div className={styles.optionContent}>
+                <div className={styles.infoBox}>
+                  <i className="fas fa-info-circle"></i>
+                  <div>
+                    <strong>Manual evaluation enabled</strong>
+                    <p>Configure custom evaluation criteria below. Total weightage must equal 100%.</p>
+                  </div>
                 </div>
-              )}
-            </div>
-          </Card>
-        )}
-
-        {/* Bottom Actions */}
-        <div className={styles.bottomActions}>
-          {!isValid && hasAttemptedSubmit && (
-            <div className={styles.validationAlert}>
-              <i className="fas fa-exclamation-triangle"></i>
-              Please fix the validation errors to continue
+              </div>
             </div>
           )}
-          
-          <div className={styles.actionButtons}>
-            <Button 
-              variant="secondary" 
-              onClick={handlePrevious}
-            >
-              Previous
-            </Button>
-            <Button 
-              variant="primary" 
-              onClick={handleSaveAndContinue}
-              disabled={!isValid}
-            >
-              Save & Continue
-            </Button>
+        </div>
+
+        {/* Criteria Configuration */}
+        {manualEvaluationEnabled && (
+          <div className={styles.criteriaSection}>
+            <div className={styles.criteriaHeader}>
+              <h2>Evaluation Criteria</h2>
+              <span className={`${styles.totalWeightage} ${isValidWeightage ? styles.valid : styles.invalid}`}>
+                Total: {totalWeightage}%
+              </span>
+            </div>
+            
+            <div className={styles.criteriaList}>
+              {criteria.map((criterion, index) => (
+                <div key={criterion.id} className={styles.criterionItem}>
+                  <div className={styles.criterionHeader}>
+                    <span className={styles.criterionNumber}>{index + 1}</span>
+                    <div className={styles.criterionInputs}>
+                      <Input
+                        placeholder="Evaluation criterion title"
+                        value={criterion.title}
+                        onChange={(e) => updateCriterion(criterion.id, 'title', e.target.value)}
+                        error={errors[`criterion_${index}_title`]}
+                        size="sm"
+                      />
+                      <div className={styles.weightageInput}>
+                        <Input
+                          type="number"
+                          placeholder="Weight %"
+                          value={criterion.weightage}
+                          onChange={(e) => updateCriterion(criterion.id, 'weightage', e.target.value)}
+                          error={errors[`criterion_${index}_weightage`]}
+                          min="1"
+                          max="100"
+                          size="sm"
+                          endIcon={<span>%</span>}
+                        />
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeCriterion(criterion.id)}
+                      className={styles.removeCriterion}
+                    >
+                      <i className="fas fa-trash-alt"></i>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.criteriaActions}>
+              <Button variant="ghost" onClick={addCriterion}>
+                <i className="fas fa-plus"></i>
+                Add Criterion
+              </Button>
+              {criteria.length === 0 && (
+                <Button variant="secondary" onClick={loadDefaultCriteria}>
+                  <i className="fas fa-magic"></i>
+                  Use Default Criteria
+                </Button>
+              )}
+            </div>
+
+            {errors.criteria && (
+              <div className={styles.error}>
+                <i className="fas fa-exclamation-triangle"></i>
+                {errors.criteria}
+              </div>
+            )}
+            
+            {errors.totalWeightage && (
+              <div className={styles.error}>
+                <i className="fas fa-exclamation-triangle"></i>
+                {errors.totalWeightage}
+              </div>
+            )}
           </div>
+        )}
+      </div>
+
+      {/* Bottom Actions */}
+      <div className={styles.bottomActions}>
+        {!isValid && hasAttemptedSubmit && (
+          <div className={styles.validationAlert}>
+            <i className="fas fa-exclamation-triangle"></i>
+            Please fix the validation errors to continue
+          </div>
+        )}
+        
+        <div className={styles.actionButtons}>
+          <Button variant="secondary" onClick={handlePrevious}>
+            Previous
+          </Button>
+          <Button variant="primary" onClick={handleSaveAndContinue} disabled={!isValid}>
+            Save & Continue
+          </Button>
         </div>
       </div>
     </div>
