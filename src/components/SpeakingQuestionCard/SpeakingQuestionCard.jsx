@@ -54,25 +54,69 @@ const SpeakingQuestionCard = ({ questionData }) => {
           </div>
           <div className={styles.timeCard}>
             <i className="fas fa-clock"></i>
-            <span>{questionData.timeSpent}s</span>
+            <span>Time spent: {questionData.timeSpent} secs</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Additional Stats */}
+      <div className={styles.statsSection}>
+        <div className={styles.statsGrid}>
+          <div className={styles.statItem}>
+            <i className="fas fa-external-link-alt"></i>
+            <span>Total Time Spent Outside: {questionData.totalTimeOutside} sec</span>
+          </div>
+          <div className={styles.statItem}>
+            <i className="fas fa-mouse-pointer"></i>
+            <span>Total Move Count: {questionData.moveCount}</span>
+          </div>
+          <div className={styles.statItem}>
+            <i className="fas fa-redo"></i>
+            <span>Attempts: {questionData.attempts}</span>
+          </div>
+          <div className={styles.statItem}>
+            <i className="fas fa-percentage"></i>
+            <span>Confidence: {questionData.confidence.percentage}% </span>
+            <span className={`${styles.confidenceBadge} ${styles[questionData.confidence.level.toLowerCase()]}`}>
+              {questionData.confidence.level}
+            </span>
           </div>
         </div>
       </div>
 
       {/* Audio Section */}
       <div className={styles.section}>
-        <h4><i className="fas fa-volume-up"></i> Audio Analysis</h4>
+        <h4>Transcript Analysis</h4>
         <div className={styles.audioContainer}>
           <div className={styles.audioPlayer}>
             <button onClick={handlePlayPause} className={styles.playButton}>
               <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
             </button>
-            <span className={styles.duration}>{formatTime(questionData.audio.duration)}</span>
+            <div className={styles.audioInfo}>
+              <div className={styles.audioTitle}>
+                <span>Audio Submitted</span>
+                <span className={styles.duration}>
+                  <i className="fas fa-clock"></i>
+                  {formatTime(questionData.audio.duration)}
+                </span>
+                {isPlaying && (
+                  <span className={styles.status}>
+                    Playing...
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className={styles.audioControls}>
+              <button className={styles.speedButton} title="Playback speed">
+                <i className="fas fa-tachometer-alt"></i>
+                1x
+              </button>
+            </div>
           </div>
           <div className={styles.transcriptSection}>
             <div className={styles.transcriptHeader}>
               <div className={styles.transcriptLabel}>
-                <i className="fas fa-file-alt"></i> Transcript:
+                Transcript:
               </div>
               <div className={styles.analysisControls}>
                 <span className={styles.controlsLabel}>Word Analysis</span>
@@ -166,70 +210,82 @@ const SpeakingQuestionCard = ({ questionData }) => {
 
       {/* Analysis Section */}
       <div className={styles.section}>
-        <h4><i className="fas fa-robot"></i> AI Analysis Results</h4>
+        <h4>Score Breakdown</h4>
         <div className={styles.analysisGrid}>
           <div className={styles.analysisCard}>
             <div className={styles.analysisHeader}>
               <i className="fas fa-microphone-alt"></i>
               <div className={styles.analysisTitle}>
-                <span>Fluency & Pronunciation</span>
+                <span>Fluency</span>
                 <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.fluency.score, questionData.analysis.fluency.maxScore)]}`}>
-                  {questionData.analysis.fluency.score}/{questionData.analysis.fluency.maxScore}
+                  {questionData.analysis.fluency.score}/5
                 </span>
               </div>
             </div>
-            <ul className={styles.detailsList}>
-              {questionData.analysis.fluency.details.map((detail, index) => (
-                <li key={index}>{detail}</li>
-              ))}
-            </ul>
+            {questionData.analysis.fluency.details && (
+              <ul className={styles.detailsList}>
+                {questionData.analysis.fluency.details.map((detail, index) => (
+                  <li key={index}>{detail}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className={styles.analysisCard}>
+            <div className={styles.analysisHeader}>
+              <i className="fas fa-book"></i>
+              <div className={styles.analysisTitle}>
+                <span>Lexical Resource (Vocabulary)</span>
+                <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.lexical?.score || questionData.analysis.content?.score || 3, 5)]}`}>
+                  {questionData.analysis.lexical?.score || questionData.analysis.content?.score || '3.0'}/5
+                </span>
+              </div>
+            </div>
+            {questionData.analysis.lexical?.details && (
+              <ul className={styles.detailsList}>
+                {questionData.analysis.lexical.details.map((detail, index) => (
+                  <li key={index}>{detail}</li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className={styles.analysisCard}>
             <div className={styles.analysisHeader}>
               <i className="fas fa-spell-check"></i>
               <div className={styles.analysisTitle}>
-                <span>Grammar & Punctuation</span>
+                <span>Grammar Range & Accuracy</span>
                 <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.grammar.score, questionData.analysis.grammar.maxScore)]}`}>
-                  {questionData.analysis.grammar.score}/{questionData.analysis.grammar.maxScore}
+                  {questionData.analysis.grammar.score}/5
                 </span>
               </div>
             </div>
-            <ul className={styles.detailsList}>
-              {questionData.analysis.grammar.details.map((detail, index) => (
-                <li key={index}>{detail}</li>
-              ))}
-            </ul>
+            {questionData.analysis.grammar.details && (
+              <ul className={styles.detailsList}>
+                {questionData.analysis.grammar.details.map((detail, index) => (
+                  <li key={index}>{detail}</li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className={styles.analysisCard}>
             <div className={styles.analysisHeader}>
-              <i className="fas fa-comments"></i>
+              <i className="fas fa-volume-up"></i>
               <div className={styles.analysisTitle}>
-                <span>Content & Communication</span>
-                <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.content.score, questionData.analysis.content.maxScore)]}`}>
-                  {questionData.analysis.content.score}/{questionData.analysis.content.maxScore}
+                <span>Pronunciation</span>
+                <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.pronunciation?.score || 4, 5)]}`}>
+                  {questionData.analysis.pronunciation?.score || '4.0'}/5
                 </span>
               </div>
             </div>
-            <ul className={styles.detailsList}>
-              {questionData.analysis.content.details.map((detail, index) => (
-                <li key={index}>{detail}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className={styles.analysisCard}>
-            <div className={styles.analysisHeader}>
-              <i className="fas fa-heart"></i>
-              <div className={styles.analysisTitle}>
-                <span>Sentiment Analysis</span>
-                <span className={styles.sentimentBadge}>{questionData.analysis.sentiment}</span>
-              </div>
-            </div>
-            <div className={styles.sentimentContent}>
-              <span className={styles.sentimentDescription}>Overall emotional tone detected in the response</span>
-            </div>
+            {questionData.analysis.pronunciation?.details && (
+              <ul className={styles.detailsList}>
+                {questionData.analysis.pronunciation.details.map((detail, index) => (
+                  <li key={index}>{detail}</li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>
@@ -237,7 +293,7 @@ const SpeakingQuestionCard = ({ questionData }) => {
       {/* Comments Section - Only show if comments exist and are not empty */}
       {questionData.evaluatorComments && questionData.evaluatorComments.trim().length > 0 && (
         <div className={styles.section}>
-          <h4><i className="fas fa-comment-alt"></i> Evaluator Comments</h4>
+          <h4>Evaluator Comments</h4>
           <div className={styles.commentsCard}>
             <p>{questionData.evaluatorComments}</p>
           </div>

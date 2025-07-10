@@ -41,19 +41,43 @@ const SpeakingQuestionCardDemo = () => {
         fluency: {
           score: 2.1,
           maxScore: 5,
-          details: ["Clear pronunciation detected", "Natural speech flow: Moderate"]
+          details: [
+            "Speaking pace is inconsistent",
+            "Some hesitation and pauses",
+            "Needs improvement in flow"
+          ]
+        },
+        lexical: {
+          score: 2.0,
+          maxScore: 5,
+          details: [
+            "Limited vocabulary range",
+            "Basic word choices",
+            "Some repetition of phrases"
+          ]
         },
         grammar: {
           score: 1.8,
           maxScore: 5,
-          details: ["Sentence structure: Basic", "Grammar accuracy: 75%"]
+          details: [
+            "Simple sentence structures",
+            "Some grammatical errors",
+            "Limited complex constructions"
+          ]
         },
-        content: {
-          score: 0.6,
+        pronunciation: {
+          score: 2.5,
           maxScore: 5,
-          details: ["Message clarity: Low", "Engagement level: Basic"]
+          details: [
+            "Generally clear pronunciation",
+            "Some mispronunciations",
+            "Accent affects clarity occasionally"
+          ]
         },
-        sentiment: "NEUTRAL"
+        sentiment: "NEUTRAL",
+        ielts: {
+          band: 4.5
+        }
       },
       evaluatorComments: null
     },
@@ -109,19 +133,43 @@ const SpeakingQuestionCardDemo = () => {
         fluency: {
           score: 4.5,
           maxScore: 5,
-          details: ["Excellent pronunciation and clarity", "Natural speech flow: Very good", "Appropriate pacing maintained"]
+          details: [
+            "Excellent speaking pace and rhythm",
+            "Natural flow with minimal hesitation",
+            "Confident delivery throughout"
+          ]
+        },
+        lexical: {
+          score: 4.2,
+          maxScore: 5,
+          details: [
+            "Wide range of vocabulary",
+            "Appropriate word choices",
+            "Good use of professional terminology"
+          ]
         },
         grammar: {
           score: 4.3,
           maxScore: 5,
-          details: ["Complex sentence structures used effectively", "Grammar accuracy: 95%", "Varied vocabulary demonstrated"]
+          details: [
+            "Complex sentence structures used well",
+            "Minor grammatical errors only",
+            "Good variety in constructions"
+          ]
         },
-        content: {
-          score: 3.8,
+        pronunciation: {
+          score: 4.0,
           maxScore: 5,
-          details: ["Message clarity: High", "Engagement level: Very good", "Structured presentation approach"]
+          details: [
+            "Clear and intelligible pronunciation",
+            "Good stress and intonation patterns",
+            "Minor accent features present"
+          ]
         },
-        sentiment: "POSITIVE"
+        sentiment: "POSITIVE",
+        ielts: {
+          band: 7.5
+        }
       },
       evaluatorComments: "Excellent communication skills demonstrated. Clear structure and engaging delivery."
     },
@@ -155,19 +203,43 @@ const SpeakingQuestionCardDemo = () => {
         fluency: {
           score: 0.5,
           maxScore: 5,
-          details: ["Pronunciation unclear", "Multiple hesitations detected", "Irregular speech flow"]
+          details: [
+            "Very hesitant delivery",
+            "Long pauses and fillers",
+            "Lacks confidence in speaking"
+          ]
+        },
+        lexical: {
+          score: 1.0,
+          maxScore: 5,
+          details: [
+            "Very limited vocabulary",
+            "Basic expressions only",
+            "Difficulty finding appropriate words"
+          ]
         },
         grammar: {
           score: 1.2,
           maxScore: 5,
-          details: ["Simple sentence structures only", "Grammar accuracy: 45%", "Limited vocabulary usage"]
+          details: [
+            "Simple phrases only",
+            "Frequent grammatical errors",
+            "Very basic sentence structures"
+          ]
         },
-        content: {
-          score: 0.7,
+        pronunciation: {
+          score: 1.5,
           maxScore: 5,
-          details: ["Message clarity: Very low", "Engagement level: Poor", "Incomplete thoughts expressed"]
+          details: [
+            "Unclear pronunciation at times",
+            "Heavy accent affects understanding",
+            "Word stress issues present"
+          ]
         },
-        sentiment: "UNCERTAIN"
+        sentiment: "UNCERTAIN",
+        ielts: {
+          band: 3.0
+        }
       },
       evaluatorComments: "Needs significant improvement in speaking confidence and content organization."
     }
@@ -176,9 +248,6 @@ const SpeakingQuestionCardDemo = () => {
   return (
     <div className={styles.demoPage}>
       <div className={styles.container}>
-        <header className={styles.header}>
-          <h1 className={styles.pageTitle}>Speaking Question Cards</h1>
-        </header>
 
         <div className={styles.questionsSection}>
           <SpeakingQuestionCard questionData={sampleQuestions[1]} />

@@ -92,6 +92,68 @@
   white-space: nowrap;
 }
 
+/* Stats Section */
+.statsSection {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-3);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-2);
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-2);
+  background: var(--color-background-primary);
+  border-radius: var(--radius-base);
+  border: 1px solid var(--color-border-primary);
+}
+
+.statItem i {
+  color: var(--color-primary-600);
+  font-size: var(--font-size-xs);
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.confidenceBadge {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-base);
+  white-space: nowrap;
+  margin-left: var(--spacing-1);
+}
+
+.confidenceBadge.high {
+  background: var(--color-success-50);
+  color: var(--color-success-700);
+  border: 1px solid var(--color-success-200);
+}
+
+.confidenceBadge.moderate {
+  background: var(--color-warning-50);
+  color: var(--color-warning-700);
+  border: 1px solid var(--color-warning-200);
+}
+
+.confidenceBadge.low {
+  background: var(--color-error-50);
+  color: var(--color-error-700);
+  border: 1px solid var(--color-error-200);
+}
+
 /* Sections */
 .section {
   margin-bottom: var(--spacing-3);
@@ -123,15 +185,7 @@
   background: var(--color-background-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-base);
-  padding: var(--spacing-3) 8px;
-}
-
-.audioContainer p {
-  transform: translateX(0px) translateY(0px);
-  border-width: 1px;
-  border-left-width: 4px;
-  border-style: solid;
-  border-left-color: rgba(155, 89, 182, 0.61);
+  padding: var(--spacing-3);
 }
 
 /* Audio Player */
@@ -139,11 +193,9 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  margin-bottom: var(--spacing-2);
-  margin-left: 8px;
-  margin-right: 8px;
+  margin-bottom: var(--spacing-3);
   background: var(--color-background-primary);
-  padding: var(--spacing-2);
+  padding: var(--spacing-3);
   border-radius: var(--radius-base);
   border: 1px solid var(--color-border-primary);
 }
@@ -166,10 +218,81 @@
   background: var(--color-primary-600);
 }
 
-.duration {
+.audioInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  min-width: 0;
+}
+
+.audioTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.audioTitle i {
+  color: var(--color-primary-600);
+  font-size: var(--font-size-sm);
+}
+
+.audioMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+}
+
+.duration {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
   font-weight: var(--font-weight-medium);
+}
+
+.duration i {
+  font-size: var(--font-size-xs);
+}
+
+.status {
+  font-style: italic;
+  color: var(--color-text-tertiary);
+}
+
+.audioControls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.speedButton {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  min-width: fit-content;
+}
+
+.speedButton:hover {
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-600);
+  background: var(--color-primary-25);
+}
+
+.speedButton i {
+  font-size: var(--font-size-xs);
 }
 
 /* Transcript */
@@ -177,9 +300,7 @@
   background: var(--color-background-primary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-base);
-  padding: var(--spacing-2);
-  margin-left: 8px;
-  margin-right: 8px;
+  padding: var(--spacing-3);
 }
 
 .transcriptHeader {
@@ -250,8 +371,7 @@
   color: var(--color-primary-700);
 }
 
-.confidenceLegend,
-.sentimentLegend {
+.confidenceLegend {
   background: var(--color-blue-25);
   border: 1px solid var(--color-blue-200);
   border-radius: var(--radius-base);
@@ -261,7 +381,10 @@
 
 .sentimentLegend {
   background: var(--color-purple-25);
-  border-color: var(--color-purple-200);
+  border: 1px solid var(--color-purple-200);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-3);
 }
 
 .legendTitle {
@@ -337,13 +460,11 @@
   line-height: var(--line-height-base);
   font-style: normal;
   background: var(--color-background-primary);
-  padding: var(--spacing-2);
+  padding: var(--spacing-3);
   border-radius: var(--radius-base);
   border: 1px solid var(--color-border-primary);
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-left-color: #ddd6e4;
   quotes: '"' '"' ''' ''';
+  margin-top: var(--spacing-3);
 }
 
 .confidenceWord,
@@ -477,6 +598,32 @@
   border: 1px solid var(--color-error-200);
 }
 
+.ieltsScore {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-base);
+  white-space: nowrap;
+}
+
+.ieltsScore.success {
+  background: var(--color-success-50);
+  color: var(--color-success-700);
+  border: 1px solid var(--color-success-200);
+}
+
+.ieltsScore.warning {
+  background: var(--color-warning-50);
+  color: var(--color-warning-700);
+  border: 1px solid var(--color-warning-200);
+}
+
+.ieltsScore.error {
+  background: var(--color-error-50);
+  color: var(--color-error-700);
+  border: 1px solid var(--color-error-200);
+}
+
 .detailsList {
   margin: 0;
   padding: 0;
@@ -497,6 +644,8 @@
 .detailsList li:last-child {
   margin-bottom: 0;
 }
+
+
 
 /* Sentiment in Analysis Grid */
 .sentimentBadge {
