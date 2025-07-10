@@ -1,0 +1,77 @@
+/* Speaking Question Card Demo Page Styles */
+.demoPage {
+  min-height: 100vh;
+  background: var(--color-background-primary);
+  padding: var(--spacing-6) 0;
+}
+
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+  padding: var(--spacing-6) 0;
+}
+
+.pageTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+
+/* Questions Section */
+.questionsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .demoPage {
+    padding: var(--spacing-4) 0;
+  }
+
+  .container {
+    padding: 0 var(--spacing-4);
+  }
+
+  .header {
+    margin-bottom: var(--spacing-6);
+    padding: var(--spacing-4) 0;
+  }
+
+  .pageTitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .questionsSection {
+    gap: var(--spacing-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--spacing-3);
+  }
+
+  .pageTitle {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .header {
+    border: 2px solid var(--color-border-primary);
+  }
+}
