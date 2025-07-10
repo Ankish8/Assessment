@@ -1,0 +1,113 @@
+/* LanguageList.module.css */
+.languageList {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.languageItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.languageItem:last-child {
+  margin-bottom: 0;
+}
+
+.languageItem:hover {
+  background: white;
+  border-color: var(--color-border);
+  transform: translateX(2px);
+}
+
+.languageItem.selected {
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(127, 86, 217, 0.1);
+}
+
+.languageItem.current {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+.languageItem.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--color-primary);
+  border-radius: 0 3px 3px 0;
+}
+
+.languageCheckbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d0d5dd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.languageItem:hover .languageCheckbox {
+  border-color: #98a2b3;
+}
+
+.languageItem.selected .languageCheckbox {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  animation: checkPulse 0.3s ease;
+}
+
+.checkmark {
+  color: white;
+  font-size: 12px;
+  animation: checkAppear 0.2s ease;
+}
+
+@keyframes checkPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes checkAppear {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.languageInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.languageName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.languageVersion {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.2;
+}

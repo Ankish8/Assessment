@@ -1,0 +1,76 @@
+/* Enhanced Difficulty Selector */
+.difficultySelector {
+  position: relative;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 6px;
+  display: flex;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.difficultyOption {
+  flex: 1;
+  padding: 12px 16px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.difficultyOption:hover:not(.selected) {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.difficultySelector::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: calc(33.333% - 4px);
+  height: calc(100% - 12px);
+  background: linear-gradient(135deg, #7f56d9, #6941c6);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(127, 86, 217, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1;
+}
+
+.difficultySelector.easy::before {
+  left: 6px;
+}
+
+.difficultySelector.medium::before {
+  left: calc(33.333% + 2px);
+}
+
+.difficultySelector.hard::before {
+  left: calc(66.666% - 2px);
+}
+
+.difficultyLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.3s ease;
+}
+
+.difficultyOption.selected .difficultyLabel {
+  color: white;
+  font-weight: 600;
+  transform: scale(1.05);
+}
+
+.difficultySelector.easy .difficultyOption:first-child .difficultyLabel,
+.difficultySelector.medium .difficultyOption:nth-child(2) .difficultyLabel,
+.difficultySelector.hard .difficultyOption:last-child .difficultyLabel {
+  color: white !important;
+  font-weight: 600;
+}

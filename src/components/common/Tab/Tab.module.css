@@ -1,0 +1,121 @@
+@import '../../../styles/tokens.css';
+
+.tabContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Tab Navigation */
+.tabNav {
+    display: flex;
+    background-color: var(--color-background-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-1);
+    margin-bottom: var(--spacing-6);
+    position: relative;
+    box-shadow: var(--shadow-xs);
+}
+
+.tabButton {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: var(--spacing-3) var(--spacing-5);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    font-family: var(--font-family-base);
+}
+
+.tabButton:hover {
+    color: var(--color-text-primary);
+}
+
+.tabButton.active {
+    background-color: var(--color-background-primary);
+    color: var(--color-primary-600);
+    box-shadow: var(--shadow-sm);
+    font-weight: var(--font-weight-semibold);
+}
+
+.tabButton:focus {
+    outline: 2px solid var(--color-primary-400);
+    outline-offset: 2px;
+}
+
+.tabButton i {
+    font-size: var(--font-size-sm);
+}
+
+/* Tab Content */
+.tabContent {
+    flex: 1;
+    overflow: hidden;
+}
+
+.tabPanel {
+    display: none;
+    height: 100%;
+    animation: fadeIn var(--animation-duration-slow) var(--animation-ease-out);
+}
+
+.tabPanel.active {
+    display: block;
+}
+
+.tabPanelInner {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: var(--spacing-2);
+}
+
+/* Custom scrollbar */
+.tabPanelInner::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tabPanelInner::-webkit-scrollbar-track {
+    background: var(--color-background-secondary);
+    border-radius: 3px;
+}
+
+.tabPanelInner::-webkit-scrollbar-thumb {
+    background: var(--color-border-secondary);
+    border-radius: 3px;
+}
+
+.tabPanelInner::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-tertiary);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .tabButton {
+        padding: var(--spacing-2) var(--spacing-3);
+        font-size: var(--font-size-xs);
+    }
+    
+    .tabButton i {
+        font-size: var(--font-size-xs);
+    }
+}

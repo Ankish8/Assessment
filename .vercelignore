@@ -1,0 +1,17 @@
+node_modules
+.git
+.storybook
+stories
+storybook-static
+static-backup
+ui
+*.md
+.DS_Store
+dist/assets
+.cache
+.vite
+.eslintrc.json
+.prettierrc.cjs
+tsconfig.json
+tailwind.config.js
+vite.config.js

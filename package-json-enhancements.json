@@ -1,0 +1,54 @@
+{
+  "scripts": {
+    "// NOTE": "Add these optimized scripts to your existing package.json",
+    
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "NODE_OPTIONS='--max-old-space-size=8192' storybook build",
+    "storybook:build:analyze": "NODE_OPTIONS='--max-old-space-size=8192' storybook build --webpack-stats-json",
+    "storybook:serve": "npx http-server storybook-static -p 8080",
+    "storybook:test": "test-storybook",
+    
+    "// Performance Scripts": "",
+    "build:prod": "NODE_OPTIONS='--max-old-space-size=8192' ng build --configuration production",
+    "analyze:bundle": "npx webpack-bundle-analyzer storybook-static/static/js/*.js",
+    
+    "// Development Scripts": "",
+    "dev:storybook": "concurrently \"ng serve\" \"npm run storybook\"",
+    "lint:stories": "eslint src/**/*.stories.ts",
+    "format:stories": "prettier --write src/**/*.stories.ts"
+  },
+  
+  "devDependencies": {
+    "// NOTE": "Consider adding these for enhanced development experience",
+    
+    "@storybook/addon-a11y": "^8.3.5",
+    "@storybook/addon-viewport": "^8.3.5", 
+    "@storybook/addon-measure": "^8.3.5",
+    "@storybook/addon-outline": "^8.3.5",
+    "@storybook/test-runner": "^0.19.1",
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1",
+    "webpack-bundle-analyzer": "^4.10.1"
+  },
+  
+  "storybook": {
+    "// Configuration": "Storybook-specific configuration",
+    "disableTelemetry": true,
+    "enableCrashReports": false
+  },
+  
+  "browserslist": {
+    "// Production": "Optimized for modern browsers in production",
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "last 2 versions"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,187 @@
+/* CodeEditor.module.css */
+.codeEditorSection {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+.editorHeader {
+  background: white;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+}
+
+.editorTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.languageLabel {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.currentLanguage {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.successBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ecfdf3;
+  color: #067647;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 12px;
+  animation: fadeInScale 0.3s ease;
+}
+
+.successBadge svg {
+  width: 12px;
+  height: 12px;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.editorActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.editorBtn {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: white;
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: auto;
+  white-space: nowrap;
+}
+
+.editorBtn svg {
+  flex-shrink: 0;
+}
+
+.editorBtn.iconOnly {
+  padding: 8px;
+  min-width: 36px;
+  justify-content: center;
+}
+
+.editorBtn.compact {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.editorBtn:hover {
+  background: var(--color-background-secondary);
+  border-color: #98a2b3;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+.codeEditor {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 20px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  flex: 1;
+  overflow: auto;
+  white-space: pre-wrap;
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  outline: none;
+  min-height: 400px;
+}
+
+/* Light theme */
+.codeEditor.lightTheme {
+  background: #ffffff;
+  color: #333333;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Syntax highlighting for dark theme */
+.codeEditor :global(.keyword) { color: #569cd6; }
+.codeEditor :global(.string) { color: #ce9178; }
+.codeEditor :global(.comment) { color: #6a9955; }
+.codeEditor :global(.function) { color: #dcdcaa; }
+.codeEditor :global(.number) { color: #b5cea8; }
+.codeEditor :global(.operator) { color: #d4d4d4; }
+.codeEditor :global(.preprocessor) { color: #c586c0; }
+
+/* Syntax highlighting for light theme */
+.codeEditor.lightTheme :global(.keyword) { color: #0000ff; }
+.codeEditor.lightTheme :global(.string) { color: #a31515; }
+.codeEditor.lightTheme :global(.comment) { color: #008000; }
+.codeEditor.lightTheme :global(.function) { color: #795e26; }
+.codeEditor.lightTheme :global(.number) { color: #098658; }
+.codeEditor.lightTheme :global(.operator) { color: #333333; }
+.codeEditor.lightTheme :global(.preprocessor) { color: #af00db; }
+
+/* Scrollbar styling */
+.codeEditor::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.codeEditor::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.codeEditor::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.codeEditor.lightTheme::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.codeEditor::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.codeEditor.lightTheme::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
