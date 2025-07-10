@@ -24,6 +24,8 @@ import SpeakingQuestionStatement from './pages/Speaking/SpeakingQuestionStatemen
 import SpeakingMediaResources from './pages/Speaking/SpeakingMediaResources';
 import SpeakingQuestionDetails from './pages/Speaking/SpeakingQuestionDetails';
 import SpeakingEvaluationParameters from './pages/Speaking/SpeakingEvaluationParameters';
+import SpeakingQuestionCardDemo from './pages/SpeakingQuestionCardDemo/SpeakingQuestionCardDemo';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './styles/variables.css';
 import './index.css';
 
@@ -55,6 +57,7 @@ function App() {
         <Route path="/speaking/media-resources" element={<SpeakingMediaResources />} />
         <Route path="/speaking/question-details" element={<SpeakingQuestionDetails />} />
         <Route path="/speaking/evaluation-parameters" element={<SpeakingEvaluationParameters />} />
+        <Route path="/speaking-question-card-demo" element={<SpeakingQuestionCardDemo />} />
         <Route path="/premium-modal-demo" element={<PremiumModalDemo />} />
       </Routes>
     </div>
