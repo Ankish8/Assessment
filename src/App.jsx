@@ -26,7 +26,7 @@ import SpeakingQuestionDetails from './pages/Speaking/SpeakingQuestionDetails';
 import SpeakingEvaluationParameters from './pages/Speaking/SpeakingEvaluationParameters';
 import SpeakingQuestionCardDemo from './pages/SpeakingQuestionCardDemo/SpeakingQuestionCardDemo';
 import VideoJobDescription from './pages/Video/VideoJobDescription';
-import VideoQuestionStatement from './pages/Video/VideoQuestionStatement';
+import VideoQuestions from './pages/Video/VideoQuestions';
 import VideoMediaResources from './pages/Video/VideoMediaResources';
 import VideoQuestionDetails from './pages/Video/VideoQuestionDetails';
 import VideoEvaluationParameters from './pages/Video/VideoEvaluationParameters';
@@ -64,7 +64,7 @@ function App() {
         <Route path="/speaking/evaluation-parameters" element={<SpeakingEvaluationParameters />} />
         <Route path="/speaking-question-card-demo" element={<SpeakingQuestionCardDemo />} />
         <Route path="/video/job-description" element={<VideoJobDescription />} />
-        <Route path="/video/management-questions" element={<VideoQuestionStatement />} />
+        <Route path="/video/questions" element={<VideoQuestions />} />
         <Route path="/video/media-resources" element={<VideoMediaResources />} />
         <Route path="/video/question-details" element={<VideoQuestionDetails />} />
         <Route path="/video/evaluation-parameters" element={<VideoEvaluationParameters />} />

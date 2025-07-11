@@ -321,8 +321,8 @@ const VideoJobDescription = () => {
 
   const handleSaveAndContinue = () => {
     if (!selectedJobDescription) return;
-    // Navigate to next step - Management Questions
-    navigate('/video/management-questions');
+    // Navigate to next step - Questions (unified Management + Professional)
+    navigate('/video/questions');
   };
 
   // Get current tab data and filter
