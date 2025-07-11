@@ -93,7 +93,7 @@ const submissionTypes = [
       'Presentation skills analysis',
       'Body language assessment'
     ],
-    route: '/question-details?type=video'
+    route: '/video/job-description'
   }
 ];
 

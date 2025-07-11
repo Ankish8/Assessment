@@ -25,6 +25,11 @@ import SpeakingMediaResources from './pages/Speaking/SpeakingMediaResources';
 import SpeakingQuestionDetails from './pages/Speaking/SpeakingQuestionDetails';
 import SpeakingEvaluationParameters from './pages/Speaking/SpeakingEvaluationParameters';
 import SpeakingQuestionCardDemo from './pages/SpeakingQuestionCardDemo/SpeakingQuestionCardDemo';
+import VideoJobDescription from './pages/Video/VideoJobDescription';
+import VideoQuestionStatement from './pages/Video/VideoQuestionStatement';
+import VideoMediaResources from './pages/Video/VideoMediaResources';
+import VideoQuestionDetails from './pages/Video/VideoQuestionDetails';
+import VideoEvaluationParameters from './pages/Video/VideoEvaluationParameters';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './styles/variables.css';
 import './index.css';
@@ -58,6 +63,11 @@ function App() {
         <Route path="/speaking/question-details" element={<SpeakingQuestionDetails />} />
         <Route path="/speaking/evaluation-parameters" element={<SpeakingEvaluationParameters />} />
         <Route path="/speaking-question-card-demo" element={<SpeakingQuestionCardDemo />} />
+        <Route path="/video/job-description" element={<VideoJobDescription />} />
+        <Route path="/video/management-questions" element={<VideoQuestionStatement />} />
+        <Route path="/video/media-resources" element={<VideoMediaResources />} />
+        <Route path="/video/question-details" element={<VideoQuestionDetails />} />
+        <Route path="/video/evaluation-parameters" element={<VideoEvaluationParameters />} />
         <Route path="/premium-modal-demo" element={<PremiumModalDemo />} />
       </Routes>
     </div>

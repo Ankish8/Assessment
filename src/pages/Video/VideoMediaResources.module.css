@@ -1,0 +1,362 @@
+/* VideoMediaResources Styles */
+
+.container {
+  min-height: 100vh;
+  background-color: var(--color-background-primary);
+  font-family: var(--font-family);
+}
+
+/* Header styles (reused from VideoJobDescription) */
+.compactHeader {
+  background: var(--color-background-primary);
+  border-bottom: 1px solid var(--color-border-secondary);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background-color: var(--color-background-secondary);
+  color: var(--color-text-primary);
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.headerTitle i {
+  color: var(--color-primary-600);
+}
+
+/* Progress steps (reused) */
+.compactProgress {
+  background: var(--color-background-secondary);
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.compactProgress > div {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  padding: var(--spacing-sm) 0;
+}
+
+.progressStep {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+.progressStep.current {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.progressStep.lastStep i {
+  display: none;
+}
+
+.stepIndicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-background-tertiary);
+  color: var(--color-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid var(--color-border-secondary);
+}
+
+.stepIndicator.current {
+  background-color: var(--color-primary-600);
+  color: var(--color-white);
+  border-color: var(--color-primary-600);
+}
+
+.stepIndicator.completed {
+  background-color: var(--color-success-600);
+  color: var(--color-white);
+  border-color: var(--color-success-600);
+}
+
+.stepLabel {
+  margin-right: var(--spacing-xs);
+}
+
+/* Content */
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+.mainCard {
+  margin-bottom: var(--spacing-xl);
+}
+
+.cardHeader {
+  margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.sectionDescription {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-relaxed);
+}
+
+/* Sections */
+.section {
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.subsectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-lg) 0;
+}
+
+/* Options List */
+.optionsList {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.optionCard {
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  background: var(--color-background-secondary);
+  transition: all 0.2s ease;
+}
+
+.optionCard:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-25);
+}
+
+.optionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.optionCheckbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  margin: 0;
+}
+
+.optionLabel i {
+  color: var(--color-primary-600);
+  font-size: var(--font-size-lg);
+}
+
+.optionDescription {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-relaxed);
+  margin-left: 34px; /* Align with label text */
+}
+
+/* Settings */
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.settingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.settingLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.settingSelect {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  background: var(--color-background-primary);
+}
+
+.settingSelect:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+/* Formats */
+.formatsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.formatOption {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-md);
+  background: var(--color-background-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.formatOption:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.formatCheckbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.formatLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+/* Bottom Actions */
+.bottomActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--color-background-primary);
+  border-top: 1px solid var(--color-border-secondary);
+  position: sticky;
+  bottom: 0;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .compactHeader {
+    padding: var(--spacing-md);
+  }
+  
+  .compactProgress {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .stepLabel {
+    display: none;
+  }
+  
+  .content {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+  
+  .cardHeader {
+    text-align: left;
+  }
+  
+  .settingsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .formatsList {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .optionDescription {
+    margin-left: 0;
+    margin-top: var(--spacing-xs);
+  }
+  
+  .bottomActions {
+    padding: var(--spacing-md);
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .content {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+}

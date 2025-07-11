@@ -42,35 +42,55 @@
 ## Component Library Structure
 
 ### Available Components
-The project has a well-organized component library with the following components available in Storybook:
+The project has a well-organized component library with **35+ documented components** available in Storybook:
 
 **Core UI Components:**
-- **ui/button** - Basic button with variants, sizes, states
-- **ui/input** - Input fields with validation, types, states  
-- **ui/card** - Card container with headers, footers, variants
-- **ui/modal** - Modal dialogs with portal rendering, accessibility
-- **ui/form** - Form wrapper with validation, layouts
-- **ui/header** - Page header with navigation, responsive design
-- **ui/progress-steps** - Step indicator with progress tracking
-- **ui/selector** - Multi-selection component with grid/list layouts
-- **ui/tab** - Tab navigation with keyboard accessibility
-- **ui/responsive-progress-steps** - Advanced stepper with overflow detection
-- **ui/floating-footer** - Fixed bottom footer with validation alerts
+- **Button** - Basic button with variants, sizes, states
+- **Input** - Input fields with validation, types, states  
+- **Card** - Card container with headers, footers, variants
+- **Modal** - Modal dialogs with portal rendering, accessibility
+- **Form** - Form wrapper with validation, layouts
+- **Tab** - Tab navigation with keyboard accessibility
+- **Selector** - Multi-selection component with grid/list layouts
 
-**Feature Components:**
-- **BottomActions** - Common bottom action component
+**Navigation & Layout Components:**
+- **Header** - Standard page header with navigation, responsive design
+- **CompactHeader** - Compact unified header component (**PREFERRED for new pages**)
+- **ProgressSteps** - Step indicator with progress tracking
+- **ResponsiveProgressSteps** - Advanced stepper with overflow detection
+- **CompactProgressSteps** - Compact unified progress steps (**PREFERRED for new pages**)
+- **FloatingFooter** - Fixed bottom footer with validation alerts
+- **CustomFooter** - Custom footer component
+- **InfoText** - Information text component
+
+**Specialized Components:**
 - **QuestionTypeSelector** - Root level question type selector
-- **EvaluationParameters** - Page component for evaluation settings
 - **CodeEditor** - Code editing component with syntax highlighting
 - **LanguageList** - Programming language selection
 - **ToggleCard** - Toggle-able card component
 - **SkillsInput** - Skills input with tagging
-- **FillInTheBlanks** - Fill-in-the-blanks page component
+
+**Page Components:**
+- **SubmissionQuestions** - Questions listing page with WYSIWYG editor
 - **MediaResources** - Media resource management page
-- **SolutionDetails** - Solution details page component
 - **SubmissionQuestionDetails** - Question details page
-- **SubmissionQuestions** - Questions listing page
+- **EvaluationParameters** - Evaluation settings page
+- **SolutionDetails** - Solution details page component
 - **TestCases** - Test cases management page
+- **FillInTheBlanks** - Fill-in-the-blanks page component
+- **FillInTheBlanks/EvaluationParameters** - Fill-in-the-blanks evaluation parameters
+- **Speaking/SpeakingQuestionStatement** - Speaking question statement page
+- **UIFramework/UIFrameworkEvaluationParameters** - UI Framework evaluation parameters
+
+**System & Documentation Components:**
+- **Welcome** - Library overview and getting started
+- **Examples** - Real-world component composition examples
+- **ColorPalette** - Color palette documentation
+- **UnifiedDesignSystem** - Unified design system showcase
+- **AccessibilityTest** - Accessibility testing component
+
+**Legacy Template Components (stories/ directory):**
+- **Header** (Legacy), **Page** (Legacy), **Badge**, **Card** (Legacy), **Button** (Legacy), **React-Button**, **Template-Button**
 
 ### Technical Standards
 - **TypeScript**: Full type safety with proper interfaces
@@ -182,8 +202,9 @@ These pages are specific to certain assessment types:
    Used in: FillInTheBlanks, DefaultCodes
 
 #### Component Patterns
-- **Progress Navigation**: All pages use `ResponsiveProgressSteps`
-- **Bottom Actions**: `FloatingFooter` or `BottomActions` with consistent button patterns
+- **Progress Navigation**: All pages use `CompactProgressSteps` or `ResponsiveProgressSteps` (**PREFER CompactProgressSteps for new pages**)
+- **Page Headers**: Use `CompactHeader` for consistent navigation and branding (**PREFERRED for new pages**)
+- **Bottom Actions**: `FloatingFooter` or `CustomFooter` with consistent button patterns
 - **Form Validation**: Real-time validation with error states
 - **File Management**: Consistent drag-drop upload interface
 - **Card-based Selection**: Difficulty, evaluation methods, submission options
@@ -214,10 +235,11 @@ For each new assessment type, you typically need:
 - Example: `/fill-in-the-blanks/question-details`
 
 ### Currently Implemented Assessment Types:
-1. **General Submission** - Complete flow with all core pages
-2. **Fill-in-the-Blanks** - Complete specialized flow with customized pages  
-3. **Multiple Choice** - Question creation page implemented
-4. **Coding Questions** - Enhanced flow with test cases and default codes
+1. **General Submission** - Complete flow with all core pages (SubmissionQuestions, MediaResources, SubmissionQuestionDetails, EvaluationParameters, SolutionDetails)
+2. **Fill-in-the-Blanks** - Complete specialized flow with customized pages (FillInTheBlanks, FillInTheBlanks/EvaluationParameters)
+3. **Speaking Assessment** - Question statement page (Speaking/SpeakingQuestionStatement)
+4. **UI Framework** - Evaluation parameters page (UIFramework/UIFrameworkEvaluationParameters)
+5. **Coding Questions** - Enhanced flow with test cases and default codes (TestCases, CodeEditor, LanguageList)
 
 ### Missing/Potential Assessment Types:
 - **Essay Questions** - Long-form text responses
@@ -259,18 +281,43 @@ A comprehensive collection of reusable React components with complete Storybook 
 
 ## 📚 COMPONENT LIBRARY STATUS
 
-### **✅ COMPLETED COMPONENTS**
-- **ProgressSteps** - Enhanced with comprehensive documentation
-- **CompactProgressSteps** - Unified design system variant
+### **✅ COMPLETED COMPONENTS** (35+ Total)
+**Core UI Components:**
 - **Button** - All variants and states
 - **Input** - Form input with validation
 - **Card** - Container with headers/footers
 - **Modal** - Accessible modal dialogs
 - **Form** - Form wrapper with validation
-- **Selector** - Multi-selection component
-- **Header** - Page header with navigation
 - **Tab** - Tab navigation with keyboard support
+- **Selector** - Multi-selection component
+
+**Navigation & Layout Components:**
+- **Header** - Standard page header with navigation
+- **CompactHeader** - Compact unified header component (**PREFERRED**)
+- **ProgressSteps** - Enhanced with comprehensive documentation
+- **ResponsiveProgressSteps** - Advanced stepper with overflow detection
+- **CompactProgressSteps** - Unified design system variant (**PREFERRED**)
 - **FloatingFooter** - Fixed bottom actions
+- **CustomFooter** - Custom footer component
+- **InfoText** - Information text component
+
+**Specialized Components:**
+- **QuestionTypeSelector** - Root level question type selector
+- **CodeEditor** - Code editing component with syntax highlighting
+- **LanguageList** - Programming language selection
+- **ToggleCard** - Toggle-able card component
+- **SkillsInput** - Skills input with tagging
+
+**Page Components:**
+- **SubmissionQuestions** - Questions listing page
+- **MediaResources** - Media resource management
+- **SubmissionQuestionDetails** - Question details page
+- **EvaluationParameters** - Evaluation settings
+- **SolutionDetails** - Solution details page
+- **TestCases** - Test cases management
+- **FillInTheBlanks** - Fill-in-the-blanks page
+- **Speaking/SpeakingQuestionStatement** - Speaking question page
+- **UIFramework/UIFrameworkEvaluationParameters** - UI Framework evaluation
 
 ### **📖 ENHANCED DOCUMENTATION**
 - **Interactive Controls** - Live component testing

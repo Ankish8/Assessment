@@ -1,0 +1,180 @@
+/* JobDescriptionModal Styles */
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  height: 70vh;
+  max-height: 600px;
+}
+
+.searchSection {
+  flex-shrink: 0;
+}
+
+.tabSection {
+  flex-shrink: 0;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--spacing-xl);
+  flex: 1;
+  min-height: 0;
+}
+
+.jobList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-height: 0;
+}
+
+.resultsInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-secondary);
+  flex-shrink: 0;
+}
+
+.itemCount {
+  font-weight: var(--font-weight-medium);
+}
+
+.resultCount {
+  color: var(--color-text-tertiary);
+}
+
+.preview {
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-lg);
+  background: var(--color-background-secondary);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.previewHeader {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border-secondary);
+  flex-shrink: 0;
+}
+
+.previewHeader h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.previewBody {
+  padding: var(--spacing-lg);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.jobTitle {
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+}
+
+.jobSkills {
+  margin-bottom: var(--spacing-lg);
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+.skillBadge {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.jobDescription {
+  flex: 1;
+}
+
+.descriptionText {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+}
+
+.previewPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+.noResults {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .preview {
+    order: -1;
+    max-height: 200px;
+  }
+  
+  .modalContent {
+    height: 80vh;
+  }
+  
+  .previewBody {
+    padding: var(--spacing-md);
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .contentGrid {
+    grid-template-columns: 1fr 300px;
+  }
+  
+  .preview {
+    font-size: var(--font-size-sm);
+  }
+}
