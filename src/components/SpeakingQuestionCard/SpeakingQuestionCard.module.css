@@ -26,8 +26,9 @@
 
 .scoreInfo {
   display: flex;
-  gap: var(--spacing-4);
+  gap: var(--spacing-2);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 /* Score Card with color coding */
@@ -110,19 +111,20 @@
 .statItem {
   display: flex;
   align-items: center;
-  gap: var(--spacing-2);
-  font-size: var(--font-size-sm);
+  gap: var(--spacing-1);
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
-  padding: var(--spacing-2);
-  background: var(--color-background-primary);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--color-background-secondary);
   border-radius: var(--radius-base);
   border: 1px solid var(--color-border-primary);
+  white-space: nowrap;
 }
 
 .statItem i {
   color: var(--color-primary-600);
   font-size: var(--font-size-xs);
-  width: 14px;
+  width: 12px;
   text-align: center;
   flex-shrink: 0;
 }
@@ -178,6 +180,24 @@
   color: var(--color-primary-600);
   font-size: var(--font-size-sm);
   margin-right: var(--spacing-1);
+}
+
+/* Audio Section Header */
+.audioSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-3);
+}
+
+.audioSectionHeader h4 {
+  margin: 0;
+}
+
+.activityStats {
+  display: flex;
+  gap: var(--spacing-2);
+  align-items: center;
 }
 
 /* Audio Container */
@@ -880,6 +900,124 @@
   font-style: italic;
 }
 
+/* Collapsible Sections */
+.collapsibleSection {
+  margin-bottom: var(--spacing-3);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  background: var(--color-background-primary);
+}
+
+.collapsibleHeader {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: var(--spacing-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+.collapsibleHeader:hover {
+  background: var(--color-background-secondary);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-weight: var(--font-weight-medium);
+}
+
+.headerContent i {
+  color: var(--color-primary-600);
+  font-size: var(--font-size-sm);
+  width: 16px;
+  text-align: center;
+}
+
+.badge {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-base);
+  margin-left: var(--spacing-2);
+}
+
+.collapsibleContent {
+  border-top: 1px solid var(--color-border-primary);
+  padding: var(--spacing-3);
+  background: var(--color-background-secondary);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Analysis Tabs */
+.analysisTabContainer {
+  background: var(--color-background-primary);
+  border-radius: var(--radius-base);
+  overflow: hidden;
+}
+
+.analysisTabNav {
+  display: flex;
+  background: var(--color-background-secondary);
+  border-bottom: 1px solid var(--color-border-primary);
+}
+
+.analysisTabButton {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: var(--spacing-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  border-bottom: 2px solid transparent;
+}
+
+.analysisTabButton:hover {
+  color: var(--color-primary-600);
+  background: var(--color-primary-25);
+}
+
+.analysisTabButton.active {
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+  border-bottom-color: var(--color-primary-600);
+}
+
+.analysisTabButton i {
+  font-size: var(--font-size-sm);
+}
+
+.analysisTabContent {
+  padding: var(--spacing-3);
+  min-height: 100px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .header {
@@ -921,5 +1059,48 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-1);
+  }
+
+  .collapsibleHeader {
+    padding: var(--spacing-2);
+    font-size: var(--font-size-sm);
+  }
+
+  .headerContent {
+    gap: var(--spacing-1);
+  }
+
+  .badge {
+    font-size: var(--font-size-xs);
+    padding: 2px var(--spacing-1);
+    margin-left: var(--spacing-1);
+  }
+
+  .analysisTabButton {
+    padding: var(--spacing-2) var(--spacing-1);
+    font-size: var(--font-size-xs);
+    gap: var(--spacing-1);
+    min-width: 0;
+    flex: 1;
+    text-align: center;
+  }
+
+  .collapsibleContent {
+    padding: var(--spacing-2);
+  }
+
+  .analysisTabContent {
+    padding: var(--spacing-2);
+  }
+
+  .audioSectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+
+  .activityStats {
+    align-self: stretch;
+    justify-content: space-between;
   }
 }

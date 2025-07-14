@@ -4,6 +4,12 @@ import styles from './SpeakingQuestionCard.module.css';
 const SpeakingQuestionCard = ({ questionData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [analysisMode, setAnalysisMode] = useState('none'); // 'none', 'confidence', 'sentiment'
+  const [expandedSections, setExpandedSections] = useState({
+    assessment: false,
+    analysis: false,
+    feedback: false
+  });
+  const [activeAnalysisTab, setActiveAnalysisTab] = useState('grammar'); // 'grammar', 'vocabulary', 'pronunciation'
 
   // Transform real API data to component format
   const transformedData = {
@@ -99,6 +105,13 @@ const SpeakingQuestionCard = ({ questionData }) => {
     return 'error';
   };
 
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -120,23 +133,22 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       </div>
 
-      {/* Additional Stats - from original design */}
-      <div className={styles.statsSection}>
-        <div className={styles.statsGrid}>
-          <div className={styles.statItem}>
-            <i className="fas fa-external-link-alt"></i>
-            <span>Total Time Spent Outside: {transformedData.totalTimeOutside} sec</span>
-          </div>
-          <div className={styles.statItem}>
-            <i className="fas fa-mouse-pointer"></i>
-            <span>Total Move Count: {transformedData.moveCount}</span>
-          </div>
-        </div>
-      </div>
 
       {/* Audio Section */}
       <div className={styles.section}>
-        <h4>Audio Submitted</h4>
+        <div className={styles.audioSectionHeader}>
+          <h4>Audio Submitted</h4>
+          <div className={styles.activityStats}>
+            <div className={styles.statItem}>
+              <i className="fas fa-external-link-alt"></i>
+              <span>Tab switches: {transformedData.totalTimeOutside}s</span>
+            </div>
+            <div className={styles.statItem}>
+              <i className="fas fa-mouse-pointer"></i>
+              <span>Focus changes: {transformedData.moveCount}</span>
+            </div>
+          </div>
+        </div>
         <div className={styles.audioPlayer}>
           <button onClick={handlePlayPause} className={styles.playButton}>
             <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
@@ -207,7 +219,7 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       </div>
 
-      {/* Correctness Feedback */}
+      {/* Correctness Feedback - Always visible */}
       {questionData.correctness_feedback && (
         <div className={styles.section}>
           <h4>Correctness Feedback</h4>
@@ -217,120 +229,244 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       )}
 
-      {/* Assessment Summary */}
-      <div className={styles.section}>
-        <h4>Assessment Summary</h4>
-        <div className={styles.summaryGrid}>
-          <div className={styles.summaryCard}>
-            <span className={styles.summaryLabel}>IELTS Band Estimate:</span>
-            <span className={styles.summaryValue}>{questionData.ielts_band_estimate || 'N/A'}</span>
+      {/* Assessment Summary - Collapsible */}
+      <div className={styles.collapsibleSection}>
+        <button 
+          className={styles.collapsibleHeader}
+          onClick={() => toggleSection('assessment')}
+        >
+          <div className={styles.headerContent}>
+            <i className="fas fa-chart-bar"></i>
+            <span>Assessment Summary & IELTS Breakdown</span>
           </div>
-          <div className={styles.summaryCard}>
-            <span className={styles.summaryLabel}>Grammar Score:</span>
-            <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.grammar_score || 0, 5)]}`}>
-              {questionData.grammar_score || 0}/5
-            </span>
-          </div>
-          <div className={styles.summaryCard}>
-            <span className={styles.summaryLabel}>Pronunciation Score:</span>
-            <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.pronunciation_score || 0, 5)]}`}>
-              {questionData.pronunciation_score || 0}/5
-            </span>
-          </div>
-          <div className={styles.summaryCard}>
-            <span className={styles.summaryLabel}>Vocabulary Score:</span>
-            <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.vocabulary_score || 0, 5)]}`}>
-              {questionData.vocabulary_score || 0}/5
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* IELTS Criteria Breakdown */}
-      <div className={styles.section}>
-        <h4>IELTS Criteria Breakdown</h4>
-        <div className={styles.criteriaGrid}>
-          <div className={styles.criteriaItem}>
-            <span className={styles.criteriaLabel}>Fluency:</span>
-            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.fluency || 0, 5)]}`}>
-              {questionData.ielts_criteria?.fluency || 0}/5
-            </span>
-          </div>
-          <div className={styles.criteriaItem}>
-            <span className={styles.criteriaLabel}>Lexical Resource:</span>
-            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.lexical_resource || 0, 5)]}`}>
-              {questionData.ielts_criteria?.lexical_resource || 0}/5
-            </span>
-          </div>
-          <div className={styles.criteriaItem}>
-            <span className={styles.criteriaLabel}>Grammar Range & Accuracy:</span>
-            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.grammar_range_and_accuracy || 0, 5)]}`}>
-              {questionData.ielts_criteria?.grammar_range_and_accuracy || 0}/5
-            </span>
-          </div>
-          <div className={styles.criteriaItem}>
-            <span className={styles.criteriaLabel}>Pronunciation:</span>
-            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.pronunciation || 0, 5)]}`}>
-              {questionData.ielts_criteria?.pronunciation || 0}/5
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Issues Analysis */}
-      {(questionData.grammar_issues?.length > 0 || questionData.vocabulary_issues?.length > 0) && (
-        <div className={styles.section}>
-          <h4>Issues Analysis</h4>
-          <div className={styles.issuesContainer}>
-            {questionData.grammar_issues && questionData.grammar_issues.map((issue, index) => (
-              <div key={`grammar-${index}`} className={styles.issueCard}>
-                <div className={styles.issueType}>Grammar Issue</div>
-                <div className={styles.issueOriginal}>
-                  <strong>Original:</strong> "{issue.original}"
+          <i className={`fas ${expandedSections.assessment ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+        </button>
+        
+        {expandedSections.assessment && (
+          <div className={styles.collapsibleContent}>
+            <div className={styles.section}>
+              <h4>Assessment Summary</h4>
+              <div className={styles.summaryGrid}>
+                <div className={styles.summaryCard}>
+                  <span className={styles.summaryLabel}>IELTS Band Estimate:</span>
+                  <span className={styles.summaryValue}>{questionData.ielts_band_estimate || 'N/A'}</span>
                 </div>
-                <div className={styles.issueDescription}>
-                  <strong>Issue:</strong> {issue.issue}
+                <div className={styles.summaryCard}>
+                  <span className={styles.summaryLabel}>Grammar Score:</span>
+                  <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.grammar_score || 0, 5)]}`}>
+                    {questionData.grammar_score || 0}/5
+                  </span>
                 </div>
-                <div className={styles.issueSuggestion}>
-                  <strong>Suggestion:</strong> "{issue.suggestion}"
+                <div className={styles.summaryCard}>
+                  <span className={styles.summaryLabel}>Pronunciation Score:</span>
+                  <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.pronunciation_score || 0, 5)]}`}>
+                    {questionData.pronunciation_score || 0}/5
+                  </span>
+                </div>
+                <div className={styles.summaryCard}>
+                  <span className={styles.summaryLabel}>Vocabulary Score:</span>
+                  <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.vocabulary_score || 0, 5)]}`}>
+                    {questionData.vocabulary_score || 0}/5
+                  </span>
                 </div>
               </div>
-            ))}
-            {questionData.vocabulary_issues && questionData.vocabulary_issues.map((issue, index) => (
-              <div key={`vocabulary-${index}`} className={styles.issueCard}>
-                <div className={styles.issueType}>Vocabulary Issue</div>
-                <div className={styles.issueOriginal}>
-                  <strong>Problematic phrase:</strong> "{issue.word}"
+            </div>
+
+            <div className={styles.section}>
+              <h4>IELTS Criteria Breakdown</h4>
+              <div className={styles.criteriaGrid}>
+                <div className={styles.criteriaItem}>
+                  <span className={styles.criteriaLabel}>Fluency:</span>
+                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.fluency || 0, 5)]}`}>
+                    {questionData.ielts_criteria?.fluency || 0}/5
+                  </span>
                 </div>
-                <div className={styles.issueDescription}>
-                  <strong>Issue:</strong> {issue.issue}
+                <div className={styles.criteriaItem}>
+                  <span className={styles.criteriaLabel}>Lexical Resource:</span>
+                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.lexical_resource || 0, 5)]}`}>
+                    {questionData.ielts_criteria?.lexical_resource || 0}/5
+                  </span>
                 </div>
-                <div className={styles.issueSuggestion}>
-                  <strong>Suggestion:</strong> "{issue.suggestion}"
+                <div className={styles.criteriaItem}>
+                  <span className={styles.criteriaLabel}>Grammar Range & Accuracy:</span>
+                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.grammar_range_and_accuracy || 0, 5)]}`}>
+                    {questionData.ielts_criteria?.grammar_range_and_accuracy || 0}/5
+                  </span>
+                </div>
+                <div className={styles.criteriaItem}>
+                  <span className={styles.criteriaLabel}>Pronunciation:</span>
+                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.pronunciation || 0, 5)]}`}>
+                    {questionData.ielts_criteria?.pronunciation || 0}/5
+                  </span>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
+        )}
+      </div>
+
+      {/* Issues Analysis - Collapsible with Tabs */}
+      {/* Always show if any of the three issue types exist in the data */}
+      {(questionData.grammar_issues !== undefined || questionData.vocabulary_issues !== undefined || questionData.pronunciation_issues !== undefined) && (
+        <div className={styles.collapsibleSection}>
+          <button 
+            className={styles.collapsibleHeader}
+            onClick={() => toggleSection('analysis')}
+          >
+            <div className={styles.headerContent}>
+              <i className="fas fa-microscope"></i>
+              <span>Issues Analysis</span>
+              <span className={styles.badge}>
+                {(questionData.grammar_issues?.length || 0) + (questionData.vocabulary_issues?.length || 0) + (questionData.pronunciation_issues?.length || 0)} issues
+              </span>
+            </div>
+            <i className={`fas ${expandedSections.analysis ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          </button>
+          
+          {expandedSections.analysis && (
+            <div className={styles.collapsibleContent}>
+              <div className={styles.analysisTabContainer}>
+                <div className={styles.analysisTabNav}>
+                  <button
+                    className={`${styles.analysisTabButton} ${activeAnalysisTab === 'grammar' ? styles.active : ''}`}
+                    onClick={() => setActiveAnalysisTab('grammar')}
+                  >
+                    <i className="fas fa-spell-check"></i>
+                    Grammar ({questionData.grammar_issues?.length || 0})
+                  </button>
+                  <button
+                    className={`${styles.analysisTabButton} ${activeAnalysisTab === 'vocabulary' ? styles.active : ''}`}
+                    onClick={() => setActiveAnalysisTab('vocabulary')}
+                  >
+                    <i className="fas fa-book"></i>
+                    Vocabulary ({questionData.vocabulary_issues?.length || 0})
+                  </button>
+                  <button
+                    className={`${styles.analysisTabButton} ${activeAnalysisTab === 'pronunciation' ? styles.active : ''}`}
+                    onClick={() => setActiveAnalysisTab('pronunciation')}
+                  >
+                    <i className="fas fa-volume-up"></i>
+                    Pronunciation ({questionData.pronunciation_issues?.length || 0})
+                  </button>
+                </div>
+                
+                <div className={styles.analysisTabContent}>
+                  {activeAnalysisTab === 'grammar' && (
+                    <div className={styles.issuesContainer}>
+                      {questionData.grammar_issues?.length > 0 ? (
+                        questionData.grammar_issues.map((issue, index) => (
+                          <div key={`grammar-${index}`} className={styles.issueCard}>
+                            <div className={styles.issueType}>Grammar Issue</div>
+                            <div className={styles.issueOriginal}>
+                              <strong>Original:</strong> "{issue.original}"
+                            </div>
+                            <div className={styles.issueDescription}>
+                              <strong>Issue:</strong> {issue.issue}
+                            </div>
+                            <div className={styles.issueSuggestion}>
+                              <strong>Suggestion:</strong> "{issue.suggestion}"
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className={styles.noIssuesCard}>
+                          <p>No grammar issues identified.</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  {activeAnalysisTab === 'vocabulary' && (
+                    <div className={styles.issuesContainer}>
+                      {questionData.vocabulary_issues?.length > 0 ? (
+                        questionData.vocabulary_issues.map((issue, index) => (
+                          <div key={`vocabulary-${index}`} className={styles.issueCard}>
+                            <div className={styles.issueType}>Vocabulary Issue</div>
+                            <div className={styles.issueOriginal}>
+                              <strong>Problematic phrase:</strong> "{issue.word}"
+                            </div>
+                            <div className={styles.issueDescription}>
+                              <strong>Issue:</strong> {issue.issue}
+                            </div>
+                            <div className={styles.issueSuggestion}>
+                              <strong>Suggestion:</strong> "{issue.suggestion}"
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className={styles.noIssuesCard}>
+                          <p>No vocabulary issues identified.</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  {activeAnalysisTab === 'pronunciation' && (
+                    <div className={styles.issuesContainer}>
+                      {questionData.pronunciation_issues?.length > 0 ? (
+                        questionData.pronunciation_issues.map((issue, index) => (
+                          <div key={`pronunciation-${index}`} className={styles.issueCard}>
+                            <div className={styles.issueType}>Pronunciation Issue</div>
+                            <div className={styles.issueOriginal}>
+                              <strong>Original:</strong> "{issue.original}"
+                            </div>
+                            <div className={styles.issueDescription}>
+                              <strong>Issue:</strong> {issue.issue}
+                            </div>
+                            <div className={styles.issueSuggestion}>
+                              <strong>Suggestion:</strong> "{issue.suggestion}"
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className={styles.noIssuesCard}>
+                          <p>No pronunciation issues were identified in the assessment.</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Corrected Text */}
-      {questionData.corrected_text && (
-        <div className={styles.section}>
-          <h4>Corrected Text</h4>
-          <div className={styles.correctedTextCard}>
-            <p>"{questionData.corrected_text}"</p>
-          </div>
-        </div>
-      )}
+      {/* Corrected Text & AI Feedback - Collapsible */}
+      {(questionData.corrected_text || questionData.ai_feedback_summary || transformedData.evaluatorComments) && (
+        <div className={styles.collapsibleSection}>
+          <button 
+            className={styles.collapsibleHeader}
+            onClick={() => toggleSection('feedback')}
+          >
+            <div className={styles.headerContent}>
+              <i className="fas fa-comments"></i>
+              <span>AI Analysis & Corrected Text</span>
+            </div>
+            <i className={`fas ${expandedSections.feedback ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          </button>
+          
+          {expandedSections.feedback && (
+            <div className={styles.collapsibleContent}>
+              {questionData.corrected_text && (
+                <div className={styles.section}>
+                  <h4>Corrected Text</h4>
+                  <div className={styles.correctedTextCard}>
+                    <p>"{questionData.corrected_text}"</p>
+                  </div>
+                </div>
+              )}
 
-      {/* AI Feedback Summary */}
-      {(questionData.ai_feedback_summary || transformedData.evaluatorComments) && (
-        <div className={styles.section}>
-          <h4>AI Feedback Summary</h4>
-          <div className={styles.commentsCard}>
-            <p>{questionData.ai_feedback_summary || transformedData.evaluatorComments}</p>
-          </div>
+              {(questionData.ai_feedback_summary || transformedData.evaluatorComments) && (
+                <div className={styles.section}>
+                  <h4>AI Feedback Summary</h4>
+                  <div className={styles.commentsCard}>
+                    <p>{questionData.ai_feedback_summary || transformedData.evaluatorComments}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
