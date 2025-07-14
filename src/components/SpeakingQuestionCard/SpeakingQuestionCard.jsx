@@ -5,6 +5,67 @@ const SpeakingQuestionCard = ({ questionData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [analysisMode, setAnalysisMode] = useState('none'); // 'none', 'confidence', 'sentiment'
 
+  // Transform real API data to component format
+  const transformedData = {
+    // Use provided data or fallback to defaults
+    id: questionData.id || 1,
+    type: questionData.type || "Speaking Assessment",
+    score: questionData.correctness_score || questionData.score || 0,
+    maxScore: 5,
+    timeSpent: questionData.timeSpent || 0,
+    totalTimeOutside: questionData.totalTimeOutside || 0,
+    moveCount: questionData.moveCount || 0,
+    attempts: questionData.attempts || 1,
+    confidence: questionData.confidence || { level: "MODERATE", percentage: 50 },
+    
+    audio: {
+      url: questionData.audio?.url || null,
+      duration: questionData.audio?.duration || 0,
+      transcript: questionData.corrected_text || questionData.audio?.transcript || "",
+      transcriptWords: questionData.audio?.transcriptWords || []
+    },
+    
+    analysis: {
+      fluency: {
+        score: questionData.ielts_criteria?.fluency || questionData.analysis?.fluency?.score || 0,
+        maxScore: 5,
+        details: questionData.grammar_issues?.map(issue => 
+          `${issue.issue} - Suggestion: ${issue.suggestion}`) || 
+          questionData.analysis?.fluency?.details || []
+      },
+      lexical: {
+        score: questionData.ielts_criteria?.lexical_resource || questionData.vocabulary_score || questionData.analysis?.lexical?.score || 0,
+        maxScore: 5,
+        details: questionData.vocabulary_issues?.map(issue => 
+          `Word: "${issue.word}" - ${issue.issue} - Suggestion: ${issue.suggestion}`) || 
+          questionData.analysis?.lexical?.details || []
+      },
+      grammar: {
+        score: questionData.ielts_criteria?.grammar_range_and_accuracy || questionData.grammar_score || questionData.analysis?.grammar?.score || 0,
+        maxScore: 5,
+        details: questionData.grammar_issues?.map(issue => 
+          `"${issue.original}" - ${issue.issue} - Suggestion: "${issue.suggestion}"`) || 
+          questionData.analysis?.grammar?.details || []
+      },
+      pronunciation: {
+        score: questionData.ielts_criteria?.pronunciation || questionData.pronunciation_score || questionData.analysis?.pronunciation?.score || 0,
+        maxScore: 5,
+        details: questionData.pronunciation_issues?.length > 0 
+          ? questionData.pronunciation_issues.map(issue => 
+              `"${issue.original}" - ${issue.issue} - Suggestion: "${issue.suggestion}"`)
+          : questionData.analysis?.pronunciation?.details || ["No specific pronunciation issues identified"]
+      },
+      sentiment: questionData.analysis?.sentiment || "NEUTRAL",
+      ielts: {
+        band: questionData.ielts_band_estimate ? 
+          parseFloat(questionData.ielts_band_estimate.replace('Band ', '')) : 
+          questionData.analysis?.ielts?.band || 0
+      }
+    },
+    
+    evaluatorComments: questionData.ai_feedback_summary || questionData.correctness_feedback || questionData.evaluatorComments || null
+  };
+
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
@@ -42,260 +103,233 @@ const SpeakingQuestionCard = ({ questionData }) => {
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.questionInfo}>
-          <h3>Question {questionData.id}: {questionData.type}</h3>
+          <h3>Question {transformedData.id}: {transformedData.type}</h3>
         </div>
         <div className={styles.scoreInfo}>
-          <div className={`${styles.scoreCard} ${styles[getScoreColor(questionData.score, questionData.maxScore)]}`}>
+          <div className={`${styles.scoreCard} ${styles[getScoreColor(questionData.correctness_score || transformedData.score, 5)]}`}>
             <i className="fas fa-chart-bar"></i>
             <div className={styles.scoreDetails}>
               <span className={styles.scoreLabel}>Score:</span>
-              <span className={styles.scoreValue}>{questionData.score}/{questionData.maxScore}</span>
+              <span className={styles.scoreValue}>{questionData.correctness_score || transformedData.score}/5</span>
             </div>
           </div>
           <div className={styles.timeCard}>
             <i className="fas fa-clock"></i>
-            <span>Time spent: {questionData.timeSpent} secs</span>
+            <span>Time spent: {transformedData.timeSpent} secs</span>
           </div>
         </div>
       </div>
 
-      {/* Additional Stats */}
+      {/* Additional Stats - from original design */}
       <div className={styles.statsSection}>
         <div className={styles.statsGrid}>
           <div className={styles.statItem}>
             <i className="fas fa-external-link-alt"></i>
-            <span>Total Time Spent Outside: {questionData.totalTimeOutside} sec</span>
+            <span>Total Time Spent Outside: {transformedData.totalTimeOutside} sec</span>
           </div>
           <div className={styles.statItem}>
             <i className="fas fa-mouse-pointer"></i>
-            <span>Total Move Count: {questionData.moveCount}</span>
-          </div>
-          <div className={styles.statItem}>
-            <i className="fas fa-redo"></i>
-            <span>Attempts: {questionData.attempts}</span>
-          </div>
-          <div className={styles.statItem}>
-            <i className="fas fa-percentage"></i>
-            <span>Confidence: {questionData.confidence.percentage}% </span>
-            <span className={`${styles.confidenceBadge} ${styles[questionData.confidence.level.toLowerCase()]}`}>
-              {questionData.confidence.level}
-            </span>
+            <span>Total Move Count: {transformedData.moveCount}</span>
           </div>
         </div>
       </div>
 
       {/* Audio Section */}
       <div className={styles.section}>
-        <h4>Transcript Analysis</h4>
-        <div className={styles.audioContainer}>
-          <div className={styles.audioPlayer}>
-            <button onClick={handlePlayPause} className={styles.playButton}>
-              <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
+        <h4>Audio Submitted</h4>
+        <div className={styles.audioPlayer}>
+          <button onClick={handlePlayPause} className={styles.playButton}>
+            <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
+          </button>
+          <div className={styles.audioInfo}>
+            <span className={styles.duration}>
+              <i className="fas fa-clock"></i>
+              {formatTime(transformedData.audio.duration)}
+            </span>
+            {isPlaying && (
+              <span className={styles.status}>Playing...</span>
+            )}
+          </div>
+          <div className={styles.audioControls}>
+            <button className={styles.speedButton}>
+              <i className="fas fa-tachometer-alt"></i>
+              1x
             </button>
-            <div className={styles.audioInfo}>
-              <div className={styles.audioTitle}>
-                <span>Audio Submitted</span>
-                <span className={styles.duration}>
-                  <i className="fas fa-clock"></i>
-                  {formatTime(questionData.audio.duration)}
-                </span>
-                {isPlaying && (
-                  <span className={styles.status}>
-                    Playing...
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className={styles.audioControls}>
-              <button className={styles.speedButton} title="Playback speed">
-                <i className="fas fa-tachometer-alt"></i>
-                1x
+          </div>
+        </div>
+
+        <div className={styles.transcriptSection}>
+          <div className={styles.transcriptHeader}>
+            <span className={styles.transcriptLabel}>Transcript:</span>
+            <div className={styles.analysisControls}>
+              <button 
+                className={`${styles.analysisButton} ${analysisMode === 'confidence' ? styles.active : ''}`}
+                onClick={() => handleAnalysisModeChange('confidence')}
+              >
+                <i className="fas fa-signal"></i>
+                Confidence
+              </button>
+              <button 
+                className={`${styles.analysisButton} ${analysisMode === 'sentiment' ? styles.active : ''}`}
+                onClick={() => handleAnalysisModeChange('sentiment')}
+              >
+                <i className="fas fa-smile"></i>
+                Sentiment
               </button>
             </div>
           </div>
-          <div className={styles.transcriptSection}>
-            <div className={styles.transcriptHeader}>
-              <div className={styles.transcriptLabel}>
-                Transcript:
-              </div>
-              <div className={styles.analysisControls}>
-                <span className={styles.controlsLabel}>Word Analysis</span>
-                <div className={styles.controlButtons}>
-                  <button 
-                    className={`${styles.analysisButton} ${analysisMode === 'confidence' ? styles.active : ''}`}
-                    onClick={() => handleAnalysisModeChange('confidence')}
-                  >
-                    <i className="fas fa-signal"></i>
-                    Confidence
-                  </button>
-                  <button 
-                    className={`${styles.analysisButton} ${analysisMode === 'sentiment' ? styles.active : ''}`}
-                    onClick={() => handleAnalysisModeChange('sentiment')}
-                  >
-                    <i className="fas fa-smile"></i>
-                    Sentiment
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            {analysisMode === 'confidence' && (
-              <div className={styles.confidenceLegend}>
-                <span className={styles.legendTitle}>Confidence Levels:</span>
-                <div className={styles.legendItems}>
-                  <span className={styles.legendItem}>
-                    <span className={`${styles.legendDot} ${styles.success}`}></span>
-                    High (70%+)
-                  </span>
-                  <span className={styles.legendItem}>
-                    <span className={`${styles.legendDot} ${styles.warning}`}></span>
-                    Medium (40-70%)
-                  </span>
-                  <span className={styles.legendItem}>
-                    <span className={`${styles.legendDot} ${styles.error}`}></span>
-                    Low (&lt;40%)
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {analysisMode === 'sentiment' && (
-              <div className={styles.sentimentLegend}>
-                <span className={styles.legendTitle}>Sentiment Analysis:</span>
-                <div className={styles.legendItems}>
-                  <span className={styles.legendItem}>
-                    <span className={`${styles.legendDot} ${styles.positive}`}></span>
-                    Positive statement
-                  </span>
-                  <span className={styles.legendItem}>
-                    <span className={`${styles.legendDot} ${styles.neutral}`}></span>
-                    Neutral statement
-                  </span>
-                  <span className={styles.legendItem}>
-                    <span className={`${styles.legendDot} ${styles.negative}`}></span>
-                    Negative statement
-                  </span>
-                </div>
-              </div>
-            )}
-            
-            <div className={styles.transcriptText}>
-              {analysisMode === 'confidence' && questionData.audio.transcriptWords ? (
-                questionData.audio.transcriptWords.map((item, index) => (
-                  <span 
-                    key={index}
-                    className={`${styles.confidenceWord} ${styles[getConfidenceColor(item.confidence * 100)]}`}
-                    title={`${Math.round(item.confidence * 100)}% confidence`}
-                  >
-                    {item.word}{index < questionData.audio.transcriptWords.length - 1 ? ' ' : ''}
-                  </span>
-                ))
-              ) : analysisMode === 'sentiment' && questionData.audio.transcriptWords ? (
-                questionData.audio.transcriptWords.map((item, index) => (
-                  <span 
-                    key={index}
-                    className={`${styles.sentimentWord} ${styles[getSentimentColor(item.sentiment)]}`}
-                    title={`${item.sentiment} sentiment`}
-                  >
-                    {item.word}{index < questionData.audio.transcriptWords.length - 1 ? ' ' : ''}
-                  </span>
-                ))
-              ) : (
-                questionData.audio.transcript
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Analysis Section */}
-      <div className={styles.section}>
-        <h4>Score Breakdown</h4>
-        <div className={styles.analysisGrid}>
-          <div className={styles.analysisCard}>
-            <div className={styles.analysisHeader}>
-              <i className="fas fa-microphone-alt"></i>
-              <div className={styles.analysisTitle}>
-                <span>Fluency</span>
-                <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.fluency.score, questionData.analysis.fluency.maxScore)]}`}>
-                  {questionData.analysis.fluency.score}/5
+          
+          <div className={styles.transcriptText}>
+            {analysisMode === 'confidence' && transformedData.audio.transcriptWords ? (
+              transformedData.audio.transcriptWords.map((item, index) => (
+                <span 
+                  key={index}
+                  className={`${styles.confidenceWord} ${styles[getConfidenceColor(item.confidence * 100)]}`}
+                  title={`${Math.round(item.confidence * 100)}% confidence`}
+                >
+                  {item.word}{index < transformedData.audio.transcriptWords.length - 1 ? ' ' : ''}
                 </span>
-              </div>
-            </div>
-            {questionData.analysis.fluency.details && (
-              <ul className={styles.detailsList}>
-                {questionData.analysis.fluency.details.map((detail, index) => (
-                  <li key={index}>{detail}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className={styles.analysisCard}>
-            <div className={styles.analysisHeader}>
-              <i className="fas fa-book"></i>
-              <div className={styles.analysisTitle}>
-                <span>Lexical Resource (Vocabulary)</span>
-                <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.lexical?.score || questionData.analysis.content?.score || 3, 5)]}`}>
-                  {questionData.analysis.lexical?.score || questionData.analysis.content?.score || '3.0'}/5
+              ))
+            ) : analysisMode === 'sentiment' && transformedData.audio.transcriptWords ? (
+              transformedData.audio.transcriptWords.map((item, index) => (
+                <span 
+                  key={index}
+                  className={`${styles.sentimentWord} ${styles[getSentimentColor(item.sentiment)]}`}
+                  title={`${item.sentiment} sentiment`}
+                >
+                  {item.word}{index < transformedData.audio.transcriptWords.length - 1 ? ' ' : ''}
                 </span>
-              </div>
-            </div>
-            {questionData.analysis.lexical?.details && (
-              <ul className={styles.detailsList}>
-                {questionData.analysis.lexical.details.map((detail, index) => (
-                  <li key={index}>{detail}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className={styles.analysisCard}>
-            <div className={styles.analysisHeader}>
-              <i className="fas fa-spell-check"></i>
-              <div className={styles.analysisTitle}>
-                <span>Grammar Range & Accuracy</span>
-                <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.grammar.score, questionData.analysis.grammar.maxScore)]}`}>
-                  {questionData.analysis.grammar.score}/5
-                </span>
-              </div>
-            </div>
-            {questionData.analysis.grammar.details && (
-              <ul className={styles.detailsList}>
-                {questionData.analysis.grammar.details.map((detail, index) => (
-                  <li key={index}>{detail}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className={styles.analysisCard}>
-            <div className={styles.analysisHeader}>
-              <i className="fas fa-volume-up"></i>
-              <div className={styles.analysisTitle}>
-                <span>Pronunciation</span>
-                <span className={`${styles.analysisScore} ${styles[getScoreColor(questionData.analysis.pronunciation?.score || 4, 5)]}`}>
-                  {questionData.analysis.pronunciation?.score || '4.0'}/5
-                </span>
-              </div>
-            </div>
-            {questionData.analysis.pronunciation?.details && (
-              <ul className={styles.detailsList}>
-                {questionData.analysis.pronunciation.details.map((detail, index) => (
-                  <li key={index}>{detail}</li>
-                ))}
-              </ul>
+              ))
+            ) : (
+              transformedData.audio.transcript
             )}
           </div>
         </div>
       </div>
 
-      {/* Comments Section - Only show if comments exist and are not empty */}
-      {questionData.evaluatorComments && questionData.evaluatorComments.trim().length > 0 && (
+      {/* Correctness Feedback */}
+      {questionData.correctness_feedback && (
         <div className={styles.section}>
-          <h4>Evaluator Comments</h4>
+          <h4>Correctness Feedback</h4>
+          <div className={styles.feedbackCard}>
+            <p>{questionData.correctness_feedback}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Assessment Summary */}
+      <div className={styles.section}>
+        <h4>Assessment Summary</h4>
+        <div className={styles.summaryGrid}>
+          <div className={styles.summaryCard}>
+            <span className={styles.summaryLabel}>IELTS Band Estimate:</span>
+            <span className={styles.summaryValue}>{questionData.ielts_band_estimate || 'N/A'}</span>
+          </div>
+          <div className={styles.summaryCard}>
+            <span className={styles.summaryLabel}>Grammar Score:</span>
+            <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.grammar_score || 0, 5)]}`}>
+              {questionData.grammar_score || 0}/5
+            </span>
+          </div>
+          <div className={styles.summaryCard}>
+            <span className={styles.summaryLabel}>Pronunciation Score:</span>
+            <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.pronunciation_score || 0, 5)]}`}>
+              {questionData.pronunciation_score || 0}/5
+            </span>
+          </div>
+          <div className={styles.summaryCard}>
+            <span className={styles.summaryLabel}>Vocabulary Score:</span>
+            <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.vocabulary_score || 0, 5)]}`}>
+              {questionData.vocabulary_score || 0}/5
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* IELTS Criteria Breakdown */}
+      <div className={styles.section}>
+        <h4>IELTS Criteria Breakdown</h4>
+        <div className={styles.criteriaGrid}>
+          <div className={styles.criteriaItem}>
+            <span className={styles.criteriaLabel}>Fluency:</span>
+            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.fluency || 0, 5)]}`}>
+              {questionData.ielts_criteria?.fluency || 0}/5
+            </span>
+          </div>
+          <div className={styles.criteriaItem}>
+            <span className={styles.criteriaLabel}>Lexical Resource:</span>
+            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.lexical_resource || 0, 5)]}`}>
+              {questionData.ielts_criteria?.lexical_resource || 0}/5
+            </span>
+          </div>
+          <div className={styles.criteriaItem}>
+            <span className={styles.criteriaLabel}>Grammar Range & Accuracy:</span>
+            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.grammar_range_and_accuracy || 0, 5)]}`}>
+              {questionData.ielts_criteria?.grammar_range_and_accuracy || 0}/5
+            </span>
+          </div>
+          <div className={styles.criteriaItem}>
+            <span className={styles.criteriaLabel}>Pronunciation:</span>
+            <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.pronunciation || 0, 5)]}`}>
+              {questionData.ielts_criteria?.pronunciation || 0}/5
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Issues Analysis */}
+      {(questionData.grammar_issues?.length > 0 || questionData.vocabulary_issues?.length > 0) && (
+        <div className={styles.section}>
+          <h4>Issues Analysis</h4>
+          <div className={styles.issuesContainer}>
+            {questionData.grammar_issues && questionData.grammar_issues.map((issue, index) => (
+              <div key={`grammar-${index}`} className={styles.issueCard}>
+                <div className={styles.issueType}>Grammar Issue</div>
+                <div className={styles.issueOriginal}>
+                  <strong>Original:</strong> "{issue.original}"
+                </div>
+                <div className={styles.issueDescription}>
+                  <strong>Issue:</strong> {issue.issue}
+                </div>
+                <div className={styles.issueSuggestion}>
+                  <strong>Suggestion:</strong> "{issue.suggestion}"
+                </div>
+              </div>
+            ))}
+            {questionData.vocabulary_issues && questionData.vocabulary_issues.map((issue, index) => (
+              <div key={`vocabulary-${index}`} className={styles.issueCard}>
+                <div className={styles.issueType}>Vocabulary Issue</div>
+                <div className={styles.issueOriginal}>
+                  <strong>Problematic phrase:</strong> "{issue.word}"
+                </div>
+                <div className={styles.issueDescription}>
+                  <strong>Issue:</strong> {issue.issue}
+                </div>
+                <div className={styles.issueSuggestion}>
+                  <strong>Suggestion:</strong> "{issue.suggestion}"
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Corrected Text */}
+      {questionData.corrected_text && (
+        <div className={styles.section}>
+          <h4>Corrected Text</h4>
+          <div className={styles.correctedTextCard}>
+            <p>"{questionData.corrected_text}"</p>
+          </div>
+        </div>
+      )}
+
+      {/* AI Feedback Summary */}
+      {(questionData.ai_feedback_summary || transformedData.evaluatorComments) && (
+        <div className={styles.section}>
+          <h4>AI Feedback Summary</h4>
           <div className={styles.commentsCard}>
-            <p>{questionData.evaluatorComments}</p>
+            <p>{questionData.ai_feedback_summary || transformedData.evaluatorComments}</p>
           </div>
         </div>
       )}

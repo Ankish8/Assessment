@@ -3,245 +3,105 @@ import SpeakingQuestionCard from '../../components/SpeakingQuestionCard';
 import styles from './SpeakingQuestionCardDemo.module.css';
 
 const SpeakingQuestionCardDemo = () => {
-  // Sample data representing different performance levels
+  // Sample data using real JSON API format - YOUR NEW DATA ONLY
   const sampleQuestions = [
     {
-      id: 2,
-      type: "Speaking Type 2",
-      score: 1.18,
-      maxScore: 5,
-      timeSpent: 18,
-      totalTimeOutside: 0,
-      moveCount: 0,
-      attempts: 0,
-      confidence: {
-        level: "MODERATE",
-        percentage: 88.56
+      // Real API format
+      correctness_score: 1,
+      correctness_feedback: "The answer does not address the question about AI at all. It seems unrelated to the concept of Artificial Intelligence and appears to be more about some technical instructions or an unrelated task.",
+      ielts_band_estimate: "Band 4.0",
+      ielts_criteria: {
+        fluency: 3,
+        lexical_resource: 3,
+        grammar_range_and_accuracy: 4,
+        pronunciation: 3
       },
-      audio: {
-        url: null,
-        duration: 18,
-        transcript: "Speaking, type two. Checking. Speaking, type two. Okay, thank you. Bye. Uh.",
-        transcriptWords: [
-          {word: "Speaking,", confidence: 0.85, sentiment: "neutral"},
-          {word: "type", confidence: 0.92, sentiment: "neutral"},
-          {word: "two.", confidence: 0.88, sentiment: "neutral"},
-          {word: "Checking.", confidence: 0.65, sentiment: "neutral"},
-          {word: "Speaking,", confidence: 0.89, sentiment: "neutral"},
-          {word: "type", confidence: 0.94, sentiment: "neutral"},
-          {word: "two.", confidence: 0.91, sentiment: "neutral"},
-          {word: "Okay,", confidence: 0.78, sentiment: "positive"},
-          {word: "thank", confidence: 0.95, sentiment: "positive"},
-          {word: "you.", confidence: 0.92, sentiment: "positive"},
-          {word: "Bye.", confidence: 0.75, sentiment: "positive"},
-          {word: "Uh.", confidence: 0.45, sentiment: "negative"}
-        ]
-      },
-      analysis: {
-        fluency: {
-          score: 2.1,
-          maxScore: 5,
-          details: [
-            "Speaking pace is inconsistent",
-            "Some hesitation and pauses",
-            "Needs improvement in flow"
-          ]
+      grammar_score: 4,
+      pronunciation_score: 3,
+      vocabulary_score: 3,
+      grammar_issues: [
+        {
+          original: "And you also spend maximum time that is store providing solution and close.",
+          issue: "Awkward and unclear sentence structure.",
+          suggestion: "You also spend the maximum time providing a solution and closing it."
         },
-        lexical: {
-          score: 2.0,
-          maxScore: 5,
-          details: [
-            "Limited vocabulary range",
-            "Basic word choices",
-            "Some repetition of phrases"
-          ]
-        },
-        grammar: {
-          score: 1.8,
-          maxScore: 5,
-          details: [
-            "Simple sentence structures",
-            "Some grammatical errors",
-            "Limited complex constructions"
-          ]
-        },
-        pronunciation: {
-          score: 2.5,
-          maxScore: 5,
-          details: [
-            "Generally clear pronunciation",
-            "Some mispronunciations",
-            "Accent affects clarity occasionally"
-          ]
-        },
-        sentiment: "NEUTRAL",
-        ielts: {
-          band: 4.5
+        {
+          original: "The close is disabled.",
+          issue: "Missing article 'the'.",
+          suggestion: "The 'close' button is disabled."
         }
-      },
-      evaluatorComments: null
-    },
-    {
+      ],
+      pronunciation_issues: [],
+      vocabulary_issues: [
+        {
+          word: "maximum time that is store providing solution and close",
+          issue: "This phrase is confusing and contextually inappropriate.",
+          suggestion: "Spend the maximum time providing a solution."
+        }
+      ],
+      corrected_text: "Click on it. It will start recording and give some kind of feedback when recording. It will also show the time. You also spend the maximum time providing a solution and closing it. The 'close' button is disabled. I don't think we need to close it.",
+      ai_feedback_summary: "The answer fails to address what AI is and seems off-topic, discussing a process involving recording and feedback instead. Grammar and sentence structure are mostly incorrect and difficult to follow.",
+      
+      // Additional fields for demo purposes (not in real API)
       id: 1,
-      type: "Speaking Assessment - Professional",
-      score: 4.2,
-      maxScore: 5,
+      type: "Speaking Assessment - AI Analysis",
       timeSpent: 45,
       totalTimeOutside: 2,
       moveCount: 1,
       attempts: 1,
-      confidence: {
-        level: "HIGH",
-        percentage: 92.3
-      },
+      confidence: { level: "LOW", percentage: 23.4 },
       audio: {
         url: null,
         duration: 45,
-        transcript: "Good morning. I am excited to present my thoughts on this topic. The key considerations include market analysis, strategic planning, and implementation phases. Thank you for your attention.",
         transcriptWords: [
-          {word: "Good", confidence: 0.95, sentiment: "positive"},
-          {word: "morning.", confidence: 0.97, sentiment: "positive"},
-          {word: "I", confidence: 0.98, sentiment: "neutral"},
-          {word: "am", confidence: 0.96, sentiment: "neutral"},
-          {word: "excited", confidence: 0.92, sentiment: "positive"},
-          {word: "to", confidence: 0.98, sentiment: "neutral"},
-          {word: "present", confidence: 0.94, sentiment: "positive"},
-          {word: "my", confidence: 0.97, sentiment: "neutral"},
-          {word: "thoughts", confidence: 0.89, sentiment: "neutral"},
+          {word: "Click", confidence: 0.95, sentiment: "neutral"},
           {word: "on", confidence: 0.98, sentiment: "neutral"},
-          {word: "this", confidence: 0.95, sentiment: "neutral"},
-          {word: "topic.", confidence: 0.93, sentiment: "neutral"},
-          {word: "The", confidence: 0.97, sentiment: "neutral"},
-          {word: "key", confidence: 0.91, sentiment: "positive"},
-          {word: "considerations", confidence: 0.85, sentiment: "neutral"},
-          {word: "include", confidence: 0.94, sentiment: "neutral"},
-          {word: "market", confidence: 0.89, sentiment: "neutral"},
-          {word: "analysis,", confidence: 0.87, sentiment: "neutral"},
-          {word: "strategic", confidence: 0.82, sentiment: "positive"},
-          {word: "planning,", confidence: 0.88, sentiment: "positive"},
+          {word: "it.", confidence: 0.97, sentiment: "neutral"},
+          {word: "It", confidence: 0.96, sentiment: "neutral"},
+          {word: "will", confidence: 0.94, sentiment: "neutral"},
+          {word: "start", confidence: 0.92, sentiment: "positive"},
+          {word: "recording", confidence: 0.89, sentiment: "neutral"},
           {word: "and", confidence: 0.98, sentiment: "neutral"},
-          {word: "implementation", confidence: 0.79, sentiment: "neutral"},
-          {word: "phases.", confidence: 0.85, sentiment: "neutral"},
-          {word: "Thank", confidence: 0.96, sentiment: "positive"},
-          {word: "you", confidence: 0.98, sentiment: "positive"},
-          {word: "for", confidence: 0.97, sentiment: "positive"},
-          {word: "your", confidence: 0.95, sentiment: "positive"},
-          {word: "attention.", confidence: 0.92, sentiment: "positive"}
+          {word: "give", confidence: 0.87, sentiment: "positive"},
+          {word: "some", confidence: 0.85, sentiment: "neutral"},
+          {word: "kind", confidence: 0.83, sentiment: "neutral"},
+          {word: "of", confidence: 0.96, sentiment: "neutral"},
+          {word: "feedback", confidence: 0.91, sentiment: "positive"},
+          {word: "when", confidence: 0.93, sentiment: "neutral"},
+          {word: "recording.", confidence: 0.88, sentiment: "neutral"},
+          {word: "It", confidence: 0.95, sentiment: "neutral"},
+          {word: "will", confidence: 0.94, sentiment: "neutral"},
+          {word: "also", confidence: 0.92, sentiment: "neutral"},
+          {word: "show", confidence: 0.89, sentiment: "positive"},
+          {word: "the", confidence: 0.97, sentiment: "neutral"},
+          {word: "time.", confidence: 0.91, sentiment: "neutral"},
+          {word: "And", confidence: 0.94, sentiment: "neutral"},
+          {word: "you", confidence: 0.96, sentiment: "neutral"},
+          {word: "also", confidence: 0.93, sentiment: "neutral"},
+          {word: "spend", confidence: 0.88, sentiment: "neutral"},
+          {word: "maximum", confidence: 0.78, sentiment: "neutral"},
+          {word: "time", confidence: 0.85, sentiment: "neutral"},
+          {word: "that", confidence: 0.65, sentiment: "negative"},
+          {word: "is", confidence: 0.72, sentiment: "negative"},
+          {word: "store", confidence: 0.45, sentiment: "negative"},
+          {word: "providing", confidence: 0.67, sentiment: "neutral"},
+          {word: "solution", confidence: 0.83, sentiment: "positive"},
+          {word: "and", confidence: 0.94, sentiment: "neutral"},
+          {word: "close.", confidence: 0.76, sentiment: "neutral"},
+          {word: "The", confidence: 0.95, sentiment: "neutral"},
+          {word: "close", confidence: 0.82, sentiment: "neutral"},
+          {word: "is", confidence: 0.93, sentiment: "neutral"},
+          {word: "disabled.", confidence: 0.89, sentiment: "negative"},
+          {word: "I", confidence: 0.97, sentiment: "neutral"},
+          {word: "don't", confidence: 0.94, sentiment: "negative"},
+          {word: "think", confidence: 0.91, sentiment: "neutral"},
+          {word: "we", confidence: 0.95, sentiment: "neutral"},
+          {word: "need", confidence: 0.88, sentiment: "neutral"},
+          {word: "to", confidence: 0.96, sentiment: "neutral"},
+          {word: "close", confidence: 0.84, sentiment: "neutral"},
+          {word: "it.", confidence: 0.92, sentiment: "neutral"}
         ]
-      },
-      analysis: {
-        fluency: {
-          score: 4.5,
-          maxScore: 5,
-          details: [
-            "Excellent speaking pace and rhythm",
-            "Natural flow with minimal hesitation",
-            "Confident delivery throughout"
-          ]
-        },
-        lexical: {
-          score: 4.2,
-          maxScore: 5,
-          details: [
-            "Wide range of vocabulary",
-            "Appropriate word choices",
-            "Good use of professional terminology"
-          ]
-        },
-        grammar: {
-          score: 4.3,
-          maxScore: 5,
-          details: [
-            "Complex sentence structures used well",
-            "Minor grammatical errors only",
-            "Good variety in constructions"
-          ]
-        },
-        pronunciation: {
-          score: 4.0,
-          maxScore: 5,
-          details: [
-            "Clear and intelligible pronunciation",
-            "Good stress and intonation patterns",
-            "Minor accent features present"
-          ]
-        },
-        sentiment: "POSITIVE",
-        ielts: {
-          band: 7.5
-        }
-      },
-      evaluatorComments: "Excellent communication skills demonstrated. Clear structure and engaging delivery."
-    },
-    {
-      id: 3,
-      type: "Speaking Type 1 - Basic",
-      score: 0.8,
-      maxScore: 5,
-      timeSpent: 12,
-      totalTimeOutside: 5,
-      moveCount: 3,
-      attempts: 2,
-      confidence: {
-        level: "LOW",
-        percentage: 23.4
-      },
-      audio: {
-        url: null,
-        duration: 12,
-        transcript: "Um... uh... I think... maybe... yes.",
-        transcriptWords: [
-          {word: "Um...", confidence: 0.35, sentiment: "negative"},
-          {word: "uh...", confidence: 0.28, sentiment: "negative"},
-          {word: "I", confidence: 0.75, sentiment: "neutral"},
-          {word: "think...", confidence: 0.68, sentiment: "neutral"},
-          {word: "maybe...", confidence: 0.42, sentiment: "negative"},
-          {word: "yes.", confidence: 0.55, sentiment: "positive"}
-        ]
-      },
-      analysis: {
-        fluency: {
-          score: 0.5,
-          maxScore: 5,
-          details: [
-            "Very hesitant delivery",
-            "Long pauses and fillers",
-            "Lacks confidence in speaking"
-          ]
-        },
-        lexical: {
-          score: 1.0,
-          maxScore: 5,
-          details: [
-            "Very limited vocabulary",
-            "Basic expressions only",
-            "Difficulty finding appropriate words"
-          ]
-        },
-        grammar: {
-          score: 1.2,
-          maxScore: 5,
-          details: [
-            "Simple phrases only",
-            "Frequent grammatical errors",
-            "Very basic sentence structures"
-          ]
-        },
-        pronunciation: {
-          score: 1.5,
-          maxScore: 5,
-          details: [
-            "Unclear pronunciation at times",
-            "Heavy accent affects understanding",
-            "Word stress issues present"
-          ]
-        },
-        sentiment: "UNCERTAIN",
-        ielts: {
-          band: 3.0
-        }
-      },
-      evaluatorComments: "Needs significant improvement in speaking confidence and content organization."
+      }
     }
   ];
 
@@ -250,9 +110,7 @@ const SpeakingQuestionCardDemo = () => {
       <div className={styles.container}>
 
         <div className={styles.questionsSection}>
-          <SpeakingQuestionCard questionData={sampleQuestions[1]} />
           <SpeakingQuestionCard questionData={sampleQuestions[0]} />
-          <SpeakingQuestionCard questionData={sampleQuestions[2]} />
         </div>
       </div>
     </div>
