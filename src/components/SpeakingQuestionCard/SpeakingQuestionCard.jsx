@@ -9,13 +9,9 @@ const SpeakingQuestionCard = ({ questionData }) => {
     analysis: true
   });
   
-  // Update Marks modal state
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [updatedScores, setUpdatedScores] = useState({
-    correctness_score: questionData.correctness_score || 0,
-    grammar_score: questionData.grammar_score || 0,
-    vocabulary_score: questionData.vocabulary_score || 0
-  });
+  // Inline editing state
+  const [isEditingScore, setIsEditingScore] = useState(false);
+  const [editScore, setEditScore] = useState(questionData.correctness_score || 0);
   const [currentQuestionData, setCurrentQuestionData] = useState(questionData);
   // Set initial active tab based on available data
   const getInitialActiveTab = () => {
@@ -113,63 +109,84 @@ const SpeakingQuestionCard = ({ questionData }) => {
     }));
   };
 
-  const handleUpdateMarks = () => {
-    setShowUpdateModal(true);
-    setUpdatedScores({
-      correctness_score: currentQuestionData.correctness_score || 0,
-      grammar_score: currentQuestionData.grammar_score || 0,
-      vocabulary_score: currentQuestionData.vocabulary_score || 0
-    });
+  const handleScoreClick = () => {
+    setIsEditingScore(true);
+    setEditScore(currentQuestionData.correctness_score || 0);
   };
 
-  const handleScoreChange = (scoreType, value) => {
-    const numValue = Math.max(0, Math.min(10, parseInt(value) || 0));
-    setUpdatedScores(prev => ({
-      ...prev,
-      [scoreType]: numValue
-    }));
+  const handleScoreChange = (value) => {
+    const numValue = Math.max(0, Math.min(10, parseFloat(value) || 0));
+    setEditScore(numValue);
   };
 
-  const handleSaveScores = () => {
+  const handleSaveScore = () => {
     const updatedData = {
       ...currentQuestionData,
-      ...updatedScores
+      correctness_score: editScore
     };
     setCurrentQuestionData(updatedData);
-    setShowUpdateModal(false);
+    setIsEditingScore(false);
   };
 
-  const handleCancelUpdate = () => {
-    setShowUpdateModal(false);
-    setUpdatedScores({
-      correctness_score: currentQuestionData.correctness_score || 0,
-      grammar_score: currentQuestionData.grammar_score || 0,
-      vocabulary_score: currentQuestionData.vocabulary_score || 0
-    });
+  const handleCancelEdit = () => {
+    setEditScore(currentQuestionData.correctness_score || 0);
+    setIsEditingScore(false);
   };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSaveScore();
+    } else if (e.key === 'Escape') {
+      handleCancelEdit();
+    }
+  };
+
+  // Check if this is a "Not Attempted" case
+  const isNotAttempted = questionData.correctness_score === 0 && 
+                        questionData.grammar_score === 0 && 
+                        questionData.vocabulary_score === 0 &&
+                        (questionData.grammar_issues?.length === 0 || !questionData.grammar_issues) &&
+                        (questionData.vocabulary_issues?.length === 0 || !questionData.vocabulary_issues) &&
+                        transformedData.timeSpent === 0;
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${isNotAttempted ? styles.notAttemptedCard : ''}`}>
       <div className={styles.header}>
         <div className={styles.questionInfo}>
           <h3>Question {transformedData.id}: {transformedData.type}</h3>
+          {isNotAttempted && (
+            <div className={styles.notAttemptedBadge}>
+              <i className="fas fa-exclamation-triangle"></i>
+              NOT ATTEMPTED
+            </div>
+          )}
         </div>
         <div className={styles.scoreInfo}>
-          <div className={`${styles.scoreCard} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
-            <i className="fas fa-chart-bar"></i>
-            <div className={styles.scoreDetails}>
-              <span className={styles.scoreLabel}>Score:</span>
-              <span className={styles.scoreValue}>{currentQuestionData.correctness_score || transformedData.score}/10</span>
-            </div>
+          <div className={styles.inlineScoreContainer}>
+            <span className={styles.scoreLabel}>Score:</span>
+            {isEditingScore ? (
+              <input
+                type="number"
+                min="0"
+                max="10"
+                step="0.1"
+                value={editScore}
+                onChange={(e) => handleScoreChange(e.target.value)}
+                onBlur={handleSaveScore}
+                onKeyDown={handleKeyPress}
+                className={styles.scoreInput}
+                autoFocus
+              />
+            ) : (
+              <div className={styles.inlineScore} onClick={handleScoreClick}>
+                <span className={`${styles.scoreNumber} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
+                  {currentQuestionData.correctness_score || transformedData.score}
+                </span>
+                <span className={styles.scoreUnit}>out of 10</span>
+                <i className={`fas fa-pencil-alt ${styles.editIcon}`}></i>
+              </div>
+            )}
           </div>
-          <button 
-            className={styles.updateMarksButton}
-            onClick={handleUpdateMarks}
-            title="Update Marks"
-          >
-            <i className="fas fa-edit"></i>
-            Update Marks
-          </button>
           <div className={styles.timeCard}>
             <i className="fas fa-clock"></i>
             <span>Time spent: {transformedData.timeSpent} secs</span>
@@ -469,72 +486,6 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       )}
 
-      {/* Update Marks Modal */}
-      {showUpdateModal && (
-        <div className={styles.modalOverlay} onClick={handleCancelUpdate}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              <h3>Update Marks</h3>
-              <button className={styles.modalCloseButton} onClick={handleCancelUpdate}>
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-            
-            <div className={styles.modalBody}>
-              <div className={styles.scoreInputGroup}>
-                <label className={styles.scoreLabel}>
-                  Correctness Score (0-10):
-                  <input
-                    type="number"
-                    min="0"
-                    max="10"
-                    value={updatedScores.correctness_score}
-                    onChange={(e) => handleScoreChange('correctness_score', e.target.value)}
-                    className={styles.scoreInput}
-                  />
-                </label>
-              </div>
-              
-              <div className={styles.scoreInputGroup}>
-                <label className={styles.scoreLabel}>
-                  Grammar Score (0-10):
-                  <input
-                    type="number"
-                    min="0"
-                    max="10"
-                    value={updatedScores.grammar_score}
-                    onChange={(e) => handleScoreChange('grammar_score', e.target.value)}
-                    className={styles.scoreInput}
-                  />
-                </label>
-              </div>
-              
-              <div className={styles.scoreInputGroup}>
-                <label className={styles.scoreLabel}>
-                  Vocabulary Score (0-10):
-                  <input
-                    type="number"
-                    min="0"
-                    max="10"
-                    value={updatedScores.vocabulary_score}
-                    onChange={(e) => handleScoreChange('vocabulary_score', e.target.value)}
-                    className={styles.scoreInput}
-                  />
-                </label>
-              </div>
-            </div>
-            
-            <div className={styles.modalFooter}>
-              <button className={styles.cancelButton} onClick={handleCancelUpdate}>
-                Cancel
-              </button>
-              <button className={styles.saveButton} onClick={handleSaveScores}>
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

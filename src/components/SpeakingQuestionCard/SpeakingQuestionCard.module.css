@@ -1472,314 +1472,137 @@
   }
 }
 
-/* Update Marks Button */
-.updateMarksButton {
+/* Inline Score Editing */
+.inlineScoreContainer {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
-  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: var(--spacing-2) var(--spacing-3);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+}
+
+.inlineScore {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 
-    0 2px 4px rgba(99, 102, 241, 0.2),
-    0 1px 2px rgba(99, 102, 241, 0.1);
+  transition: all 0.15s ease;
   position: relative;
-  overflow: hidden;
 }
 
-.updateMarksButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
-  pointer-events: none;
+.inlineScore:hover {
+  background: var(--color-gray-50);
 }
 
-.updateMarksButton:hover {
-  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-700) 100%);
-  transform: translateY(-1px);
-  box-shadow: 
-    0 4px 8px rgba(99, 102, 241, 0.25),
-    0 2px 4px rgba(99, 102, 241, 0.15);
+.inlineScore:hover .editIcon {
+  opacity: 1;
 }
 
-.updateMarksButton:active {
-  transform: translateY(0);
-  box-shadow: 
-    0 1px 2px rgba(99, 102, 241, 0.2),
-    0 0 1px rgba(99, 102, 241, 0.1);
-}
-
-.updateMarksButton i {
-  font-size: var(--font-size-sm);
-}
-
-/* Modal Styles */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeInOverlay 0.2s ease-out;
-}
-
-@keyframes fadeInOverlay {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.modalContent {
-  background: linear-gradient(135deg, var(--color-background-primary) 0%, rgba(248, 250, 252, 0.95) 100%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 16px;
-  box-shadow: 
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow: hidden;
-  position: relative;
-  animation: slideInModal 0.3s ease-out;
-}
-
-@keyframes slideInModal {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modalContent::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
-  border-radius: 16px;
-  pointer-events: none;
-}
-
-.modalHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-4) var(--spacing-4) var(--spacing-3);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.02) 0%, rgba(168, 85, 247, 0.01) 100%);
-  position: relative;
-  z-index: 1;
-}
-
-.modalHeader h3 {
-  margin: 0;
+.scoreNumber {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
+  line-height: 1;
 }
 
-.modalCloseButton {
-  background: transparent;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-text-secondary);
-  transition: all 0.2s ease;
+.scoreNumber.success {
+  color: var(--color-success-600);
 }
 
-.modalCloseButton:hover {
-  background: var(--color-gray-100);
-  color: var(--color-text-primary);
-  transform: scale(1.05);
+.scoreNumber.warning {
+  color: var(--color-warning-600);
 }
 
-.modalBody {
-  padding: var(--spacing-4);
-  position: relative;
-  z-index: 1;
+.scoreNumber.error {
+  color: var(--color-error-600);
 }
 
-.scoreInputGroup {
-  margin-bottom: var(--spacing-4);
+.scoreUnit {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  font-weight: var(--font-weight-normal);
+  margin-left: 2px;
 }
 
-.scoreInputGroup:last-child {
-  margin-bottom: 0;
-}
-
-.scoreLabel {
-  display: block;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-2);
+.editIcon {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  margin-left: var(--spacing-1);
 }
 
 .scoreInput {
-  width: 100%;
-  padding: var(--spacing-3);
-  border: 1px solid var(--color-border-primary);
-  border-radius: 8px;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  border: 2px solid var(--color-primary-400);
+  border-radius: 4px;
+  padding: var(--spacing-1) var(--spacing-2);
+  width: 60px;
+  text-align: center;
   background: var(--color-background-primary);
-  transition: all 0.2s ease;
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    inset 0 1px 3px rgba(0, 0, 0, 0.02);
+  color: var(--color-text-primary);
 }
 
 .scoreInput:focus {
   outline: none;
   border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Not Attempted Styling */
+.notAttemptedCard {
+  border: 2px solid var(--color-error-300);
+  background: linear-gradient(135deg, 
+    rgba(254, 242, 242, 0.8) 0%, 
+    rgba(252, 230, 230, 0.6) 100%);
   box-shadow: 
-    0 0 0 3px rgba(99, 102, 241, 0.1),
-    0 1px 2px rgba(0, 0, 0, 0.04);
+    0 4px 12px rgba(239, 68, 68, 0.1),
+    0 2px 6px rgba(239, 68, 68, 0.06);
 }
 
-.scoreInput:hover {
-  border-color: var(--color-border-hover);
-}
-
-.modalFooter {
+.notAttemptedBadge {
   display: flex;
-  justify-content: flex-end;
-  gap: var(--spacing-3);
-  padding: var(--spacing-3) var(--spacing-4) var(--spacing-4);
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  background: linear-gradient(135deg, rgba(248, 250, 252, 0.4) 0%, rgba(241, 245, 249, 0.3) 100%);
-  position: relative;
-  z-index: 1;
-}
-
-.cancelButton {
-  background: transparent;
-  border: 1px solid var(--color-border-primary);
-  color: var(--color-text-secondary);
-  border-radius: 8px;
-  padding: var(--spacing-2) var(--spacing-4);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: linear-gradient(135deg, var(--color-background-primary) 0%, rgba(248, 250, 252, 0.8) 100%);
-}
-
-.cancelButton:hover {
-  background: linear-gradient(135deg, var(--color-gray-50) 0%, rgba(243, 244, 246, 0.8) 100%);
-  border-color: var(--color-border-hover);
-  color: var(--color-text-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.saveButton {
-  background: linear-gradient(135deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
-  border: none;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: var(--color-error-500);
   color: white;
-  border-radius: 8px;
-  padding: var(--spacing-2) var(--spacing-4);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 
-    0 2px 4px rgba(34, 197, 94, 0.2),
-    0 1px 2px rgba(34, 197, 94, 0.1);
-  position: relative;
-  overflow: hidden;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: 20px;
+  margin-top: var(--spacing-2);
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  animation: pulseAttention 2s ease-in-out infinite;
 }
 
-.saveButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
-  pointer-events: none;
+.notAttemptedBadge i {
+  font-size: var(--font-size-xs);
 }
 
-.saveButton:hover {
-  background: linear-gradient(135deg, var(--color-success-600) 0%, var(--color-success-700) 100%);
-  transform: translateY(-1px);
-  box-shadow: 
-    0 4px 8px rgba(34, 197, 94, 0.25),
-    0 2px 4px rgba(34, 197, 94, 0.15);
+@keyframes pulseAttention {
+  0%, 100% {
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  }
+  50% {
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  }
 }
 
-.saveButton:active {
-  transform: translateY(0);
-  box-shadow: 
-    0 1px 2px rgba(34, 197, 94, 0.2),
-    0 0 1px rgba(34, 197, 94, 0.1);
-}
-
-/* Mobile responsive for modal */
+/* Mobile responsive for inline editing */
 @media (max-width: 768px) {
-  .modalContent {
-    width: 95%;
-    margin: var(--spacing-2);
-  }
-  
-  .modalHeader {
-    padding: var(--spacing-3);
-  }
-  
-  .modalHeader h3 {
-    font-size: var(--font-size-base);
-  }
-  
-  .modalBody {
-    padding: var(--spacing-3);
-  }
-  
-  .modalFooter {
-    padding: var(--spacing-2) var(--spacing-3) var(--spacing-3);
-    flex-direction: column-reverse;
-  }
-  
-  .cancelButton,
-  .saveButton {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .updateMarksButton {
-    padding: var(--spacing-2);
-    font-size: var(--font-size-xs);
+  .inlineScoreContainer {
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--spacing-1);
   }
+
+  .scoreNumber {
+    font-size: var(--font-size-base);
+  }
+
+  .scoreInput {
+    font-size: var(--font-size-base);
+    width: 50px;
+  }
 }
+
