@@ -212,7 +212,7 @@
 .audioPlayer {
   display: flex;
   align-items: center;
-  gap: var(--spacing-2);
+  gap: var(--spacing-3);
   margin-bottom: var(--spacing-3);
   background: var(--color-background-primary);
   padding: var(--spacing-3);
@@ -225,17 +225,74 @@
   color: white;
   border: none;
   border-radius: var(--radius-base);
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .playButton:hover {
   background: var(--color-primary-600);
+}
+
+.waveform {
+  display: flex;
+  align-items: end;
+  gap: 2px;
+  height: 48px;
+  padding: var(--spacing-2) 0;
+  overflow: hidden;
+  flex: 1;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-base);
+  width: 100%;
+}
+
+.waveformBar {
+  width: 4px;
+  min-height: 8px;
+  background: var(--color-primary-300);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.waveformBar.animating {
+  background: var(--color-primary-500);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 0.4;
+    transform: scaleY(0.8);
+  }
+  50% { 
+    opacity: 1;
+    transform: scaleY(1.1);
+  }
+}
+
+.audioTimerInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  text-align: right;
+  min-width: 60px;
+}
+
+.audioMetaInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
 }
 
 .audioInfo {
@@ -269,49 +326,13 @@
 }
 
 .duration {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
   font-weight: var(--font-weight-medium);
-}
-
-.duration i {
-  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
 }
 
 .status {
   font-style: italic;
   color: var(--color-text-tertiary);
-}
-
-.audioControls {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-}
-
-.speedButton {
-  background: var(--color-background-secondary);
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-base);
-  padding: var(--spacing-1) var(--spacing-2);
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  min-width: fit-content;
-}
-
-.speedButton:hover {
-  border-color: var(--color-primary-300);
-  color: var(--color-primary-600);
-  background: var(--color-primary-25);
-}
-
-.speedButton i {
   font-size: var(--font-size-xs);
 }
 
@@ -1067,6 +1088,39 @@
   }
 
   .headerContent {
+    gap: var(--spacing-1);
+  }
+
+  .audioPlayer {
+    gap: var(--spacing-2);
+    padding: var(--spacing-2);
+  }
+
+  .playButton {
+    width: 36px;
+    height: 36px;
+  }
+
+  .waveform {
+    height: 48px;
+    gap: 1px;
+    margin: 0 var(--spacing-1);
+    padding: var(--spacing-1);
+  }
+
+  .waveformBar {
+    min-width: 2px;
+    max-width: 4px;
+  }
+
+  .audioTimerInfo {
+    min-width: 50px;
+    font-size: var(--font-size-xs);
+  }
+
+  .audioMetaInfo {
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--spacing-1);
   }
 

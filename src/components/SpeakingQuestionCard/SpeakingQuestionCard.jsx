@@ -13,11 +13,10 @@ const SpeakingQuestionCard = ({ questionData }) => {
   const getInitialActiveTab = () => {
     if (questionData.grammar_issues && questionData.grammar_issues.length > 0) return 'grammar';
     if (questionData.vocabulary_issues && questionData.vocabulary_issues.length > 0) return 'vocabulary';
-    if (questionData.pronunciation_issues && questionData.pronunciation_issues.length > 0) return 'pronunciation';
     return 'grammar'; // fallback
   };
   
-  const [activeAnalysisTab, setActiveAnalysisTab] = useState(getInitialActiveTab()); // 'grammar', 'vocabulary', 'pronunciation'
+  const [activeAnalysisTab, setActiveAnalysisTab] = useState(getInitialActiveTab()); // 'grammar', 'vocabulary'
 
   // Transform real API data to component format
   const transformedData = {
@@ -29,7 +28,6 @@ const SpeakingQuestionCard = ({ questionData }) => {
     timeSpent: questionData.timeSpent || 0,
     totalTimeOutside: questionData.totalTimeOutside || 0,
     moveCount: questionData.moveCount || 0,
-    attempts: questionData.attempts || 1,
     confidence: questionData.confidence || { level: "MODERATE", percentage: 50 },
     
     audio: {
@@ -41,40 +39,27 @@ const SpeakingQuestionCard = ({ questionData }) => {
     
     analysis: {
       fluency: {
-        score: questionData.ielts_criteria?.fluency || questionData.analysis?.fluency?.score || 0,
+        score: questionData.analysis?.fluency?.score || 0,
         maxScore: 5,
         details: questionData.grammar_issues?.map(issue => 
           `${issue.issue} - Suggestion: ${issue.suggestion}`) || 
           questionData.analysis?.fluency?.details || []
       },
       lexical: {
-        score: questionData.ielts_criteria?.lexical_resource || questionData.vocabulary_score || questionData.analysis?.lexical?.score || 0,
+        score: questionData.vocabulary_score || questionData.analysis?.lexical?.score || 0,
         maxScore: 5,
         details: questionData.vocabulary_issues?.map(issue => 
           `Word: "${issue.word}" - ${issue.issue} - Suggestion: ${issue.suggestion}`) || 
           questionData.analysis?.lexical?.details || []
       },
       grammar: {
-        score: questionData.ielts_criteria?.grammar_range_and_accuracy || questionData.grammar_score || questionData.analysis?.grammar?.score || 0,
+        score: questionData.grammar_score || questionData.analysis?.grammar?.score || 0,
         maxScore: 5,
         details: questionData.grammar_issues?.map(issue => 
           `"${issue.original}" - ${issue.issue} - Suggestion: "${issue.suggestion}"`) || 
           questionData.analysis?.grammar?.details || []
       },
-      pronunciation: {
-        score: questionData.ielts_criteria?.pronunciation || questionData.pronunciation_score || questionData.analysis?.pronunciation?.score || 0,
-        maxScore: 5,
-        details: questionData.pronunciation_issues?.length > 0 
-          ? questionData.pronunciation_issues.map(issue => 
-              `"${issue.original}" - ${issue.issue} - Suggestion: "${issue.suggestion}"`)
-          : questionData.analysis?.pronunciation?.details || ["No specific pronunciation issues identified"]
-      },
-      sentiment: questionData.analysis?.sentiment || "NEUTRAL",
-      ielts: {
-        band: questionData.ielts_band_estimate ? 
-          parseFloat(questionData.ielts_band_estimate.replace('Band ', '')) : 
-          questionData.analysis?.ielts?.band || 0
-      }
+      sentiment: questionData.analysis?.sentiment || "NEUTRAL"
     },
     
     evaluatorComments: questionData.ai_feedback_summary || questionData.correctness_feedback || questionData.evaluatorComments || null
@@ -127,11 +112,11 @@ const SpeakingQuestionCard = ({ questionData }) => {
           <h3>Question {transformedData.id}: {transformedData.type}</h3>
         </div>
         <div className={styles.scoreInfo}>
-          <div className={`${styles.scoreCard} ${styles[getScoreColor(questionData.correctness_score || transformedData.score, 5)]}`}>
+          <div className={`${styles.scoreCard} ${styles[getScoreColor(questionData.correctness_score || transformedData.score, 10)]}`}>
             <i className="fas fa-chart-bar"></i>
             <div className={styles.scoreDetails}>
               <span className={styles.scoreLabel}>Score:</span>
-              <span className={styles.scoreValue}>{questionData.correctness_score || transformedData.score}/5</span>
+              <span className={styles.scoreValue}>{questionData.correctness_score || transformedData.score}/10</span>
             </div>
           </div>
           <div className={styles.timeCard}>
@@ -161,20 +146,31 @@ const SpeakingQuestionCard = ({ questionData }) => {
           <button onClick={handlePlayPause} className={styles.playButton}>
             <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
           </button>
-          <div className={styles.audioInfo}>
+          
+          <div className={styles.waveform}>
+            {Array.from({ length: 150 }, (_, i) => {
+              const heights = [40, 60, 30, 75, 45, 80, 35, 65, 50, 85, 25, 70, 55, 40, 90, 30, 75, 60, 45, 80, 35, 70, 50, 85, 40, 65, 55, 75, 30, 80];
+              const height = heights[i % heights.length];
+              return (
+                <div 
+                  key={i} 
+                  className={`${styles.waveformBar} ${isPlaying ? styles.animating : ''}`}
+                  style={{
+                    height: `${Math.max(height, 20)}%`,
+                    animationDelay: `${i * 0.01}s`
+                  }}
+                ></div>
+              );
+            })}
+          </div>
+          
+          <div className={styles.audioTimerInfo}>
             <span className={styles.duration}>
-              <i className="fas fa-clock"></i>
               {formatTime(transformedData.audio.duration)}
             </span>
             {isPlaying && (
               <span className={styles.status}>Playing...</span>
             )}
-          </div>
-          <div className={styles.audioControls}>
-            <button className={styles.speedButton}>
-              <i className="fas fa-tachometer-alt"></i>
-              1x
-            </button>
           </div>
         </div>
 
@@ -227,10 +223,10 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       </div>
 
-      {/* Correctness Feedback - Always visible */}
+      {/* AI Feedback - Always visible */}
       {questionData.correctness_feedback && (
         <div className={styles.section}>
-          <h4>Correctness Feedback</h4>
+          <h4>AI Feedback</h4>
           <div className={styles.feedbackCard}>
             <p>{questionData.correctness_feedback}</p>
           </div>
@@ -245,81 +241,34 @@ const SpeakingQuestionCard = ({ questionData }) => {
         >
           <div className={styles.headerContent}>
             <i className="fas fa-chart-bar"></i>
-            <span>Assessment Summary & IELTS Breakdown</span>
+            <span>Score Breakdown</span>
           </div>
           <i className={`fas ${expandedSections.assessment ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
         </button>
         
         {expandedSections.assessment && (
           <div className={styles.collapsibleContent}>
-            <div className={styles.section}>
-              <h4>Assessment Summary</h4>
-              <div className={styles.summaryGrid}>
-                <div className={styles.summaryCard}>
-                  <span className={styles.summaryLabel}>IELTS Band Estimate:</span>
-                  <span className={styles.summaryValue}>{questionData.ielts_band_estimate || 'N/A'}</span>
-                </div>
-                <div className={styles.summaryCard}>
-                  <span className={styles.summaryLabel}>Grammar Score:</span>
-                  <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.grammar_score || 0, 5)]}`}>
-                    {questionData.grammar_score || 0}/5
-                  </span>
-                </div>
-                {questionData.pronunciation_score !== undefined && (
-                  <div className={styles.summaryCard}>
-                    <span className={styles.summaryLabel}>Pronunciation Score:</span>
-                    <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.pronunciation_score || 0, 5)]}`}>
-                      {questionData.pronunciation_score || 0}/5
-                    </span>
-                  </div>
-                )}
-                <div className={styles.summaryCard}>
-                  <span className={styles.summaryLabel}>Vocabulary Score:</span>
-                  <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.vocabulary_score || 0, 5)]}`}>
-                    {questionData.vocabulary_score || 0}/5
-                  </span>
-                </div>
+            <div className={styles.summaryGrid}>
+              <div className={styles.summaryCard}>
+                <span className={styles.summaryLabel}>Grammar Score:</span>
+                <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.grammar_score || 0, 10)]}`}>
+                  {questionData.grammar_score || 0}/10
+                </span>
+              </div>
+              <div className={styles.summaryCard}>
+                <span className={styles.summaryLabel}>Vocabulary Score:</span>
+                <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.vocabulary_score || 0, 10)]}`}>
+                  {questionData.vocabulary_score || 0}/10
+                </span>
               </div>
             </div>
-
-            {questionData.ielts_criteria && (
-              <div className={styles.section}>
-                <h4>IELTS Criteria Breakdown</h4>
-                <div className={styles.criteriaGrid}>
-                  <div className={styles.criteriaItem}>
-                    <span className={styles.criteriaLabel}>Fluency:</span>
-                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.fluency || 0, 5)]}`}>
-                      {questionData.ielts_criteria?.fluency || 0}/5
-                    </span>
-                  </div>
-                  <div className={styles.criteriaItem}>
-                    <span className={styles.criteriaLabel}>Lexical Resource:</span>
-                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.lexical_resource || 0, 5)]}`}>
-                      {questionData.ielts_criteria?.lexical_resource || 0}/5
-                    </span>
-                  </div>
-                  <div className={styles.criteriaItem}>
-                    <span className={styles.criteriaLabel}>Grammar Range & Accuracy:</span>
-                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.grammar_range_and_accuracy || 0, 5)]}`}>
-                      {questionData.ielts_criteria?.grammar_range_and_accuracy || 0}/5
-                    </span>
-                  </div>
-                  <div className={styles.criteriaItem}>
-                    <span className={styles.criteriaLabel}>Pronunciation:</span>
-                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.pronunciation || 0, 5)]}`}>
-                      {questionData.ielts_criteria?.pronunciation || 0}/5
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )}
       </div>
 
       {/* Issues Analysis - Collapsible with Tabs */}
-      {/* Always show if any of the three issue types exist in the data */}
-      {(questionData.grammar_issues !== undefined || questionData.vocabulary_issues !== undefined || questionData.pronunciation_issues !== undefined) && (
+      {/* Always show if any of the two issue types exist in the data */}
+      {(questionData.grammar_issues !== undefined || questionData.vocabulary_issues !== undefined) && (
         <div className={styles.collapsibleSection}>
           <button 
             className={styles.collapsibleHeader}
@@ -329,7 +278,7 @@ const SpeakingQuestionCard = ({ questionData }) => {
               <i className="fas fa-microscope"></i>
               <span>Issues Analysis</span>
               <span className={styles.badge}>
-                {(questionData.grammar_issues?.length || 0) + (questionData.vocabulary_issues?.length || 0) + (questionData.pronunciation_issues?.length || 0)} issues
+                {(questionData.grammar_issues?.length || 0) + (questionData.vocabulary_issues?.length || 0)} issues
               </span>
             </div>
             <i className={`fas ${expandedSections.analysis ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
@@ -353,15 +302,6 @@ const SpeakingQuestionCard = ({ questionData }) => {
                     <i className="fas fa-book"></i>
                     Vocabulary ({questionData.vocabulary_issues?.length || 0})
                   </button>
-                  {questionData.pronunciation_issues !== undefined && (
-                    <button
-                      className={`${styles.analysisTabButton} ${activeAnalysisTab === 'pronunciation' ? styles.active : ''}`}
-                      onClick={() => setActiveAnalysisTab('pronunciation')}
-                    >
-                      <i className="fas fa-volume-up"></i>
-                      Pronunciation ({questionData.pronunciation_issues?.length || 0})
-                    </button>
-                  )}
                 </div>
                 
                 <div className={styles.analysisTabContent}>
@@ -415,30 +355,6 @@ const SpeakingQuestionCard = ({ questionData }) => {
                     </div>
                   )}
                   
-                  {activeAnalysisTab === 'pronunciation' && questionData.pronunciation_issues !== undefined && (
-                    <div className={styles.issuesContainer}>
-                      {questionData.pronunciation_issues?.length > 0 ? (
-                        questionData.pronunciation_issues.map((issue, index) => (
-                          <div key={`pronunciation-${index}`} className={styles.issueCard}>
-                            <div className={styles.issueType}>Pronunciation Issue</div>
-                            <div className={styles.issueOriginal}>
-                              <strong>Original:</strong> "{issue.original}"
-                            </div>
-                            <div className={styles.issueDescription}>
-                              <strong>Issue:</strong> {issue.issue}
-                            </div>
-                            <div className={styles.issueSuggestion}>
-                              <strong>Suggestion:</strong> "{issue.suggestion}"
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className={styles.noIssuesCard}>
-                          <p>No pronunciation issues were identified in the assessment.</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -446,16 +362,16 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       )}
 
-      {/* Corrected Text & AI Feedback - Collapsible */}
-      {(questionData.corrected_text || questionData.ai_feedback_summary || transformedData.evaluatorComments) && (
+      {/* Corrected Text - Collapsible */}
+      {questionData.corrected_text && (
         <div className={styles.collapsibleSection}>
           <button 
             className={styles.collapsibleHeader}
             onClick={() => toggleSection('feedback')}
           >
             <div className={styles.headerContent}>
-              <i className="fas fa-comments"></i>
-              <span>AI Analysis & Corrected Text</span>
+              <i className="fas fa-spell-check"></i>
+              <span>Corrected Text</span>
             </div>
             <i className={`fas ${expandedSections.feedback ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
           </button>
@@ -471,14 +387,6 @@ const SpeakingQuestionCard = ({ questionData }) => {
                 </div>
               )}
 
-              {(questionData.ai_feedback_summary || transformedData.evaluatorComments) && (
-                <div className={styles.section}>
-                  <h4>AI Feedback Summary</h4>
-                  <div className={styles.commentsCard}>
-                    <p>{questionData.ai_feedback_summary || transformedData.evaluatorComments}</p>
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </div>
