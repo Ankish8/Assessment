@@ -212,6 +212,34 @@ const SpeakingQuestionCardDemo = () => {
           {word: "concept.", confidence: 0.93, sentiment: "neutral"}
         ]
       }
+    },
+    
+    {
+      // Json5.txt - Not Attempted by Candidate case
+      ...{
+        "correctness_score": 0,
+        "correctness_feedback": "No response provided by candidate. Question was not attempted.",
+        "grammar_score": 0,
+        "vocabulary_score": 0,
+        "grammar_issues": [],
+        "vocabulary_issues": [],
+        "ai_feedback_summary": "Candidate did not attempt to answer the question. No analysis could be performed due to lack of response."
+      },
+      
+      // Additional fields for demo UI functionality
+      id: 5,
+      type: "Speaking Assessment - Not Attempted",
+      timeSpent: 0,
+      totalTimeOutside: 0,
+      moveCount: 0,
+      attempts: 0,
+      confidence: { level: "NONE", percentage: 0 },
+      audio: {
+        url: null,
+        duration: 0,
+        transcript: "",
+        transcriptWords: []
+      }
     }
   ];
 

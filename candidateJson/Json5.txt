@@ -1,0 +1,9 @@
+{
+  "correctness_score": 0,
+  "correctness_feedback": "No response provided by candidate. Question was not attempted.",
+  "grammar_score": 0,
+  "vocabulary_score": 0,
+  "grammar_issues": [],
+  "vocabulary_issues": [],
+  "ai_feedback_summary": "Candidate did not attempt to answer the question. No analysis could be performed due to lack of response."
+}

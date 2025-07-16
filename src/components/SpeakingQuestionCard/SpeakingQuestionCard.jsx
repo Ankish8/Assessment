@@ -8,6 +8,15 @@ const SpeakingQuestionCard = ({ questionData }) => {
     assessment: true,
     analysis: true
   });
+  
+  // Update Marks modal state
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [updatedScores, setUpdatedScores] = useState({
+    correctness_score: questionData.correctness_score || 0,
+    grammar_score: questionData.grammar_score || 0,
+    vocabulary_score: questionData.vocabulary_score || 0
+  });
+  const [currentQuestionData, setCurrentQuestionData] = useState(questionData);
   // Set initial active tab based on available data
   const getInitialActiveTab = () => {
     if (questionData.grammar_issues && questionData.grammar_issues.length > 0) return 'grammar';
@@ -104,6 +113,41 @@ const SpeakingQuestionCard = ({ questionData }) => {
     }));
   };
 
+  const handleUpdateMarks = () => {
+    setShowUpdateModal(true);
+    setUpdatedScores({
+      correctness_score: currentQuestionData.correctness_score || 0,
+      grammar_score: currentQuestionData.grammar_score || 0,
+      vocabulary_score: currentQuestionData.vocabulary_score || 0
+    });
+  };
+
+  const handleScoreChange = (scoreType, value) => {
+    const numValue = Math.max(0, Math.min(10, parseInt(value) || 0));
+    setUpdatedScores(prev => ({
+      ...prev,
+      [scoreType]: numValue
+    }));
+  };
+
+  const handleSaveScores = () => {
+    const updatedData = {
+      ...currentQuestionData,
+      ...updatedScores
+    };
+    setCurrentQuestionData(updatedData);
+    setShowUpdateModal(false);
+  };
+
+  const handleCancelUpdate = () => {
+    setShowUpdateModal(false);
+    setUpdatedScores({
+      correctness_score: currentQuestionData.correctness_score || 0,
+      grammar_score: currentQuestionData.grammar_score || 0,
+      vocabulary_score: currentQuestionData.vocabulary_score || 0
+    });
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -111,13 +155,21 @@ const SpeakingQuestionCard = ({ questionData }) => {
           <h3>Question {transformedData.id}: {transformedData.type}</h3>
         </div>
         <div className={styles.scoreInfo}>
-          <div className={`${styles.scoreCard} ${styles[getScoreColor(questionData.correctness_score || transformedData.score, 10)]}`}>
+          <div className={`${styles.scoreCard} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
             <i className="fas fa-chart-bar"></i>
             <div className={styles.scoreDetails}>
               <span className={styles.scoreLabel}>Score:</span>
-              <span className={styles.scoreValue}>{questionData.correctness_score || transformedData.score}/10</span>
+              <span className={styles.scoreValue}>{currentQuestionData.correctness_score || transformedData.score}/10</span>
             </div>
           </div>
+          <button 
+            className={styles.updateMarksButton}
+            onClick={handleUpdateMarks}
+            title="Update Marks"
+          >
+            <i className="fas fa-edit"></i>
+            Update Marks
+          </button>
           <div className={styles.timeCard}>
             <i className="fas fa-clock"></i>
             <span>Time spent: {transformedData.timeSpent} secs</span>
@@ -299,6 +351,12 @@ const SpeakingQuestionCard = ({ questionData }) => {
           <div className={styles.collapsibleContent}>
             <div className={styles.summaryGrid}>
               <div className={styles.summaryCard}>
+                <span className={styles.summaryLabel}>Correctness Score:</span>
+                <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.correctness_score || 0, 10)]}`}>
+                  {questionData.correctness_score || 0}/10
+                </span>
+              </div>
+              <div className={styles.summaryCard}>
                 <span className={styles.summaryLabel}>Grammar Score:</span>
                 <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.grammar_score || 0, 10)]}`}>
                   {questionData.grammar_score || 0}/10
@@ -408,6 +466,73 @@ const SpeakingQuestionCard = ({ questionData }) => {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Update Marks Modal */}
+      {showUpdateModal && (
+        <div className={styles.modalOverlay} onClick={handleCancelUpdate}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3>Update Marks</h3>
+              <button className={styles.modalCloseButton} onClick={handleCancelUpdate}>
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div className={styles.modalBody}>
+              <div className={styles.scoreInputGroup}>
+                <label className={styles.scoreLabel}>
+                  Correctness Score (0-10):
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    value={updatedScores.correctness_score}
+                    onChange={(e) => handleScoreChange('correctness_score', e.target.value)}
+                    className={styles.scoreInput}
+                  />
+                </label>
+              </div>
+              
+              <div className={styles.scoreInputGroup}>
+                <label className={styles.scoreLabel}>
+                  Grammar Score (0-10):
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    value={updatedScores.grammar_score}
+                    onChange={(e) => handleScoreChange('grammar_score', e.target.value)}
+                    className={styles.scoreInput}
+                  />
+                </label>
+              </div>
+              
+              <div className={styles.scoreInputGroup}>
+                <label className={styles.scoreLabel}>
+                  Vocabulary Score (0-10):
+                  <input
+                    type="number"
+                    min="0"
+                    max="10"
+                    value={updatedScores.vocabulary_score}
+                    onChange={(e) => handleScoreChange('vocabulary_score', e.target.value)}
+                    className={styles.scoreInput}
+                  />
+                </label>
+              </div>
+            </div>
+            
+            <div className={styles.modalFooter}>
+              <button className={styles.cancelButton} onClick={handleCancelUpdate}>
+                Cancel
+              </button>
+              <button className={styles.saveButton} onClick={handleSaveScores}>
+                Save Changes
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
