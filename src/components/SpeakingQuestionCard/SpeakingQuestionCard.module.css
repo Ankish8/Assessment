@@ -538,19 +538,53 @@
 }
 
 .confidenceLegend {
-  background: var(--color-blue-25);
-  border: 1px solid var(--color-blue-200);
-  border-radius: var(--radius-base);
-  padding: var(--spacing-3);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(99, 102, 241, 0.03) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.12);
+  border-radius: 10px;
+  padding: var(--spacing-4);
   margin-bottom: var(--spacing-3);
+  box-shadow: 
+    0 2px 8px rgba(59, 130, 246, 0.06),
+    0 1px 3px rgba(59, 130, 246, 0.08);
+  position: relative;
+  backdrop-filter: blur(8px);
+}
+
+.confidenceLegend::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .sentimentLegend {
-  background: var(--color-purple-25);
-  border: 1px solid var(--color-purple-200);
-  border-radius: var(--radius-base);
-  padding: var(--spacing-3);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.04) 0%, rgba(147, 51, 234, 0.03) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  border-radius: 10px;
+  padding: var(--spacing-4);
   margin-bottom: var(--spacing-3);
+  box-shadow: 
+    0 2px 8px rgba(168, 85, 247, 0.06),
+    0 1px 3px rgba(168, 85, 247, 0.08);
+  position: relative;
+  backdrop-filter: blur(8px);
+}
+
+.sentimentLegend::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 .legendTitle {
@@ -558,13 +592,17 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
   display: block;
-  margin-bottom: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
+  position: relative;
+  z-index: 1;
 }
 
 .legendItems {
   display: flex;
   gap: var(--spacing-4);
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
 .legendItem {
@@ -573,37 +611,81 @@
   gap: var(--spacing-2);
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  transition: all 0.2s ease;
+}
+
+.legendItem:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+  transform: translateY(-1px);
 }
 
 .legendDot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: var(--radius-full);
   flex-shrink: 0;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.legendDot::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  right: 1px;
+  bottom: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .legendDot.success {
-  background: var(--color-success-500);
+  background: linear-gradient(135deg, var(--color-success-400) 0%, var(--color-success-600) 100%);
+  box-shadow: 
+    0 1px 3px rgba(34, 197, 94, 0.2),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .legendDot.warning {
-  background: var(--color-warning-500);
+  background: linear-gradient(135deg, var(--color-warning-400) 0%, var(--color-warning-600) 100%);
+  box-shadow: 
+    0 1px 3px rgba(245, 158, 11, 0.2),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .legendDot.error {
-  background: var(--color-error-500);
+  background: linear-gradient(135deg, var(--color-error-400) 0%, var(--color-error-600) 100%);
+  box-shadow: 
+    0 1px 3px rgba(239, 68, 68, 0.2),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .legendDot.positive {
-  background: var(--color-success-500);
+  background: linear-gradient(135deg, var(--color-success-400) 0%, var(--color-success-600) 100%);
+  box-shadow: 
+    0 1px 3px rgba(34, 197, 94, 0.2),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .legendDot.neutral {
-  background: var(--color-gray-500);
+  background: linear-gradient(135deg, var(--color-gray-400) 0%, var(--color-gray-600) 100%);
+  box-shadow: 
+    0 1px 3px rgba(107, 114, 128, 0.2),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .legendDot.negative {
-  background: var(--color-error-500);
+  background: linear-gradient(135deg, var(--color-error-400) 0%, var(--color-error-600) 100%);
+  box-shadow: 
+    0 1px 3px rgba(239, 68, 68, 0.2),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .transcriptLabel i {

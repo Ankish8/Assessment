@@ -194,6 +194,46 @@ const SpeakingQuestionCard = ({ questionData }) => {
             </div>
           </div>
           
+          {analysisMode === 'confidence' && (
+            <div className={styles.confidenceLegend}>
+              <span className={styles.legendTitle}>Confidence Levels:</span>
+              <div className={styles.legendItems}>
+                <span className={styles.legendItem}>
+                  <span className={`${styles.legendDot} ${styles.success}`}></span>
+                  High (70%+)
+                </span>
+                <span className={styles.legendItem}>
+                  <span className={`${styles.legendDot} ${styles.warning}`}></span>
+                  Medium (40-70%)
+                </span>
+                <span className={styles.legendItem}>
+                  <span className={`${styles.legendDot} ${styles.error}`}></span>
+                  Low (&lt;40%)
+                </span>
+              </div>
+            </div>
+          )}
+
+          {analysisMode === 'sentiment' && (
+            <div className={styles.sentimentLegend}>
+              <span className={styles.legendTitle}>Sentiment Analysis:</span>
+              <div className={styles.legendItems}>
+                <span className={styles.legendItem}>
+                  <span className={`${styles.legendDot} ${styles.positive}`}></span>
+                  Positive statement
+                </span>
+                <span className={styles.legendItem}>
+                  <span className={`${styles.legendDot} ${styles.neutral}`}></span>
+                  Neutral statement
+                </span>
+                <span className={styles.legendItem}>
+                  <span className={`${styles.legendDot} ${styles.negative}`}></span>
+                  Negative statement
+                </span>
+              </div>
+            </div>
+          )}
+          
           <div className={styles.transcriptText}>
             {analysisMode === 'confidence' && transformedData.audio.transcriptWords ? (
               transformedData.audio.transcriptWords.map((item, index) => (
