@@ -150,15 +150,12 @@ const SpeakingQuestionCard = ({ questionData }) => {
                         transformedData.timeSpent === 0;
 
   return (
-    <div className={`${styles.card} ${isNotAttempted ? styles.notAttemptedCard : ''}`}>
+    <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.questionInfo}>
           <h3>Question {transformedData.id}: {transformedData.type}</h3>
           {isNotAttempted && (
-            <div className={styles.notAttemptedBadge}>
-              <i className="fas fa-exclamation-triangle"></i>
-              NOT ATTEMPTED
-            </div>
+            <span className={styles.notAttemptedText}>Not Attempted</span>
           )}
         </div>
         <div className={styles.scoreInfo}>
@@ -182,7 +179,6 @@ const SpeakingQuestionCard = ({ questionData }) => {
                 <span className={`${styles.scoreNumber} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
                   {currentQuestionData.correctness_score || transformedData.score}
                 </span>
-                <span className={styles.scoreUnit}>out of 10</span>
                 <i className={`fas fa-pencil-alt ${styles.editIcon}`}></i>
               </div>
             )}
