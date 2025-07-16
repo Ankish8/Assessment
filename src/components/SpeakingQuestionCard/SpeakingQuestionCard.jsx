@@ -10,7 +10,8 @@ const SpeakingQuestionCard = ({ questionData }) => {
   });
   
   // Score editing state
-  const [tempScore, setTempScore] = useState(questionData.correctness_score || 0);
+  const [showEditScore, setShowEditScore] = useState(false);
+  const [editingScore, setEditingScore] = useState(questionData.correctness_score || 0);
   const [currentQuestionData, setCurrentQuestionData] = useState(questionData);
   // Set initial active tab based on available data
   const getInitialActiveTab = () => {
@@ -108,14 +109,24 @@ const SpeakingQuestionCard = ({ questionData }) => {
     }));
   };
 
-  const handleScoreUpdate = (newScore) => {
-    const validScore = Math.max(0, Math.min(10, parseFloat(newScore) || 0));
+  const handleEditScore = () => {
+    setEditingScore(currentQuestionData.correctness_score || 0);
+    setShowEditScore(true);
+  };
+
+  const handleSaveScore = () => {
+    const validScore = Math.max(0, Math.min(10, parseFloat(editingScore) || 0));
     const updatedData = {
       ...currentQuestionData,
       correctness_score: validScore
     };
     setCurrentQuestionData(updatedData);
-    setTempScore(validScore);
+    setShowEditScore(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingScore(currentQuestionData.correctness_score || 0);
+    setShowEditScore(false);
   };
 
   // Check if this is a "Not Attempted" case
@@ -136,29 +147,18 @@ const SpeakingQuestionCard = ({ questionData }) => {
           )}
         </div>
         <div className={styles.scoreInfo}>
-          <div className={styles.scoreDisplayContainer}>
-            <div className={styles.scoreDisplay}>
-              <span className={styles.scoreLabel}>Score:</span>
-              <span className={`${styles.scoreValue} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
-                {currentQuestionData.correctness_score || transformedData.score}/10
-              </span>
-            </div>
-            <div className={styles.scoreControls}>
-              <button 
-                className={styles.scoreButton}
-                onClick={() => handleScoreUpdate(Math.max(0, (currentQuestionData.correctness_score || 0) - 0.5))}
-                disabled={currentQuestionData.correctness_score <= 0}
-              >
-                -
-              </button>
-              <button 
-                className={styles.scoreButton}
-                onClick={() => handleScoreUpdate(Math.min(10, (currentQuestionData.correctness_score || 0) + 0.5))}
-                disabled={currentQuestionData.correctness_score >= 10}
-              >
-                +
-              </button>
-            </div>
+          <div className={styles.scoreCard}>
+            <span className={styles.scoreLabel}>Score:</span>
+            <span className={`${styles.scoreValue} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
+              {currentQuestionData.correctness_score || transformedData.score}/10
+            </span>
+            <button 
+              className={styles.editButton}
+              onClick={handleEditScore}
+              title="Update Score"
+            >
+              <i className="fas fa-pencil-alt"></i>
+            </button>
           </div>
           <div className={styles.timeCard}>
             <i className="fas fa-clock"></i>
@@ -459,6 +459,37 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       )}
 
+      {/* Edit Score Modal */}
+      {showEditScore && (
+        <div className={styles.editScoreModal} onClick={handleCancelEdit}>
+          <div className={styles.editScoreContent} onClick={(e) => e.stopPropagation()}>
+            <h4>Update Score</h4>
+            <div className={styles.editScoreForm}>
+              <label>
+                New Score (0-10):
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  step="0.1"
+                  value={editingScore}
+                  onChange={(e) => setEditingScore(e.target.value)}
+                  className={styles.editScoreInput}
+                  autoFocus
+                />
+              </label>
+              <div className={styles.editScoreButtons}>
+                <button onClick={handleCancelEdit} className={styles.cancelButton}>
+                  Cancel
+                </button>
+                <button onClick={handleSaveScore} className={styles.saveButton}>
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
