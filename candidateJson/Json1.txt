@@ -1,0 +1,32 @@
+{
+  "correctness_score": 2,
+  "correctness_feedback": "The response does not effectively address the question 'What is AI?'. It seems to discuss a process involving recording and time management, but it's not relevant to answering what Artificial Intelligence is.",
+  "grammar_score": 6,
+  "vocabulary_score": 5,
+  "grammar_issues": [
+    {
+      "original": "Mhm. Click on it.",
+      "issue": "Fragmented sentence",
+      "suggestion": "This doesn't form a complete sentence."
+    },
+    {
+      "original": "The time is okay testgu is finre.",
+      "issue": "Spelling and structure issues",
+      "suggestion": "The time is okay; the test is fine."
+    }
+  ],
+  "vocabulary_issues": [
+    {
+      "word": "Mhm",
+      "issue": "Informal language",
+      "suggestion": "Yes or Okay"
+    },
+    {
+      "word": "testgu",
+      "issue": "Typographical error",
+      "suggestion": "test"
+    }
+  ],
+  "corrected_text": "Click on it, and it will start recording, providing some feedback. It will show the time. Okay, the test is fine. You also spend maximum time there, which is stored while providing the solution. The close option is disabled, but I don't think we need to close.",
+  "ai_feedback_summary": "The candidate's answer did not address the question 'What is AI?'. The response was off-topic and focused on a process involving recording and time management. The grammar was somewhat fragmented, and the vocabulary included informal and misspelled words. The user needs to stay focused on the question and answer clearly and directly."
+}

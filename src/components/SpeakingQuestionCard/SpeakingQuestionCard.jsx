@@ -5,11 +5,19 @@ const SpeakingQuestionCard = ({ questionData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [analysisMode, setAnalysisMode] = useState('none'); // 'none', 'confidence', 'sentiment'
   const [expandedSections, setExpandedSections] = useState({
-    assessment: false,
-    analysis: false,
-    feedback: false
+    assessment: true,
+    analysis: true,
+    feedback: true
   });
-  const [activeAnalysisTab, setActiveAnalysisTab] = useState('grammar'); // 'grammar', 'vocabulary', 'pronunciation'
+  // Set initial active tab based on available data
+  const getInitialActiveTab = () => {
+    if (questionData.grammar_issues && questionData.grammar_issues.length > 0) return 'grammar';
+    if (questionData.vocabulary_issues && questionData.vocabulary_issues.length > 0) return 'vocabulary';
+    if (questionData.pronunciation_issues && questionData.pronunciation_issues.length > 0) return 'pronunciation';
+    return 'grammar'; // fallback
+  };
+  
+  const [activeAnalysisTab, setActiveAnalysisTab] = useState(getInitialActiveTab()); // 'grammar', 'vocabulary', 'pronunciation'
 
   // Transform real API data to component format
   const transformedData = {
@@ -257,12 +265,14 @@ const SpeakingQuestionCard = ({ questionData }) => {
                     {questionData.grammar_score || 0}/5
                   </span>
                 </div>
-                <div className={styles.summaryCard}>
-                  <span className={styles.summaryLabel}>Pronunciation Score:</span>
-                  <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.pronunciation_score || 0, 5)]}`}>
-                    {questionData.pronunciation_score || 0}/5
-                  </span>
-                </div>
+                {questionData.pronunciation_score !== undefined && (
+                  <div className={styles.summaryCard}>
+                    <span className={styles.summaryLabel}>Pronunciation Score:</span>
+                    <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.pronunciation_score || 0, 5)]}`}>
+                      {questionData.pronunciation_score || 0}/5
+                    </span>
+                  </div>
+                )}
                 <div className={styles.summaryCard}>
                   <span className={styles.summaryLabel}>Vocabulary Score:</span>
                   <span className={`${styles.summaryValue} ${styles[getScoreColor(questionData.vocabulary_score || 0, 5)]}`}>
@@ -272,35 +282,37 @@ const SpeakingQuestionCard = ({ questionData }) => {
               </div>
             </div>
 
-            <div className={styles.section}>
-              <h4>IELTS Criteria Breakdown</h4>
-              <div className={styles.criteriaGrid}>
-                <div className={styles.criteriaItem}>
-                  <span className={styles.criteriaLabel}>Fluency:</span>
-                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.fluency || 0, 5)]}`}>
-                    {questionData.ielts_criteria?.fluency || 0}/5
-                  </span>
-                </div>
-                <div className={styles.criteriaItem}>
-                  <span className={styles.criteriaLabel}>Lexical Resource:</span>
-                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.lexical_resource || 0, 5)]}`}>
-                    {questionData.ielts_criteria?.lexical_resource || 0}/5
-                  </span>
-                </div>
-                <div className={styles.criteriaItem}>
-                  <span className={styles.criteriaLabel}>Grammar Range & Accuracy:</span>
-                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.grammar_range_and_accuracy || 0, 5)]}`}>
-                    {questionData.ielts_criteria?.grammar_range_and_accuracy || 0}/5
-                  </span>
-                </div>
-                <div className={styles.criteriaItem}>
-                  <span className={styles.criteriaLabel}>Pronunciation:</span>
-                  <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.pronunciation || 0, 5)]}`}>
-                    {questionData.ielts_criteria?.pronunciation || 0}/5
-                  </span>
+            {questionData.ielts_criteria && (
+              <div className={styles.section}>
+                <h4>IELTS Criteria Breakdown</h4>
+                <div className={styles.criteriaGrid}>
+                  <div className={styles.criteriaItem}>
+                    <span className={styles.criteriaLabel}>Fluency:</span>
+                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.fluency || 0, 5)]}`}>
+                      {questionData.ielts_criteria?.fluency || 0}/5
+                    </span>
+                  </div>
+                  <div className={styles.criteriaItem}>
+                    <span className={styles.criteriaLabel}>Lexical Resource:</span>
+                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.lexical_resource || 0, 5)]}`}>
+                      {questionData.ielts_criteria?.lexical_resource || 0}/5
+                    </span>
+                  </div>
+                  <div className={styles.criteriaItem}>
+                    <span className={styles.criteriaLabel}>Grammar Range & Accuracy:</span>
+                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.grammar_range_and_accuracy || 0, 5)]}`}>
+                      {questionData.ielts_criteria?.grammar_range_and_accuracy || 0}/5
+                    </span>
+                  </div>
+                  <div className={styles.criteriaItem}>
+                    <span className={styles.criteriaLabel}>Pronunciation:</span>
+                    <span className={`${styles.criteriaScore} ${styles[getScoreColor(questionData.ielts_criteria?.pronunciation || 0, 5)]}`}>
+                      {questionData.ielts_criteria?.pronunciation || 0}/5
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
@@ -341,13 +353,15 @@ const SpeakingQuestionCard = ({ questionData }) => {
                     <i className="fas fa-book"></i>
                     Vocabulary ({questionData.vocabulary_issues?.length || 0})
                   </button>
-                  <button
-                    className={`${styles.analysisTabButton} ${activeAnalysisTab === 'pronunciation' ? styles.active : ''}`}
-                    onClick={() => setActiveAnalysisTab('pronunciation')}
-                  >
-                    <i className="fas fa-volume-up"></i>
-                    Pronunciation ({questionData.pronunciation_issues?.length || 0})
-                  </button>
+                  {questionData.pronunciation_issues !== undefined && (
+                    <button
+                      className={`${styles.analysisTabButton} ${activeAnalysisTab === 'pronunciation' ? styles.active : ''}`}
+                      onClick={() => setActiveAnalysisTab('pronunciation')}
+                    >
+                      <i className="fas fa-volume-up"></i>
+                      Pronunciation ({questionData.pronunciation_issues?.length || 0})
+                    </button>
+                  )}
                 </div>
                 
                 <div className={styles.analysisTabContent}>
@@ -401,7 +415,7 @@ const SpeakingQuestionCard = ({ questionData }) => {
                     </div>
                   )}
                   
-                  {activeAnalysisTab === 'pronunciation' && (
+                  {activeAnalysisTab === 'pronunciation' && questionData.pronunciation_issues !== undefined && (
                     <div className={styles.issuesContainer}>
                       {questionData.pronunciation_issues?.length > 0 ? (
                         questionData.pronunciation_issues.map((issue, index) => (

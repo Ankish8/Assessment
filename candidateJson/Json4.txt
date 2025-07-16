@@ -1,0 +1,10 @@
+{
+  "correctness_score": 2,
+  "correctness_feedback": "The candidate acknowledges not knowing the concept. This is not a correct or informative response.",
+  "grammar_score": 8,
+  "vocabulary_score": 8,
+  "grammar_issues": [],
+  "vocabulary_issues": [],
+  "corrected_text": "I do not know the concept.",
+  "ai_feedback_summary": "The candidate did not answer the question correctly, indicating a lack of understanding of the concept. They should be encouraged to learn about photosynthesis and attempt to describe it in their own words. The grammar and vocabulary are acceptable but could be improved with practice."
+}

@@ -18,6 +18,21 @@
   padding: var(--spacing-6) 0;
 }
 
+.header h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-2) 0;
+  line-height: var(--line-height-tight);
+}
+
+.header p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-relaxed);
+}
+
 .pageTitle {
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
@@ -32,6 +47,18 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-6);
+}
+
+.questionWrapper {
+  margin-bottom: var(--spacing-4);
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--color-border-primary);
+  margin: var(--spacing-8) 0;
+  opacity: 0.5;
 }
 
 

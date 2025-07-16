@@ -1,0 +1,16 @@
+{
+  "correctness_score": 0,
+  "correctness_feedback": "The answer 'I don't know' does not address the question at all as it does not provide any information or attempt to explain the process of photosynthesis. A more relevant answer should define photosynthesis, explaining how plants, algae, and some bacteria convert light energy, usually from the sun, into chemical energy in the form of glucose.",
+  "grammar_score": 10,
+  "vocabulary_score": 5,
+  "grammar_issues": [],
+  "vocabulary_issues": [
+    {
+      "word": "dont",
+      "issue": "Incorrect contraction missing an apostrophe",
+      "suggestion": "don't"
+    }
+  ],
+  "corrected_text": "I don't know.",
+  "ai_feedback_summary": "The candidate did not attempt to answer the question about photosynthesis, which is a crucial topic in biology. It would be beneficial for the candidate to study the basic processes and terminology of photosynthesis to improve their scientific literacy."
+}
