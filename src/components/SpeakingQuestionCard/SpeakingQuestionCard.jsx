@@ -9,9 +9,8 @@ const SpeakingQuestionCard = ({ questionData }) => {
     analysis: true
   });
   
-  // Inline editing state
-  const [isEditingScore, setIsEditingScore] = useState(false);
-  const [editScore, setEditScore] = useState(questionData.correctness_score || 0);
+  // Score editing state
+  const [tempScore, setTempScore] = useState(questionData.correctness_score || 0);
   const [currentQuestionData, setCurrentQuestionData] = useState(questionData);
   // Set initial active tab based on available data
   const getInitialActiveTab = () => {
@@ -109,36 +108,14 @@ const SpeakingQuestionCard = ({ questionData }) => {
     }));
   };
 
-  const handleScoreClick = () => {
-    setIsEditingScore(true);
-    setEditScore(currentQuestionData.correctness_score || 0);
-  };
-
-  const handleScoreChange = (value) => {
-    const numValue = Math.max(0, Math.min(10, parseFloat(value) || 0));
-    setEditScore(numValue);
-  };
-
-  const handleSaveScore = () => {
+  const handleScoreUpdate = (newScore) => {
+    const validScore = Math.max(0, Math.min(10, parseFloat(newScore) || 0));
     const updatedData = {
       ...currentQuestionData,
-      correctness_score: editScore
+      correctness_score: validScore
     };
     setCurrentQuestionData(updatedData);
-    setIsEditingScore(false);
-  };
-
-  const handleCancelEdit = () => {
-    setEditScore(currentQuestionData.correctness_score || 0);
-    setIsEditingScore(false);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSaveScore();
-    } else if (e.key === 'Escape') {
-      handleCancelEdit();
-    }
+    setTempScore(validScore);
   };
 
   // Check if this is a "Not Attempted" case
@@ -159,29 +136,29 @@ const SpeakingQuestionCard = ({ questionData }) => {
           )}
         </div>
         <div className={styles.scoreInfo}>
-          <div className={styles.inlineScoreContainer}>
-            <span className={styles.scoreLabel}>Score:</span>
-            {isEditingScore ? (
-              <input
-                type="number"
-                min="0"
-                max="10"
-                step="0.1"
-                value={editScore}
-                onChange={(e) => handleScoreChange(e.target.value)}
-                onBlur={handleSaveScore}
-                onKeyDown={handleKeyPress}
-                className={styles.scoreInput}
-                autoFocus
-              />
-            ) : (
-              <div className={styles.inlineScore} onClick={handleScoreClick}>
-                <span className={`${styles.scoreNumber} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
-                  {currentQuestionData.correctness_score || transformedData.score}
-                </span>
-                <i className={`fas fa-pencil-alt ${styles.editIcon}`}></i>
-              </div>
-            )}
+          <div className={styles.scoreDisplayContainer}>
+            <div className={styles.scoreDisplay}>
+              <span className={styles.scoreLabel}>Score:</span>
+              <span className={`${styles.scoreValue} ${styles[getScoreColor(currentQuestionData.correctness_score || transformedData.score, 10)]}`}>
+                {currentQuestionData.correctness_score || transformedData.score}/10
+              </span>
+            </div>
+            <div className={styles.scoreControls}>
+              <button 
+                className={styles.scoreButton}
+                onClick={() => handleScoreUpdate(Math.max(0, (currentQuestionData.correctness_score || 0) - 0.5))}
+                disabled={currentQuestionData.correctness_score <= 0}
+              >
+                -
+              </button>
+              <button 
+                className={styles.scoreButton}
+                onClick={() => handleScoreUpdate(Math.min(10, (currentQuestionData.correctness_score || 0) + 0.5))}
+                disabled={currentQuestionData.correctness_score >= 10}
+              >
+                +
+              </button>
+            </div>
           </div>
           <div className={styles.timeCard}>
             <i className="fas fa-clock"></i>

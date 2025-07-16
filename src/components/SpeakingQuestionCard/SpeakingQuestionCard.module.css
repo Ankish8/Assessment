@@ -1472,75 +1472,78 @@
   }
 }
 
-/* Inline Score Editing */
-.inlineScoreContainer {
+/* Score Display with Controls */
+.scoreDisplayContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 8px;
+  padding: var(--spacing-2);
+}
+
+.scoreDisplay {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
 }
 
-.inlineScore {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  position: relative;
-}
-
-.inlineScore:hover {
-  background: var(--color-gray-50);
-}
-
-.inlineScore:hover .editIcon {
-  opacity: 1;
-}
-
-.scoreNumber {
-  font-size: var(--font-size-lg);
+.scoreValue {
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
-  line-height: 1;
+  font-family: ui-monospace, 'Monaco', 'Cascadia Code', 'Segoe UI Mono', monospace;
+  min-width: 40px;
+  text-align: center;
 }
 
-.scoreNumber.success {
+.scoreValue.success {
   color: var(--color-success-600);
 }
 
-.scoreNumber.warning {
+.scoreValue.warning {
   color: var(--color-warning-600);
 }
 
-.scoreNumber.error {
+.scoreValue.error {
   color: var(--color-error-600);
 }
 
-
-.editIcon {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-tertiary);
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  margin-left: var(--spacing-1);
+.scoreControls {
+  display: flex;
+  gap: var(--spacing-1);
 }
 
-.scoreInput {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  border: 2px solid var(--color-primary-400);
-  border-radius: 4px;
-  padding: var(--spacing-1) var(--spacing-2);
-  width: 60px;
-  text-align: center;
+.scoreButton {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border-primary);
   background: var(--color-background-primary);
   color: var(--color-text-primary);
+  border-radius: 4px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-.scoreInput:focus {
-  outline: none;
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+.scoreButton:hover:not(:disabled) {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-700);
+}
+
+.scoreButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.scoreButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* Not Attempted Styling - Simple */
@@ -1552,21 +1555,18 @@
   opacity: 0.8;
 }
 
-/* Mobile responsive for inline editing */
+/* Mobile responsive for score display */
 @media (max-width: 768px) {
-  .inlineScoreContainer {
+  .scoreDisplayContainer {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-1);
+    gap: var(--spacing-2);
   }
 
-  .scoreNumber {
-    font-size: var(--font-size-base);
-  }
-
-  .scoreInput {
-    font-size: var(--font-size-base);
-    width: 50px;
+  .scoreButton {
+    width: 24px;
+    height: 24px;
+    font-size: var(--font-size-xs);
   }
 }
 
