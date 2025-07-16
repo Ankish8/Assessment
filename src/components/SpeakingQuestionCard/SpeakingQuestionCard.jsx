@@ -6,8 +6,7 @@ const SpeakingQuestionCard = ({ questionData }) => {
   const [analysisMode, setAnalysisMode] = useState('none'); // 'none', 'confidence', 'sentiment'
   const [expandedSections, setExpandedSections] = useState({
     assessment: true,
-    analysis: true,
-    feedback: true
+    analysis: true
   });
   // Set initial active tab based on available data
   const getInitialActiveTab = () => {
@@ -233,7 +232,17 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       )}
 
-      {/* Assessment Summary - Collapsible */}
+      {/* Corrected Text - Immediately after feedback */}
+      {questionData.corrected_text && (
+        <div className={styles.section}>
+          <h4>Corrected Text</h4>
+          <div className={styles.correctedTextCard}>
+            <p>"{questionData.corrected_text}"</p>
+          </div>
+        </div>
+      )}
+
+      {/* Score Breakdown - Collapsible */}
       <div className={styles.collapsibleSection}>
         <button 
           className={styles.collapsibleHeader}
@@ -362,35 +371,6 @@ const SpeakingQuestionCard = ({ questionData }) => {
         </div>
       )}
 
-      {/* Corrected Text - Collapsible */}
-      {questionData.corrected_text && (
-        <div className={styles.collapsibleSection}>
-          <button 
-            className={styles.collapsibleHeader}
-            onClick={() => toggleSection('feedback')}
-          >
-            <div className={styles.headerContent}>
-              <i className="fas fa-spell-check"></i>
-              <span>Corrected Text</span>
-            </div>
-            <i className={`fas ${expandedSections.feedback ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-          </button>
-          
-          {expandedSections.feedback && (
-            <div className={styles.collapsibleContent}>
-              {questionData.corrected_text && (
-                <div className={styles.section}>
-                  <h4>Corrected Text</h4>
-                  <div className={styles.correctedTextCard}>
-                    <p>"{questionData.corrected_text}"</p>
-                  </div>
-                </div>
-              )}
-
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };
