@@ -30,6 +30,7 @@ import VideoQuestions from './pages/Video/VideoQuestions';
 import VideoMediaResources from './pages/Video/VideoMediaResources';
 import VideoQuestionDetails from './pages/Video/VideoQuestionDetails';
 import VideoEvaluationParameters from './pages/Video/VideoEvaluationParameters';
+import SystemCheckDemo from './pages/SystemCheckDemo';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './styles/variables.css';
 import './index.css';
@@ -69,6 +70,7 @@ function App() {
         <Route path="/video/question-details" element={<VideoQuestionDetails />} />
         <Route path="/video/evaluation-parameters" element={<VideoEvaluationParameters />} />
         <Route path="/premium-modal-demo" element={<PremiumModalDemo />} />
+        <Route path="/system-check-demo" element={<SystemCheckDemo />} />
       </Routes>
     </div>
   );
