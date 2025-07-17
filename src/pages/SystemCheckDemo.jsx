@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SystemCheckFlow from '../components/common/SystemCheckFlow/SystemCheckFlow';
 
 const SystemCheckDemo = () => {
+  console.log('SystemCheckDemo component loaded');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [completionData, setCompletionData] = useState(null);
   const [logs, setLogs] = useState([]);
@@ -32,6 +33,8 @@ const SystemCheckDemo = () => {
     setLogs([]);
   };
 
+  console.log('SystemCheckDemo render');
+  
   return (
     <div style={{ 
       display: 'flex',
@@ -77,8 +80,33 @@ const SystemCheckDemo = () => {
       </button>
 
       {/* System Check Modal */}
+      {isModalOpen && (
+        <div style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0, 
+          backgroundColor: 'rgba(0,0,0,0.5)', 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{ 
+            backgroundColor: 'white', 
+            padding: '2rem', 
+            borderRadius: '12px',
+            textAlign: 'center'
+          }}>
+            <p>System Check Modal (Test)</p>
+            <button onClick={handleCloseModal}>Close</button>
+          </div>
+        </div>
+      )}
+      
       <SystemCheckFlow
-        isOpen={isModalOpen}
+        isOpen={false}
         onClose={handleCloseModal}
         onComplete={handleComplete}
         config={{
