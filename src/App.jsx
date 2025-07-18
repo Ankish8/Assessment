@@ -31,6 +31,11 @@ import VideoMediaResources from './pages/Video/VideoMediaResources';
 import VideoQuestionDetails from './pages/Video/VideoQuestionDetails';
 import VideoEvaluationParameters from './pages/Video/VideoEvaluationParameters';
 import SystemCheckDemo from './pages/SystemCheckDemo';
+import AIInterviewJobProfile from './pages/AIInterview/AIInterviewJobProfile/AIInterviewJobProfile';
+import AIInterviewJobDescription from './pages/AIInterview/AIInterviewJobDescription/AIInterviewJobDescription';
+import AIInterviewSkillsQuestions from './pages/AIInterview/AIInterviewSkillsQuestions/AIInterviewSkillsQuestions';
+import AIInterviewDetails from './pages/AIInterview/AIInterviewDetails/AIInterviewDetails';
+import AIInterviewPreferences from './pages/AIInterview/AIInterviewPreferences/AIInterviewPreferences';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './styles/variables.css';
 import './index.css';
@@ -71,6 +76,11 @@ function App() {
         <Route path="/video/evaluation-parameters" element={<VideoEvaluationParameters />} />
         <Route path="/premium-modal-demo" element={<PremiumModalDemo />} />
         <Route path="/system-check-demo" element={<SystemCheckDemo />} />
+        <Route path="/ai-interview/job-profile" element={<AIInterviewJobProfile />} />
+        <Route path="/ai-interview/job-description" element={<AIInterviewJobDescription />} />
+        <Route path="/ai-interview/skills-questions" element={<AIInterviewSkillsQuestions />} />
+        <Route path="/ai-interview/interview-details" element={<AIInterviewDetails />} />
+        <Route path="/ai-interview/interview-preferences" element={<AIInterviewPreferences />} />
       </Routes>
     </div>
   );

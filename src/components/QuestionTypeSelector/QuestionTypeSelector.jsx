@@ -122,7 +122,7 @@ const interviewTypes = [
       'Adaptive difficulty levels',
       'Personalized experience'
     ],
-    route: '/question-details?type=ai-interview'
+    route: '/ai-interview/job-profile'
   }
 ];
 
