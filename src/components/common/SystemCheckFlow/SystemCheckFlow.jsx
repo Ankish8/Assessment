@@ -216,6 +216,84 @@ const SystemCheckFlow = ({
       }
     }));
   };
+
+  const retrySystemCheck = async (checkType) => {
+    if (checkType === 'camera') {
+      setSystemChecks(prev => ({
+        ...prev,
+        camera: { ...prev.camera, status: 'checking' }
+      }));
+      
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        setSystemChecks(prev => ({
+          ...prev,
+          camera: {
+            status: 'success',
+            available: true,
+            stream: stream,
+            error: null
+          }
+        }));
+      } catch (error) {
+        setSystemChecks(prev => ({
+          ...prev,
+          camera: {
+            status: 'error',
+            available: false,
+            stream: null,
+            error: 'Camera access denied or not available'
+          }
+        }));
+      }
+    } else if (checkType === 'microphone') {
+      setSystemChecks(prev => ({
+        ...prev,
+        microphone: { ...prev.microphone, status: 'checking' }
+      }));
+      
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(track => track.stop());
+        setSystemChecks(prev => ({
+          ...prev,
+          microphone: {
+            status: 'success',
+            available: true,
+            error: null
+          }
+        }));
+      } catch (error) {
+        setSystemChecks(prev => ({
+          ...prev,
+          microphone: {
+            status: 'error',
+            available: false,
+            error: 'Microphone access denied or not available'
+          }
+        }));
+      }
+    } else if (checkType === 'browser') {
+      setSystemChecks(prev => ({
+        ...prev,
+        browser: { ...prev.browser, status: 'checking' }
+      }));
+      
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+      const browserSupported = isChrome || /Firefox/.test(navigator.userAgent) || /Safari/.test(navigator.userAgent);
+      
+      setSystemChecks(prev => ({
+        ...prev,
+        browser: {
+          status: browserSupported ? 'success' : 'error',
+          supported: browserSupported,
+          error: browserSupported ? null : 'Unsupported browser detected. Please use Chrome, Firefox, or Safari.'
+        }
+      }));
+    }
+  };
   
   const testSpeakers = () => {
     try {
@@ -361,7 +439,15 @@ const SystemCheckFlow = ({
                   {key !== 'browser' && 'Required'}
                 </div>
                 {check.error && (
-                  <div className={styles.errorMessage}>{check.error}</div>
+                  <div className={styles.errorMessage}>
+                    <span>{check.error}</span>
+                    <span 
+                      className={styles.retryOption}
+                      onClick={() => retrySystemCheck(key)}
+                    >
+                      ↻ Retry
+                    </span>
+                  </div>
                 )}
                 {key === 'speakers' && check.status === 'success' && (
                   <button onClick={testSpeakers} className={styles.testButton}>
@@ -788,16 +874,6 @@ const SystemCheckFlow = ({
       className={styles.systemCheckModal}
       {...props}
     >
-      <div className={styles.stepProgress}>
-        {steps.map((step, index) => (
-          <div
-            key={step.id}
-            className={`${styles.progressStep} ${
-              index === currentStep ? styles.active : ''
-            } ${index < currentStep ? styles.completed : ''}`}
-          />
-        ))}
-      </div>
       
       <div className={styles.stepContent}>
         {renderCurrentStep()}
