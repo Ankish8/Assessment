@@ -1,0 +1,314 @@
+@import '../../../../styles/tokens.css';
+
+/* Sub Part Card */
+.subPartCard {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-4);
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.subPartCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-primary-200);
+}
+
+.subPartCard.editing {
+  border-color: var(--color-primary-400);
+  background: var(--color-primary-25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  /* Make editing mode take full width */
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: none;
+}
+
+.subPartCard.draggable {
+  cursor: move;
+}
+
+.subPartCard.draggable:hover {
+  transform: translateY(-2px);
+}
+
+.subPartCard.draggable:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
+/* Display Mode */
+.subPartHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-3);
+  gap: var(--spacing-2);
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-tertiary);
+  cursor: grab;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dragHandle:hover {
+  color: var(--color-primary-600);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.subPartTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.subPartActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-left: var(--spacing-3);
+}
+
+.timeIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background: var(--color-background-secondary);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.timeIndicator i {
+  font-size: 10px;
+}
+
+.subPartSkills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+  margin-bottom: var(--spacing-3);
+}
+
+.skillTag {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.subPartDescription {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 var(--spacing-3) 0;
+}
+
+.incompleteIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  font-size: var(--font-size-xs);
+  color: var(--color-warning-700);
+  background: var(--color-warning-50);
+  border: 1px solid var(--color-warning-200);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-3);
+}
+
+.incompleteIndicator i {
+  color: var(--color-warning-600);
+  flex-shrink: 0;
+}
+
+.incompleteMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.incompleteIndicator button {
+  flex-shrink: 0;
+  background-color: var(--color-primary-600, #611F69) !important;
+  color: var(--color-text-on-primary, #ffffff) !important;
+  border: none !important;
+  border-radius: var(--radius-sm, 4px) !important;
+  padding: var(--spacing-1, 4px) var(--spacing-2, 8px) !important;
+  height: auto !important;
+  min-height: 24px !important;
+  font-size: var(--font-size-xs, 12px) !important;
+  font-weight: var(--font-weight-medium, 500) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--spacing-1, 4px) !important;
+  transition: all var(--animation-duration-base, 200ms) ease-in-out !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.incompleteIndicator button:hover:not(:disabled) {
+  background-color: var(--color-primary-700, #5a1f60) !important;
+}
+
+/* Editing Mode */
+.editingHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-4);
+  padding-bottom: var(--spacing-3);
+  border-bottom: 1px solid var(--color-primary-200);
+}
+
+.editingTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-700);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.editingActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.editingForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4);
+  align-items: start;
+}
+
+/* Full width elements in editing form */
+.editingForm .formGroup:nth-child(1),
+.editingForm .formGroup:nth-child(4) {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .editingForm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.fieldLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.titleInput {
+  width: 100%;
+}
+
+.errorMessage {
+  font-size: var(--font-size-xs);
+  color: var(--color-error-600);
+  margin-top: var(--spacing-1);
+}
+
+/* Time Control */
+.timeControl {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  width: fit-content;
+}
+
+.timeValue {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  min-width: 30px;
+  text-align: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-sm);
+  background: var(--color-background-primary);
+}
+
+/* Description Textarea */
+.descriptionTextarea {
+  width: 100%;
+  min-height: 80px;
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.descriptionTextarea:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 2px var(--color-primary-100);
+}
+
+.descriptionTextarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .subPartHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+  
+  .subPartActions {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+  
+  .editingHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+  }
+  
+  .editingActions {
+    align-self: flex-end;
+  }
+}

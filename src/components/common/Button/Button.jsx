@@ -17,12 +17,25 @@ const Button = ({
   as = 'button',
   ...props 
 }) => {
+  // Map size aliases
+  const sizeMap = {
+    'sm': 'small',
+    'md': 'medium', 
+    'lg': 'large',
+    'xl': 'xlarge',
+    'small': 'small',
+    'medium': 'medium',
+    'large': 'large',
+    'xlarge': 'xlarge'
+  };
+  
+  const mappedSize = sizeMap[size] || 'medium';
   const Component = as;
   
   const buttonClass = [
     styles.button,
     styles[variant],
-    styles[size],
+    styles[mappedSize],
     loading && styles.loading,
     iconOnly && styles.iconOnly,
     fullWidth && styles.fullWidth,

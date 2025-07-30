@@ -9,52 +9,57 @@
 /* Tab Navigation */
 .tabNav {
     display: flex;
-    background-color: var(--color-background-secondary);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-1);
-    margin-bottom: var(--spacing-6);
+    background-color: transparent;
+    border-bottom: 1px solid var(--color-border-primary, #ddd6e3);
+    margin-bottom: 0;
     position: relative;
-    box-shadow: var(--shadow-xs);
+    gap: var(--spacing-1, 4px);
 }
 
 .tabButton {
-    flex: 1;
     background: none;
     border: none;
-    padding: var(--spacing-3) var(--spacing-5);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-secondary);
-    border-radius: var(--radius-md);
+    padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+    font-size: var(--font-size-sm, 14px);
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--color-text-secondary, #6b5671);
     cursor: pointer;
-    transition: all var(--animation-duration-base) var(--animation-ease-in-out);
+    transition: all var(--animation-duration-base, 200ms) var(--animation-ease-in-out, ease-in-out);
     position: relative;
-    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-2);
-    font-family: var(--font-family-base);
+    gap: var(--spacing-2, 8px);
+    font-family: var(--font-family-base, system-ui, -apple-system, sans-serif);
+    min-height: 40px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    border-radius: var(--radius-sm, 4px) var(--radius-sm, 4px) 0 0;
 }
 
-.tabButton:hover {
-    color: var(--color-text-primary);
+.tabButton:hover:not(.active) {
+    color: var(--color-text-primary, #2a1f35);
+    background-color: var(--color-background-secondary, #f8f6fa);
 }
 
 .tabButton.active {
-    background-color: var(--color-background-primary);
-    color: var(--color-primary-600);
-    box-shadow: var(--shadow-sm);
-    font-weight: var(--font-weight-semibold);
+    background-color: var(--color-background-primary, #ffffff);
+    color: var(--color-primary-600, #611F69);
+    border-bottom-color: var(--color-primary-600, #611F69);
+    font-weight: var(--font-weight-semibold, 600);
 }
 
 .tabButton:focus {
-    outline: 2px solid var(--color-primary-400);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary-200, #d4a3dd);
 }
 
 .tabButton i {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-sm, 14px);
+}
+
+.tabButton.active i {
+    color: var(--color-primary-600, #611F69);
 }
 
 /* Tab Content */
@@ -110,12 +115,32 @@
 
 /* Responsive Design */
 @media (max-width: 640px) {
+    .tabNav {
+        margin-bottom: var(--spacing-4, 16px);
+    }
+    
     .tabButton {
-        padding: var(--spacing-2) var(--spacing-3);
-        font-size: var(--font-size-xs);
+        padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+        font-size: var(--font-size-sm, 14px);
+        min-height: 44px;
+        gap: var(--spacing-1, 4px);
     }
     
     .tabButton i {
-        font-size: var(--font-size-xs);
+        font-size: var(--font-size-sm, 14px);
+    }
+}
+
+@media (max-width: 480px) {
+    .tabButton {
+        padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+        font-size: var(--font-size-xs, 12px);
+        min-height: 40px;
+        flex-direction: column;
+        gap: var(--spacing-1, 4px);
+    }
+    
+    .tabButton i {
+        font-size: var(--font-size-xs, 12px);
     }
 }
