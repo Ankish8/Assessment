@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Input from '../../../../components/common/Input/Input';
 import Button from '../../../../components/common/Button/Button';
 import SkillsInput from '../../../QuestionDetails/components/SkillsInput/SkillsInput';
-import SkillsModal from '../SkillsModal/SkillsModal';
+import SkillsModal from '../SkillsModal';
 import styles from './SubPartCard.module.css';
 
 const SubPartCard = ({ 
