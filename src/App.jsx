@@ -36,7 +36,10 @@ import AIInterviewJobDescription from './pages/AIInterview/AIInterviewJobDescrip
 import AIInterviewSkillsQuestions from './pages/AIInterview/AIInterviewSkillsQuestions/AIInterviewSkillsQuestions';
 import AIInterviewDetails from './pages/AIInterview/AIInterviewDetails/AIInterviewDetails';
 import AIInterviewPreferences from './pages/AIInterview/AIInterviewPreferences/AIInterviewPreferences';
+import HeroUITest from './pages/HeroUITest';
+import FreshHeroUITest from './pages/FreshHeroUITest';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import './styles/tokens.css';
 import './styles/variables.css';
 import './index.css';
 
@@ -81,8 +84,10 @@ function App() {
         <Route path="/ai-interview/skills-questions" element={<AIInterviewSkillsQuestions />} />
         <Route path="/ai-interview/interview-details" element={<AIInterviewDetails />} />
         <Route path="/ai-interview/interview-preferences" element={<AIInterviewPreferences />} />
-      </Routes>
-    </div>
+        <Route path="/heroui-test" element={<HeroUITest />} />
+        <Route path="/fresh-heroui-test" element={<FreshHeroUITest />} />
+        </Routes>
+      </div>
   );
 }
 

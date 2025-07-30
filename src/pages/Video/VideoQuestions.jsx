@@ -5,7 +5,6 @@ import CompactProgressSteps from '../../components/common/CompactProgressSteps/C
 import Tab from '../../components/common/Tab/Tab';
 import Card from '../../components/common/Card/Card';
 import Button from '../../components/common/Button/Button';
-import FloatingFooter from '../../components/common/FloatingFooter/FloatingFooter';
 import SubPartCard from './components/SubPartCard/SubPartCard';
 import HelpModal from './components/HelpModal/HelpModal';
 import styles from './VideoQuestions.module.css';
@@ -276,31 +275,29 @@ const VideoQuestions = () => {
             </div>
           </div>
         </Card>
-      </div>
 
-      {/* Use FloatingFooter component */}
-      <FloatingFooter
-        leftActions={[
-          <Button 
-            key="cancel"
-            variant="secondary" 
-            onClick={() => navigate(-1)}
-          >
-            Previous
-          </Button>
-        ]}
-        rightActions={[
-          <Button 
-            key="continue"
-            variant="primary" 
-            onClick={handleSaveAndContinue}
-            disabled={!isValid}
-          >
-            Save & Continue
-          </Button>
-        ]}
-        validationMessage={!isValid && getValidationMessage()}
-      />
+        {/* Bottom Actions - Same as Step 1 */}
+        <div className={styles.bottomActions}>
+          <div className={styles.leftActions}>
+            <Button 
+              variant="secondary" 
+              onClick={() => navigate(-1)}
+            >
+              Previous
+            </Button>
+          </div>
+          
+          <div className={styles.rightActions}>
+            <Button 
+              variant="primary" 
+              onClick={handleSaveAndContinue}
+              disabled={!isValid}
+            >
+              Save & Continue
+            </Button>
+          </div>
+        </div>
+      </div>
 
       {/* Help Modal */}
       <HelpModal
