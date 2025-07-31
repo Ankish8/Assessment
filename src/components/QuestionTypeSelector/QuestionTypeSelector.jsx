@@ -109,7 +109,7 @@ const interviewTypes = [
       'Standardized evaluation',
       'Bias-free assessment'
     ],
-    route: '/question-details?type=bot-interview'
+    route: '/bot-interview/question-statement'
   },
   {
     id: 'ai-interview',

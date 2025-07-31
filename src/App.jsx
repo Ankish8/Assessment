@@ -36,6 +36,11 @@ import AIInterviewJobDescription from './pages/AIInterview/AIInterviewJobDescrip
 import AIInterviewSkillsQuestions from './pages/AIInterview/AIInterviewSkillsQuestions/AIInterviewSkillsQuestions';
 import AIInterviewDetails from './pages/AIInterview/AIInterviewDetails/AIInterviewDetails';
 import AIInterviewPreferences from './pages/AIInterview/AIInterviewPreferences/AIInterviewPreferences';
+import BotInterviewQuestionStatement from './pages/BotInterview/BotInterviewQuestionStatement/BotInterviewQuestionStatement';
+import BotInterviewAreaSkills from './pages/BotInterview/BotInterviewAreaSkills/BotInterviewAreaSkills';
+import BotInterviewQuestionDetails from './pages/BotInterview/BotInterviewQuestionDetails/BotInterviewQuestionDetails';
+import BotInterviewEvaluationParameters from './pages/BotInterview/BotInterviewEvaluationParameters/BotInterviewEvaluationParameters';
+import BotInterviewSolutionDetails from './pages/BotInterview/BotInterviewSolutionDetails/BotInterviewSolutionDetails';
 import HeroUITest from './pages/HeroUITest';
 import FreshHeroUITest from './pages/FreshHeroUITest';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -84,6 +89,11 @@ function App() {
         <Route path="/ai-interview/skills-questions" element={<AIInterviewSkillsQuestions />} />
         <Route path="/ai-interview/interview-details" element={<AIInterviewDetails />} />
         <Route path="/ai-interview/interview-preferences" element={<AIInterviewPreferences />} />
+        <Route path="/bot-interview/question-statement" element={<BotInterviewQuestionStatement />} />
+        <Route path="/bot-interview/area-skills" element={<BotInterviewAreaSkills />} />
+        <Route path="/bot-interview/question-details" element={<BotInterviewQuestionDetails />} />
+        <Route path="/bot-interview/evaluation-parameters" element={<BotInterviewEvaluationParameters />} />
+        <Route path="/bot-interview/solution-details" element={<BotInterviewSolutionDetails />} />
         <Route path="/heroui-test" element={<HeroUITest />} />
         <Route path="/fresh-heroui-test" element={<FreshHeroUITest />} />
         </Routes>
