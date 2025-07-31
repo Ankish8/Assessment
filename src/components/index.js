@@ -9,6 +9,7 @@ export { default as Header } from './common/Header';
 export { default as ProgressSteps } from './common/ProgressSteps';
 export { default as BottomActions } from './common/BottomActions';
 export { default as Tab } from './common/Tab';
+export { default as StepperPage } from './common/StepperPage';
 
 // Feature Components
 export { default as QuestionTypeSelector } from './QuestionTypeSelector';

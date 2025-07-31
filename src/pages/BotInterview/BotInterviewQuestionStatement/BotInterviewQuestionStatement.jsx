@@ -1,12 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../../../components/common/Button/Button';
+import StepperPage from '../../../components/common/StepperPage/StepperPage';
 import { 
   BOT_INTERVIEW_STEPS, 
   BOT_INTERVIEW_STEP_NUMBERS
 } from '../shared/constants';
-import styles from './BotInterviewQuestionStatement.module.css';
-import '../../../styles/utilities.css';
 
 const BotInterviewQuestionStatement = () => {
   const navigate = useNavigate();
@@ -21,80 +19,18 @@ const BotInterviewQuestionStatement = () => {
   };
 
   return (
-    <div className={styles.container}>
-      {/* Compact Header */}
-      <div className={styles.compactHeader}>
-        <div>
-          <div className={styles.headerLeft}>
-            <button 
-              className={styles.backButton}
-              onClick={() => navigate(-1)}
-              aria-label="Go back"
-            >
-              <i className="fas fa-arrow-left"></i>
-            </button>
-            <div className={styles.headerTitle}>
-              <i className="fas fa-robot"></i>
-              <span>Bot Interview</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Compact Progress Steps */}
-      <div className={styles.compactProgress}>
-        <div>
-          <div className={styles.progressStep}>
-            <div className={`${styles.stepIndicator} ${styles.current}`}>
-              <i className="fas fa-check"></i>
-            </div>
-            <span className={styles.stepLabel}>Question Statement</span>
-            <i className="fas fa-chevron-right"></i>
-          </div>
-          <div className={styles.progressStep}>
-            <div className={styles.stepIndicator}>2</div>
-            <span className={styles.stepLabel}>Area/Skills</span>
-            <i className="fas fa-chevron-right"></i>
-          </div>
-          <div className={styles.progressStep}>
-            <div className={styles.stepIndicator}>3</div>
-            <span className={styles.stepLabel}>Question Details</span>
-            <i className="fas fa-chevron-right"></i>
-          </div>
-          <div className={styles.progressStep}>
-            <div className={styles.stepIndicator}>4</div>
-            <span className={styles.stepLabel}>Evaluation Parameters</span>
-            <i className="fas fa-chevron-right"></i>
-          </div>
-          <div className={`${styles.progressStep} ${styles.lastStep}`}>
-            <div className={styles.stepIndicator}>5</div>
-            <span className={styles.stepLabel}>Solution Details</span>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.content}>
-        {/* Content area - empty for now */}
-
-        {/* Bottom Actions */}
-        <div className={styles.bottomActions}>
-          <div className={styles.actionButtons}>
-            <Button 
-              variant="secondary" 
-              onClick={handlePrevious}
-            >
-              Cancel
-            </Button>
-            <Button 
-              variant="primary" 
-              onClick={handleSaveAndContinue}
-            >
-              Save & Continue
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <StepperPage
+      title="Bot Interview"
+      icon="fas fa-robot"
+      steps={BOT_INTERVIEW_STEPS}
+      currentStep={BOT_INTERVIEW_STEP_NUMBERS.QUESTION_STATEMENT}
+      onPrevious={handlePrevious}
+      onNext={handleSaveAndContinue}
+      previousLabel="Cancel"
+      nextLabel="Save & Continue"
+    >
+      {/* Content area - empty for now */}
+    </StepperPage>
   );
 };
 
