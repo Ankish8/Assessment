@@ -1,7 +1,10 @@
 {
+  "buildCommand": "echo 'Using pre-built files'",
+  "outputDirectory": "dist",
+  "installCommand": "echo 'No install needed'",
   "rewrites": [
     {
-      "source": "/((?!candidate|public|static).*)",
+      "source": "/((?!assets|fa|candidate|public|static).*)",
       "destination": "/index.html"
     }
   ]

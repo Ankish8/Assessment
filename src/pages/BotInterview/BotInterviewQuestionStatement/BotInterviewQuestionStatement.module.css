@@ -8,133 +8,253 @@
   background: var(--color-background-secondary);
 }
 
-/* Compact Header */
-.compactHeader {
-  background: white;
-  border-bottom: 1px solid #e9ecef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+/* Header Actions */
+.headerActions {
+  display: flex;
+  gap: var(--spacing-3);
+  align-items: center;
 }
 
-.compactHeader > div {
+.buttonText {
+  display: inline;
+}
+
+/* Content Area */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+}
+
+/* Main Card */
+.mainCard {
+  margin-bottom: var(--spacing-4);
+}
+
+/* Card Header */
+.cardHeader {
+  margin-bottom: var(--spacing-4);
+}
+
+.titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-3);
+}
+
+.titleWithTooltip {
   display: flex;
   align-items: center;
-  padding: 16px var(--spacing-6);
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  min-height: 64px;
+  gap: var(--spacing-2);
 }
 
-.headerLeft {
+.tooltipContainer i {
+  color: var(--color-text-tertiary);
+  cursor: help;
+  font-size: var(--font-size-sm);
+}
+
+.tooltipContainer i:hover {
+  color: var(--color-text-secondary);
+}
+
+.questionLabel {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
 }
 
-.backButton {
+.questionLabel > span:first-child {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.exampleText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.editorToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.toggleLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-border-primary);
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--color-primary-600);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+
+/* Editor Container */
+.editorContainer {
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-2);
+  background: var(--color-background-secondary);
+  border-bottom: 1px solid var(--color-border-primary);
+  gap: var(--spacing-1);
+  flex-wrap: wrap;
+}
+
+.toolbarSection {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.toolbarButton {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
   border: none;
-  border-radius: 6px;
   background: transparent;
-  color: #6c757d;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: var(--font-size-sm);
 }
 
-.backButton:hover {
-  background: #f8f9fa;
-  color: #495057;
+.toolbarButton:hover {
+  background: var(--color-background-tertiary);
 }
 
-.headerTitle {
+.toolbarButton:active {
+  background: var(--color-primary-100);
+}
+
+.toolbarDivider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border-primary);
+  margin: 0 var(--spacing-2);
+}
+
+.editorWrapper {
+  background: var(--color-background-primary);
+}
+
+.editorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-bottom: 1px solid var(--color-border-primary);
+  background: var(--color-background-secondary);
+}
+
+.editorInfo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #212529;
-  margin: 0;
+  gap: var(--spacing-3);
 }
 
-.headerTitle i {
-  color: var(--color-primary-600);
-  font-size: 16px;
+.characterCount {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
 }
 
-/* Compact Progress Steps */
-.compactProgress {
-  background: white;
-  border-bottom: 1px solid #e9ecef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  overflow-x: auto;
+.validationMessage {
+  font-size: var(--font-size-xs);
+  color: var(--color-error-600);
+  font-weight: var(--font-weight-medium);
 }
 
-.compactProgress > div {
-  display: flex;
-  align-items: center;
-  padding: 12px var(--spacing-6);
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  white-space: nowrap;
-  min-height: 56px;
+.editor {
+  width: 100%;
+  min-height: 300px;
+  padding: var(--spacing-4);
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-background-primary);
 }
 
-.progressStep {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+.editor::placeholder {
+  color: var(--color-text-tertiary);
 }
 
-.progressStep:not(.lastStep) {
-  margin-right: 32px;
+.editor:disabled {
+  background: var(--color-background-secondary);
+  color: var(--color-text-tertiary);
 }
 
-.stepIndicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: 600;
-  background: #e9ecef;
-  color: #6c757d;
-  transition: all 0.2s ease;
-  border: 1px solid #e9ecef;
+.editorError {
+  border-color: var(--color-error-500);
+  box-shadow: 0 0 0 1px var(--color-error-500);
 }
 
-.stepIndicator.current {
-  background: var(--color-primary-600);
-  color: white;
-  border: 1px solid var(--color-primary-600);
-}
-
-.stepLabel {
-  font-size: 14px;
-  font-weight: 500;
-  color: #6c757d;
-  white-space: nowrap;
-}
-
-.progressStep .fas.fa-chevron-right {
-  color: #dee2e6;
-  font-size: 10px;
-  margin-left: 6px;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  margin-bottom: var(--spacing-8);
-}
-
+/* Bottom Actions */
 .bottomActions {
   background: var(--color-background-primary);
   border: 1px solid var(--color-border-primary);
@@ -146,6 +266,23 @@
   gap: var(--spacing-3);
 }
 
+.validationAlert {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  background: var(--color-warning-50);
+  border: 1px solid var(--color-warning-200);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-warning-700);
+}
+
+.validationAlert i {
+  color: var(--color-warning-600);
+  flex-shrink: 0;
+}
+
 .actionButtons {
   display: flex;
   justify-content: space-between;
@@ -153,22 +290,44 @@
   gap: var(--spacing-4);
 }
 
+/* Preview Modal */
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.previewText {
+  padding: var(--spacing-4);
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .compactHeader > div {
-    padding: 12px var(--spacing-4);
+  .titleSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
   }
   
-  .headerTitle span {
-    display: none;
+  .toolbar {
+    padding: var(--spacing-1);
   }
   
-  .compactProgress > div {
-    padding: 8px var(--spacing-4);
+  .toolbarButton {
+    width: 28px;
+    height: 28px;
+    font-size: var(--font-size-xs);
   }
   
-  .stepLabel {
-    display: none;
+  .toolbarDivider {
+    margin: 0 var(--spacing-1);
   }
   
   .bottomActions {
@@ -178,5 +337,9 @@
   .actionButtons {
     flex-direction: column;
     gap: var(--spacing-3);
+  }
+  
+  .actionButtons > * {
+    width: 100%;
   }
 }

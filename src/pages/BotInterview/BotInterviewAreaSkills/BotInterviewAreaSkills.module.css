@@ -8,133 +8,444 @@
   background: var(--color-background-secondary);
 }
 
-/* Compact Header */
-.compactHeader {
-  background: white;
-  border-bottom: 1px solid #e9ecef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.compactHeader > div {
-  display: flex;
-  align-items: center;
-  padding: 16px var(--spacing-6);
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  min-height: 64px;
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.backButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: #6c757d;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.backButton:hover {
-  background: #f8f9fa;
-  color: #495057;
-}
-
-.headerTitle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #212529;
-  margin: 0;
-}
-
-.headerTitle i {
-  color: var(--color-primary-600);
-  font-size: 16px;
-}
-
-/* Compact Progress Steps */
-.compactProgress {
-  background: white;
-  border-bottom: 1px solid #e9ecef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  overflow-x: auto;
-}
-
-.compactProgress > div {
-  display: flex;
-  align-items: center;
-  padding: 12px var(--spacing-6);
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  white-space: nowrap;
-  min-height: 56px;
-}
-
-.progressStep {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.progressStep:not(.lastStep) {
-  margin-right: 32px;
-}
-
-.stepIndicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 12px;
-  font-weight: 600;
-  background: #e9ecef;
-  color: #6c757d;
-  transition: all 0.2s ease;
-  border: 1px solid #e9ecef;
-}
-
-.stepIndicator.current {
-  background: var(--color-primary-600);
-  color: white;
-  border: 1px solid var(--color-primary-600);
-}
-
-.stepLabel {
-  font-size: 14px;
-  font-weight: 500;
-  color: #6c757d;
-  white-space: nowrap;
-}
-
-.progressStep .fas.fa-chevron-right {
-  color: #dee2e6;
-  font-size: 10px;
-  margin-left: 6px;
-}
-
+/* Content Area */
 .content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-2);
+  gap: var(--spacing-4);
   margin-bottom: var(--spacing-8);
+  margin-top: var(--spacing-4);
+  padding: 0 var(--spacing-4);
 }
 
+/* Top Controls */
+.topControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-4);
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.controlsLeft {
+  flex: 1;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.sectionDescription {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.controlsRight {
+  display: flex;
+  gap: var(--spacing-3);
+  align-items: center;
+}
+
+.inlineFilters {
+  display: flex;
+  gap: var(--spacing-2);
+  align-items: center;
+}
+
+.filterSelect {
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  min-width: 120px;
+  cursor: pointer;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 2px var(--color-primary-100);
+}
+
+.searchInput {
+  min-width: 200px;
+}
+
+/* Main Grid Layout */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--spacing-4);
+  min-height: calc(100vh - 280px);
+}
+
+/* Question Library */
+.questionLibrary {
+  display: flex;
+  flex-direction: column;
+}
+
+.libraryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-4);
+}
+
+.libraryTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.questionCount {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-secondary);
+}
+
+.questionList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+  padding-right: var(--spacing-2);
+}
+
+.questionCard {
+  position: relative;
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  background: var(--color-background-primary);
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.questionCard:hover {
+  border-color: var(--color-primary-300);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.questionCard:active {
+  cursor: grabbing;
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-2);
+}
+
+.questionTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.levelBadge {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-base);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.levelBadge.beginner {
+  background: var(--color-info-100);
+  color: var(--color-info-700);
+}
+
+.levelBadge.intermediate {
+  background: var(--color-warning-100);
+  color: var(--color-warning-700);
+}
+
+.levelBadge.advanced {
+  background: var(--color-error-100);
+  color: var(--color-error-700);
+}
+
+.questionMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+.questionMetaRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-1);
+}
+
+.duration, .jobRole {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.duration i, .jobRole i {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.questionSkills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+.skillTag {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary-700);
+  background: var(--color-primary-100);
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-base);
+  white-space: nowrap;
+}
+
+.questionContent {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.dragHandle {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-2);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8) var(--spacing-4);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.emptyState i {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-3);
+  color: var(--color-text-tertiary);
+}
+
+.emptyState p {
+  margin: 0 0 var(--spacing-3) 0;
+  font-size: var(--font-size-base);
+}
+
+/* Areas Grid */
+.areasGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  align-content: start;
+}
+
+.areaCard {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.areaCard.complete {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.areaHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-3);
+}
+
+.areaTitle h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-1) 0;
+}
+
+.areaStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.questionProgress {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.areaActions {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.editButton {
+  color: var(--color-primary-500);
+}
+
+.editButton:hover {
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.deleteButton {
+  color: var(--color-error-500);
+}
+
+.deleteButton:hover {
+  background: var(--color-error-50);
+  color: var(--color-error-600);
+}
+
+/* Drop Zone */
+.dropZone {
+  min-height: 200px;
+  border: 2px dashed var(--color-border-secondary);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-3);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.dropZone.dragOver {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-50);
+}
+
+.dropZone.dragOverFull {
+  border-color: var(--color-warning-500);
+  background: var(--color-warning-50);
+}
+
+.emptyDropZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-text-secondary);
+  height: 100%;
+  min-height: 150px;
+}
+
+.emptyDropZone i {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-2);
+  color: var(--color-text-tertiary);
+}
+
+.emptyDropZone p {
+  margin: 0 0 var(--spacing-1) 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+.emptyDropZone span {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+}
+
+.addMoreZone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  border: 1px dashed var(--color-border-secondary);
+  border-radius: var(--radius-base);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: auto;
+}
+
+.addMoreZone i {
+  color: var(--color-primary-500);
+}
+
+/* Assigned Questions */
+.assignedQuestion {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--spacing-3);
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  gap: var(--spacing-2);
+}
+
+.assignedQuestionContent {
+  flex: 1;
+}
+
+.assignedQuestionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-1);
+}
+
+.assignedQuestionContent h5 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.assignedQuestionMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-1);
+}
+
+.assignedQuestionSkills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+}
+
+/* Bottom Actions */
 .bottomActions {
   background: var(--color-background-primary);
   border: 1px solid var(--color-border-primary);
@@ -146,6 +457,37 @@
   gap: var(--spacing-3);
 }
 
+.validationAlert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  background: var(--color-warning-50);
+  border: 1px solid var(--color-warning-200);
+  border-radius: var(--radius-base);
+}
+
+.validationAlert i {
+  color: var(--color-warning-600);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.validationMessages {
+  flex: 1;
+}
+
+.validationMessages p {
+  font-size: var(--font-size-sm);
+  color: var(--color-warning-700);
+  margin: 0 0 var(--spacing-1) 0;
+  line-height: 1.4;
+}
+
+.validationMessages p:last-child {
+  margin-bottom: 0;
+}
+
 .actionButtons {
   display: flex;
   justify-content: space-between;
@@ -153,30 +495,210 @@
   gap: var(--spacing-4);
 }
 
+/* Filter Modal */
+.filterContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.filterSection h4 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-1);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.skillCheckbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--font-size-xs);
+}
+
+.skillCheckbox:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.skillCheckbox input {
+  margin: 0;
+}
+
+.levelsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-2);
+}
+
+.levelCheckbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  justify-content: center;
+}
+
+.levelCheckbox:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.levelCheckbox input {
+  margin: 0;
+}
+
+.jobRolesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--spacing-1);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.jobRoleCheckbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--font-size-xs);
+}
+
+.jobRoleCheckbox:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.jobRoleCheckbox input {
+  margin: 0;
+}
+
+.filterActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-border-primary);
+}
+
+/* Add Area Modal */
+.addAreaContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.limitMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  background: var(--color-info-50);
+  border: 1px solid var(--color-info-200);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-info-700);
+}
+
+.limitMessage i {
+  color: var(--color-info-600);
+  flex-shrink: 0;
+}
+
+.addAreaActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding-top: var(--spacing-3);
+  border-top: 1px solid var(--color-border-primary);
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .compactHeader > div {
-    padding: 12px var(--spacing-4);
+  .topControls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-3);
   }
-  
-  .headerTitle span {
-    display: none;
+
+  .controlsRight {
+    justify-content: flex-start;
   }
-  
-  .compactProgress > div {
-    padding: 8px var(--spacing-4);
+
+  .mainGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
   }
-  
-  .stepLabel {
-    display: none;
+
+  .areasGrid {
+    grid-template-columns: 1fr;
   }
-  
+
   .bottomActions {
     padding: var(--spacing-3);
   }
-  
+
   .actionButtons {
     flex-direction: column;
     gap: var(--spacing-3);
+  }
+
+  .actionButtons > * {
+    width: 100%;
+  }
+
+  .skillsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .levelsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .jobRolesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filterActions,
+  .addAreaActions {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  .filterActions > *,
+  .addAreaActions > * {
+    width: 100%;
   }
 }
