@@ -1,10 +1,10 @@
 {
-  "buildCommand": "echo 'Using pre-built files'",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "installCommand": "echo 'No install needed'",
+  "installCommand": "npm install",
   "rewrites": [
     {
-      "source": "/((?!assets|fa|candidate|public|static).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
