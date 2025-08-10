@@ -96,8 +96,8 @@ function App() {
         <Route path="/bot-interview/solution-details" element={<BotInterviewSolutionDetails />} />
         <Route path="/heroui-test" element={<HeroUITest />} />
         <Route path="/fresh-heroui-test" element={<FreshHeroUITest />} />
-        </Routes>
-      </div>
+      </Routes>
+    </div>
   );
 }
 
