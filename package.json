@@ -10,7 +10,12 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "check-deploy": "node check-deployment.js"
+    "check-deploy": "node check-deployment.js",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "vercel:status": "vercel ls",
+    "vercel:logs": "vercel logs",
+    "monitor": "npm run check-deploy"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
