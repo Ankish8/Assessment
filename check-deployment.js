@@ -2,6 +2,9 @@
 
 const { exec, spawn } = require('child_process');
 const fs = require('fs');
+const { promisify } = require('util');
+
+const execAsync = promisify(exec);
 
 class VercelDeploymentMonitor {
   constructor() {
